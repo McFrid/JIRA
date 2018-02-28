@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { HashRouter as Router, Switch } from 'react-router-dom'
 
-import App from './components/app/app'
+import App from './containers/app/app'
 import Store from './store/store'
 
 //import 'bootstrap/dist/css/bootstrap.css'
