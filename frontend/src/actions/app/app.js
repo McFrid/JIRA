@@ -1,4 +1,4 @@
-export const INIT = 'INIT'
+export const INIT = 'INIT';
 
 export const init = appState => dispatch => {
     dispatch({
@@ -7,4 +7,4 @@ export const init = appState => dispatch => {
             appState
         }
     })
-}
+};
