@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'reactstrap';
 
-export default DataTable = props => (
+const DataTable = props => (
   <Table dark>
     <thead>
       <tr>
         {props.columns.map(column => (
-          <th key={column}>{column}</th>
+          <th key={column}>{props.columnNames[column]}</th>
         ))}
       </tr>
     </thead>
@@ -18,17 +18,21 @@ export default DataTable = props => (
             <td key={column}>{row[column]}</td>
           ))}
         </tr>
-      )}
+      ))}
     </tbody>
   </Table>
 );
 
 DataTable.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
+  columnNames: PropTypes.object,
   data: PropTypes.arrayOf(PropTypes.object),
 };
 
 DataTable.defaultProps = {
   columns: [],
+  columnNames: {},
   data: [],
 };
+
+export default DataTable;

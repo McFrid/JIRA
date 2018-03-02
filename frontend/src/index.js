@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { HashRouter as Router, Switch } from 'react-router-dom';
 
 import App from './containers/app/app';
-import Store from './store/store';
+import Store from './store/Store';
 
 const store = Store.configureStore();
 
