@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import UsersTableContainer from '../../containers/users/UsersTableContainer';
+import UsersTableContainer from '../../containers/users/UsersContainer';
 
 class App extends Component {
   render() {
