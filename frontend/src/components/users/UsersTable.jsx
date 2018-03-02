@@ -6,7 +6,7 @@ import DataTable from '../../components/common/DataTable';
 const columns = [
   'id',
   'email',
-  'firtName',
+  'firstName',
   'lastName',
   'experience',
 ];
