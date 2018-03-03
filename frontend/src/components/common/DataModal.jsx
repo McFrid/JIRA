@@ -9,11 +9,9 @@ import {
 
 const DataModal = props => (
   <Modal isOpen={props.isActive} toggle={props.onTogleModal}>
-    <ModalHeader toggle={props.onTogleModal}>{props.actionType}</ModalHeader>
+    <ModalHeader toggle={props.onCancel}>{props.actionType}</ModalHeader>
     <ModalBody>
-      <Form>
-
-      </Form>
+      {props.children}
     </ModalBody>
     <ModalFooter>
       <Button color="primary" onClick={props.onConfirm}>{props.confirmName}</Button>{' '}
