@@ -32,7 +32,7 @@ DataTable.propTypes = {
 DataTable.defaultProps = {
   columns: [],
   columnNames: {},
-  data: [],
+  data: []
 };
 
 export default DataTable;

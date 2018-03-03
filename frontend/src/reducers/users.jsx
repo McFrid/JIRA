@@ -1,3 +1,5 @@
+import actionTypes from "../actions/actionTypes";
+
 const initState = [{
   id: 1,
   email: 'test@google.com',
@@ -10,10 +12,16 @@ const initState = [{
   firstName: 'Firts Name 2',
   lastName: 'Last Name 2',
   experience: 2.2,
-}]
+}];
 
 const userState = (state = initState, action) => {
   switch (action.type) {
+    case actionTypes.user.USER_STORE:
+      return [
+        ...state,
+        action.payload.user
+      ];
+
     default:
       return state;
   }

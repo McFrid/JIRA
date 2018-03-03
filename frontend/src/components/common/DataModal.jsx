@@ -14,7 +14,7 @@ const DataModal = props => (
       {props.children}
     </ModalBody>
     <ModalFooter>
-      <Button color="primary" onClick={props.onConfirm}>{props.confirmName}</Button>{' '}
+      <Button color="primary" onClick={props.onConfirm}>{props.confirmName}</Button>
       <Button color="secondary" onClick={props.onCancel}>{props.cancelName}</Button>
     </ModalFooter>
   </Modal>

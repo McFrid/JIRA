@@ -55,6 +55,13 @@ class UsersMainPage extends React.Component {
       isActiveAddModal: false,
     });
 
+    this.props.userActions.storeUser({
+      email: this.state.email,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      experience: this.state.experience
+    });
+
     this.setDefaultProperties();
   }
 
