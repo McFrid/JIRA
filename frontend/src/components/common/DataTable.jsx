@@ -9,6 +9,10 @@ const DataTable = props => (
         {props.columns.map(column => (
           <th key={column}>{props.columnNames[column]}</th>
         ))}
+
+        {props.actions && (
+          <th>Actions</th>
+        )}
       </tr>
     </thead>
     <tbody>
@@ -17,6 +21,10 @@ const DataTable = props => (
           {props.columns.map(column => (
             <td key={column}>{row[column]}</td>
           ))}
+
+          {props.actions && (
+            <td>{props.actions(row.id)}</td>
+          )}
         </tr>
       ))}
     </tbody>

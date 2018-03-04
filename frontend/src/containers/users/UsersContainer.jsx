@@ -9,7 +9,7 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  userActions: bindActionCreators(actions.user, dispatch)
+  userActions: bindActionCreators(actions.user, dispatch),
 });
 
 export default connect(mapState, mapDispatch)(UsersMainPage);

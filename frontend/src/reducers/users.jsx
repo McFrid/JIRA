@@ -1,4 +1,4 @@
-import actionTypes from "../actions/actionTypes";
+import actionTypes from '../actions/actionTypes';
 
 const initState = [{
   id: 1,
@@ -19,8 +19,28 @@ const userState = (state = initState, action) => {
     case actionTypes.user.USER_STORE:
       return [
         ...state,
-        action.payload.user
+        {
+          ...action.payload.user,
+          id: Math.random(),
+          experience: Number.parseFloat(action.payload.user.experience),
+        },
       ];
+
+    case actionTypes.user.USER_UPDATE:
+      return state.map((user) => {
+        if (user.id === action.payload.id) {
+          return {
+            ...action.payload.user,
+            id: action.payload.id,
+            experience: Number.parseFloat(action.payload.user.experience),
+          };
+        }
+
+        return user;
+      });
+
+    case actionTypes.user.USER_REMOVE:
+      return state.filter(user => user.id !== action.payload.id);
 
     default:
       return state;
