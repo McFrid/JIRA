@@ -1,8 +1,9 @@
 import React from 'react';
+import PropsTypes from 'prop-types';
 import {
   FormGroup,
   Label,
-  Input
+  Input,
 } from 'reactstrap';
 
 const LabelInput = props => (
@@ -20,6 +21,19 @@ const LabelInput = props => (
       />
     )}
   </FormGroup>
-)
+);
+
+LabelInput.propTypes = {
+  inputId: PropsTypes.string,
+  labelName: PropsTypes.string,
+  inputType: PropsTypes.string,
+  inputName: PropsTypes.string,
+  placeholder: PropsTypes.string,
+  value: PropsTypes.oneOfType([
+    PropsTypes.number,
+    PropsTypes.string,
+  ]),
+  onInputChange: PropsTypes.func,
+};
 
 export default LabelInput;

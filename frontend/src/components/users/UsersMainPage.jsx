@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Button } from 'reactstrap';
 
 import UsersTable from './UsersTable';
@@ -27,13 +27,13 @@ class UsersMainPage extends React.Component {
 
   setDefaultProperties(state) {
     if (state) {
-      this.userProperties.forEach(property => {
+      this.userProperties.forEach((property) => {
         state[property] = '';
       });
     } else {
       const newState = {}
 
-      this.userProperties.forEach(property => {
+      this.userProperties.forEach((property) => {
         newState[property] = '';
       });
 
@@ -43,7 +43,7 @@ class UsersMainPage extends React.Component {
 
   onInputChange(name, event) {
     this.setState({
-      [name]: event.target.value
+      [name]: event.target.value,
     });
   }
 
@@ -89,7 +89,7 @@ class UsersMainPage extends React.Component {
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      experience: this.state.experience
+      experience: this.state.experience,
     });
 
     this.setDefaultProperties();
@@ -154,13 +154,11 @@ class UsersMainPage extends React.Component {
           updateUser={this.onTogleUpdateUserModal}
           removeUser={this.props.userActions.removeUser}
         />
-        <Button
-          color="success"
-          onClick={this.onTogleModal}
-        >Add New User</Button>
+        <Button color="success" onClick={this.onTogleModal} >Add New User</Button>
       </div>
-    )
+    );
   }
 }
 
 export default UsersMainPage;
+

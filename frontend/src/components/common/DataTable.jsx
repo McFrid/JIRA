@@ -35,12 +35,14 @@ DataTable.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
   columnNames: PropTypes.object,
   data: PropTypes.arrayOf(PropTypes.object),
+  actions: PropTypes.func,
 };
 
 DataTable.defaultProps = {
   columns: [],
   columnNames: {},
-  data: []
+  data: [],
+  actions: () => {},
 };
 
 export default DataTable;
