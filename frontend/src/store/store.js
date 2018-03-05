@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
@@ -13,7 +14,7 @@ export class Store {
       initialState = Object.assign({}, ...args);
     }
 
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const composeEnhancers = composeWithDevTools || compose;
 
     if (process.env.NODE_ENV === 'development') {
       return createStore(
