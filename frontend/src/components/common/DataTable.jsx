@@ -33,7 +33,14 @@ const DataTable = props => (
 
 DataTable.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
-  columnNames: PropTypes.object,
+  columnNames: PropTypes.oneOfType([
+    PropTypes.shape({
+      email: PropTypes.string,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      experience: PropTypes.string,
+    }),
+  ]),
   data: PropTypes.arrayOf(PropTypes.object),
   actions: PropTypes.func,
 };
@@ -42,7 +49,7 @@ DataTable.defaultProps = {
   columns: [],
   columnNames: {},
   data: [],
-  actions: () => {},
+  actions: null,
 };
 
 export default DataTable;

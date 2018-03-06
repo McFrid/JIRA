@@ -46,7 +46,7 @@ class UsersTable extends React.Component {
         data={this.props.users}
         actions={this.buttons}
       />
-    )
+    );
   }
 }
 
@@ -56,12 +56,19 @@ UsersTable.propTypes = {
     email: PropTypes.string,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
-    experience: PropTypes.number,
+    experience: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
   })),
+  updateUser: PropTypes.func,
+  removeUser: PropTypes.func,
 };
 
 UsersTable.defaultProps = {
   users: [],
+  updateUser: null,
+  removeUser: null,
 };
 
 export default UsersTable;

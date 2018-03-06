@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 
 import UsersTable from './UsersTable';
@@ -14,7 +15,10 @@ class UsersMainPage extends React.Component {
     };
 
     this.userProperties = ['email', 'firstName', 'lastName', 'experience'];
-    this.setDefaultProperties(this.state);
+
+    this.userProperties.forEach((property) => {
+      this.state[property] = '';
+    });
 
     this.onTogleModal = this.onTogleModal.bind(this);
     this.onAddUser = this.onAddUser.bind(this);
@@ -23,22 +27,6 @@ class UsersMainPage extends React.Component {
     this.onTogleUpdateUserModal = this.onTogleUpdateUserModal.bind(this);
     this.onCanceUpdateUser = this.onCanceUpdateUser.bind(this);
     this.onUpdateUser = this.onUpdateUser.bind(this);
-  }
-
-  setDefaultProperties(state) {
-    if (state) {
-      this.userProperties.forEach((property) => {
-        state[property] = '';
-      });
-    } else {
-      const newState = {}
-
-      this.userProperties.forEach((property) => {
-        newState[property] = '';
-      });
-
-      this.setState(newState);
-    }
   }
 
   onInputChange(name, event) {
@@ -62,14 +50,14 @@ class UsersMainPage extends React.Component {
   }
 
   onTogleUpdateUserModal(id) {
-    const user = this.props.users.find(user => user.id === id);
+    const currentUser = this.props.users.find(user => user.id === id);
 
     this.setState({
       id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      experience: user.experience,
+      email: currentUser.email,
+      firstName: currentUser.firstName,
+      lastName: currentUser.lastName,
+      experience: currentUser.experience,
       isActiveUpdateModal: true,
     });
   }
@@ -108,6 +96,16 @@ class UsersMainPage extends React.Component {
     });
 
     this.setDefaultProperties();
+  }
+
+  setDefaultProperties() {
+    const newState = {};
+
+    this.userProperties.forEach((property) => {
+      newState[property] = '';
+    });
+
+    this.setState(newState);
   }
 
   render() {
@@ -159,6 +157,25 @@ class UsersMainPage extends React.Component {
     );
   }
 }
+
+UsersMainPage.propTypes = {
+  users: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    experience: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+  })),
+  userActions: PropTypes.objectOf(PropTypes.func),
+};
+
+UsersMainPage.defaultProps = {
+  users: [],
+  userActions: {},
+};
 
 export default UsersMainPage;
 

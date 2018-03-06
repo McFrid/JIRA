@@ -6,7 +6,7 @@ import { HashRouter as Router, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import App from './containers/app/app';
-import Store from './store/Store';
+import Store from './store/store';
 
 const store = Store.configureStore();
 
@@ -18,5 +18,5 @@ ReactDOM.render(
       </Switch>
     </Router>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

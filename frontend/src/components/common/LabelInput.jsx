@@ -36,4 +36,14 @@ LabelInput.propTypes = {
   onInputChange: PropsTypes.func,
 };
 
+LabelInput.defaultProps = {
+  inputId: '',
+  labelName: '',
+  inputType: '',
+  inputName: '',
+  placeholder: '',
+  value: '',
+  onInputChange: null,
+};
+
 export default LabelInput;

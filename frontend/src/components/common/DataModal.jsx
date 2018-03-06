@@ -34,11 +34,11 @@ DataModal.propTypes = {
 
 DataModal.defaultProps = {
   isActive: false,
-  onToggleModal: () => {},
-  onCancel: () => {},
+  onToggleModal: null,
+  onCancel: null,
   actionType: '',
   children: null,
-  onConfirm: () => {},
+  onConfirm: null,
   confirmName: '',
   cancelName: '',
 };
