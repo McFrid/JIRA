@@ -77,7 +77,7 @@ class UsersMainPage extends React.Component {
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      experience: Number.parseFloat(this.state.experience),
+      experience: this.state.experience,
     });
 
     this.setDefaultProperties();
@@ -92,7 +92,7 @@ class UsersMainPage extends React.Component {
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      experience: Number.parseFloat(this.state.experience),
+      experience: this.state.experience,
     });
 
     this.setDefaultProperties();
