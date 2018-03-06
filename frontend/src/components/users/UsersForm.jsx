@@ -54,9 +54,20 @@ UsersForm.propTypes = {
   email: PropTypes.string,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
-  experience: PropTypes.number,
+  experience: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   onInputChange: PropTypes.func,
 
-}
+};
+
+UsersForm.defaultProps = {
+  email: '',
+  firstName: '',
+  lastName: '',
+  experience: 0,
+  onInputChange: null,
+};
 
 export default UsersForm;

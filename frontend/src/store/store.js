@@ -5,7 +5,7 @@ import logger from 'redux-logger';
 
 import rootReducer from '../reducers/index';
 
-export class Store {
+class Store {
   static configureStore(...args) {
     let initialState;
 
