@@ -5,6 +5,7 @@ import { Button } from 'reactstrap';
 import UsersTable from './UsersTable';
 import UsersForm from './UsersForm';
 import DataModal from '../common/DataModal';
+import Spinner from '../common/Spinner';
 
 class UsersMainPage extends React.Component {
   constructor(props) {
@@ -111,6 +112,8 @@ class UsersMainPage extends React.Component {
   render() {
     return (
       <div>
+        <Spinner />
+
         <DataModal
           actionType="Add New User"
           confirmName="Add"
