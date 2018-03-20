@@ -15,6 +15,7 @@ const initState = {
     experience: 2.2,
   }],
   isFetching: false,
+  isLoaded: false,
 };
 
 const userState = (state = initState, action) => {
@@ -58,12 +59,14 @@ const userState = (state = initState, action) => {
       return {
         ...state,
         isFetching: true,
+        isLoaded: false,
       };
 
     case actionTypes.users.USERS_STORE:
       return {
         ...state,
         isFetching: false,
+        isLoaded: true,
       };
 
     default:
