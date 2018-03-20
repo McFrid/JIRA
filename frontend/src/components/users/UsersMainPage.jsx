@@ -30,6 +30,10 @@ class UsersMainPage extends React.Component {
     this.onUpdateUser = this.onUpdateUser.bind(this);
   }
 
+  componentWillMount() {
+    this.props.usersActions.fetchUsers();
+  }
+
   onInputChange(name, event) {
     this.setState({
       [name]: event.target.value,
@@ -109,10 +113,6 @@ class UsersMainPage extends React.Component {
     this.setState(newState);
   }
 
-  componentWillMount() {
-    this.props.usersActions.fetchUsers();
-  }
-
   render() {
     if (this.props.isFetching || !this.props.isLoaded) {
       return (
@@ -181,11 +181,17 @@ UsersMainPage.propTypes = {
     ]),
   })),
   userActions: PropTypes.objectOf(PropTypes.func),
+  usersActions: PropTypes.objectOf(PropTypes.func),
+  isFetching: PropTypes.bool,
+  isLoaded: PropTypes.bool,
 };
 
 UsersMainPage.defaultProps = {
   users: [],
   userActions: {},
+  usersActions: {},
+  isFetching: false,
+  isLoaded: false,
 };
 
 export default UsersMainPage;
