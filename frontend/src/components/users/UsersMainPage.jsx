@@ -109,11 +109,19 @@ class UsersMainPage extends React.Component {
     this.setState(newState);
   }
 
+  componentWillMount() {
+    this.props.usersActions.fetchUsers();
+  }
+
   render() {
+    if (this.props.isFetching || !this.props.isLoaded) {
+      return (
+        <Spinner />
+      );
+    }
+
     return (
       <div>
-        <Spinner />
-
         <DataModal
           actionType="Add New User"
           confirmName="Add"
