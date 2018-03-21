@@ -5,6 +5,7 @@ import { Button } from 'reactstrap';
 import UsersTable from './UsersTable';
 import UsersForm from './UsersForm';
 import DataModal from '../common/DataModal';
+import Spinner from '../common/Spinner';
 
 class UsersMainPage extends React.Component {
   constructor(props) {
@@ -27,6 +28,10 @@ class UsersMainPage extends React.Component {
     this.onTogleUpdateUserModal = this.onTogleUpdateUserModal.bind(this);
     this.onCanceUpdateUser = this.onCanceUpdateUser.bind(this);
     this.onUpdateUser = this.onUpdateUser.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.usersActions.fetchUsers();
   }
 
   onInputChange(name, event) {
@@ -109,6 +114,12 @@ class UsersMainPage extends React.Component {
   }
 
   render() {
+    if (this.props.isFetching || !this.props.isLoaded) {
+      return (
+        <Spinner />
+      );
+    }
+
     return (
       <div>
         <DataModal
@@ -170,11 +181,17 @@ UsersMainPage.propTypes = {
     ]),
   })),
   userActions: PropTypes.objectOf(PropTypes.func),
+  usersActions: PropTypes.objectOf(PropTypes.func),
+  isFetching: PropTypes.bool,
+  isLoaded: PropTypes.bool,
 };
 
 UsersMainPage.defaultProps = {
   users: [],
   userActions: {},
+  usersActions: {},
+  isFetching: false,
+  isLoaded: false,
 };
 
 export default UsersMainPage;
