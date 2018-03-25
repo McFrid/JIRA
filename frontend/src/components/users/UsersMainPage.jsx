@@ -15,7 +15,7 @@ class UsersMainPage extends React.Component {
       isActiveUpdateModal: false,
     };
 
-    this.userProperties = ['email', 'firstName', 'lastName', 'experience'];
+    this.userProperties = ['email', 'firstName', 'lastName', 'experience', 'roleId'];
 
     this.userProperties.forEach((property) => {
       this.state[property] = '';
@@ -178,6 +178,7 @@ UsersMainPage.propTypes = {
     email: PropTypes.string,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
+    roleId: PropTypes.number,
     experience: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
@@ -185,16 +186,20 @@ UsersMainPage.propTypes = {
   })),
   userActions: PropTypes.objectOf(PropTypes.func),
   usersActions: PropTypes.objectOf(PropTypes.func),
-  isFetching: PropTypes.bool,
-  isLoaded: PropTypes.bool,
+  rolesActions: PropTypes.objectOf(PropTypes.func),
+  areUsersFetching: PropTypes.bool,
+  areUsersLoaded: PropTypes.bool,
+  areRolesLoaded: PropTypes.bool
 };
 
 UsersMainPage.defaultProps = {
   users: [],
   userActions: {},
   usersActions: {},
-  isFetching: false,
-  isLoaded: false,
+  rolesActions: {},
+  areUsersFetching: false,
+  areUsersLoaded: false,
+  areRolesLoaded: false,
 };
 
 export default UsersMainPage;
