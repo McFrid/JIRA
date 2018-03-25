@@ -42,6 +42,8 @@ public class CacheConfiguration {
             cm.createCache(by.bsuir.mpp.xpulse.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(by.bsuir.mpp.xpulse.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(by.bsuir.mpp.xpulse.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(by.bsuir.mpp.xpulse.domain.PersistentToken.class.getName(), jcacheConfiguration);
+            cm.createCache(by.bsuir.mpp.xpulse.domain.User.class.getName() + ".persistentTokens", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

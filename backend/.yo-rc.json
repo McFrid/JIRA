@@ -1,15 +1,14 @@
 {
   "generator-jhipster": {
     "promptValues": {
-      "packageName": "by.bsuir.mpp.xpulse",
-      "nativeLanguage": "en"
+      "packageName": "by.bsuir.mpp.xpulse"
     },
     "jhipsterVersion": "4.14.0",
     "baseName": "XPulse",
     "packageName": "by.bsuir.mpp.xpulse",
     "packageFolder": "by/bsuir/mpp/xpulse",
     "serverPort": "8080",
-    "authenticationType": "jwt",
+    "authenticationType": "session",
     "cacheProvider": "ehcache",
     "enableHibernateCache": true,
     "websocket": false,
@@ -22,18 +21,12 @@
     "buildTool": "maven",
     "enableSocialSignIn": false,
     "enableSwaggerCodegen": false,
-    "jwtSecretKey": "f872fce72094dc51ec023e80208799787f1dc938",
-    "clientFramework": "angularX",
-    "useSass": false,
-    "clientPackageManager": "yarn",
+    "rememberMeKey": "1677dca5d790f0151577079954a24697c13554be",
+    "enableTranslation": false,
     "applicationType": "monolith",
     "testFrameworks": [],
     "jhiPrefix": "jhi",
-    "enableTranslation": true,
-    "nativeLanguage": "en",
-    "languages": [
-      "en",
-      "ru"
-    ]
+    "clientPackageManager": "yarn",
+    "skipClient": true
   }
 }
