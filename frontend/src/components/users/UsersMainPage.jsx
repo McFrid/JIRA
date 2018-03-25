@@ -114,7 +114,7 @@ class UsersMainPage extends React.Component {
   }
 
   render() {
-    if (this.props.isFetching || !this.props.isLoaded) {
+    if (this.props.areUsersFetching || !this.props.areUsersLoaded) {
       return (
         <Spinner />
       );
