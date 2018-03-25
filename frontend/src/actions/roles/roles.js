@@ -1,4 +1,4 @@
-import actionTypes from "../actionTypes";
+import actionTypes from '../actionTypes';
 import rolesService from '../../services/roles-service'
 
 const storeRoles = roles => ({
