@@ -9,7 +9,13 @@ const users = {
   USERS_STORE: 'USERS_STORE',
 };
 
+const roles = {
+  ROLES_FETCH: 'ROLES_FETCH',
+  ROLES_STORE: 'ROLES_STORE'
+};
+
 export default {
   user,
   users,
+  roles
 };

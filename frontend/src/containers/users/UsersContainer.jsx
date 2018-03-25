@@ -6,13 +6,16 @@ import UsersMainPage from '../../components/users/UsersMainPage';
 
 const mapState = state => ({
   users: state.users.items,
-  isFetching: state.users.isFetching,
-  isLoaded: state.users.isLoaded,
+  roles: state.roles.items,
+  areUsersFetching: state.users.isFetching,
+  areUsersLoaded: state.users.isLoaded,
+  areRolesLoaded: state.roles.areLoaded,
 });
 
 const mapDispatch = dispatch => ({
   userActions: bindActionCreators(actions.user, dispatch),
   usersActions: bindActionCreators(actions.users, dispatch),
+  rolesActions: bindActionCreators(actions.roles, dispatch),
 });
 
 export default connect(mapState, mapDispatch)(UsersMainPage);
