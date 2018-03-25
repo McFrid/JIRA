@@ -32,6 +32,7 @@ class UsersMainPage extends React.Component {
 
   componentWillMount() {
     this.props.usersActions.fetchUsers();
+    this.props.rolesActions.fetchRoles();
   }
 
   onInputChange(name, event) {
@@ -114,7 +115,9 @@ class UsersMainPage extends React.Component {
   }
 
   render() {
-    if (this.props.areUsersFetching || !this.props.areUsersLoaded) {
+    if (this.props.areUsersFetching ||
+      !this.props.areUsersLoaded ||
+      !this.props.areRolesLoaded) {
       return (
         <Spinner />
       );

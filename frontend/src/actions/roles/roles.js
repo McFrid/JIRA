@@ -8,12 +8,12 @@ const storeRoles = roles => ({
   }
 });
 
-const fetchRoles = async (dispatch) => {
+const fetchRoles = () => async (dispatch) => {
   dispatch({
     type: actionTypes.roles.ROLES_FETCH
   });
 
-  const roles = rolesService.fetchRoles();
+  const roles = await rolesService.fetchRoles();
 
   dispatch(storeRoles(roles));
 };
