@@ -307,10 +307,6 @@ public class AccountResourceIntTest {
         duplicatedUser.setActivated(validUser.isActivated());
         duplicatedUser.setImageUrl(validUser.getImageUrl());
         duplicatedUser.setLangKey(validUser.getLangKey());
-        duplicatedUser.setCreatedBy(validUser.getCreatedBy());
-        duplicatedUser.setCreatedDate(validUser.getCreatedDate());
-        duplicatedUser.setLastModifiedBy(validUser.getLastModifiedBy());
-        duplicatedUser.setLastModifiedDate(validUser.getLastModifiedDate());
         duplicatedUser.setAuthorities(new HashSet<>(validUser.getAuthorities()));
 
         // Good user
@@ -356,10 +352,6 @@ public class AccountResourceIntTest {
         duplicatedUser.setActivated(validUser.isActivated());
         duplicatedUser.setImageUrl(validUser.getImageUrl());
         duplicatedUser.setLangKey(validUser.getLangKey());
-        duplicatedUser.setCreatedBy(validUser.getCreatedBy());
-        duplicatedUser.setCreatedDate(validUser.getCreatedDate());
-        duplicatedUser.setLastModifiedBy(validUser.getLastModifiedBy());
-        duplicatedUser.setLastModifiedDate(validUser.getLastModifiedDate());
         duplicatedUser.setAuthorities(new HashSet<>(validUser.getAuthorities()));
 
         // Good user
@@ -387,10 +379,6 @@ public class AccountResourceIntTest {
         userWithUpperCaseEmail.setActivated(validUser.isActivated());
         userWithUpperCaseEmail.setImageUrl(validUser.getImageUrl());
         userWithUpperCaseEmail.setLangKey(validUser.getLangKey());
-        userWithUpperCaseEmail.setCreatedBy(validUser.getCreatedBy());
-        userWithUpperCaseEmail.setCreatedDate(validUser.getCreatedDate());
-        userWithUpperCaseEmail.setLastModifiedBy(validUser.getLastModifiedBy());
-        userWithUpperCaseEmail.setLastModifiedDate(validUser.getLastModifiedDate());
         userWithUpperCaseEmail.setAuthorities(new HashSet<>(validUser.getAuthorities()));
 
         restMvc.perform(
