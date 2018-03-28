@@ -85,6 +85,7 @@ class UsersMainPage extends React.Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       experience: this.state.experience,
+      roleId: this.state.roleId,
     });
 
     this.setDefaultProperties();
@@ -100,6 +101,7 @@ class UsersMainPage extends React.Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       experience: this.state.experience,
+      roleId: this.state.roleId
     });
 
     this.setDefaultProperties();

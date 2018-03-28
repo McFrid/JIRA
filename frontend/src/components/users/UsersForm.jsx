@@ -58,8 +58,12 @@ UsersForm.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
+  roles: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    isActive: PropTypes.bool,
+  })),
   onInputChange: PropTypes.func,
-
 };
 
 UsersForm.defaultProps = {
@@ -67,6 +71,7 @@ UsersForm.defaultProps = {
   firstName: '',
   lastName: '',
   experience: 0,
+  roles: [],
   onInputChange: null,
 };
 
