@@ -13,6 +13,7 @@ class UsersTable extends React.Component {
       'firstName',
       'lastName',
       'experience',
+      'role'
     ];
 
     this.columnNames = {
@@ -20,7 +21,13 @@ class UsersTable extends React.Component {
       firstName: 'First Name',
       lastName: 'Last Name',
       experience: 'Experience',
+      role: 'Role'
     };
+
+    this.usersInfo = this.props.users.map(user => ({
+      ...user,
+      role: this.props.roles.find(role => role.id === user.roleId).name
+    }));
 
     this.buttons = id => (
       <div>
@@ -43,7 +50,7 @@ class UsersTable extends React.Component {
       <DataTable
         columns={this.columns}
         columnNames={this.columnNames}
-        data={this.props.users}
+        data={this.usersInfo}
         actions={this.buttons}
       />
     );
@@ -61,12 +68,17 @@ UsersTable.propTypes = {
       PropTypes.number,
     ]),
   })),
+  roles: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+  })),
   updateUser: PropTypes.func,
   removeUser: PropTypes.func,
 };
 
 UsersTable.defaultProps = {
   users: [],
+  roles: [],
   updateUser: null,
   removeUser: null,
 };
