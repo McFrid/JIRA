@@ -24,11 +24,6 @@ class UsersTable extends React.Component {
       role: 'Role'
     };
 
-    this.usersInfo = this.props.users.map(user => ({
-      ...user,
-      role: this.props.roles.find(role => role.id === user.roleId).name
-    }));
-
     this.buttons = id => (
       <div>
         <Button color="primary" onClick={this.onEditClick.bind(this, id)}>Edit</Button>
@@ -46,11 +41,16 @@ class UsersTable extends React.Component {
   }
 
   render() {
+    const usersInfo = this.props.users.map(user => ({
+      ...user,
+      role: this.props.roles.find(role => role.id === user.roleId).name
+    }));
+
     return (
       <DataTable
         columns={this.columns}
         columnNames={this.columnNames}
-        data={this.usersInfo}
+        data={usersInfo}
         actions={this.buttons}
       />
     );

@@ -28,17 +28,28 @@ class UsersMainPage extends React.Component {
     this.onToggleUpdateUserModal = this.onToggleUpdateUserModal.bind(this);
     this.onCancelUpdateUser = this.onCancelUpdateUser.bind(this);
     this.onUpdateUser = this.onUpdateUser.bind(this);
+    this.onDropdownSelectionChange = this.onDropdownSelectionChange.bind(this);
   }
 
   componentWillMount() {
     this.props.usersActions.fetchUsers();
     this.props.rolesActions.fetchRoles();
+
+    this.setState({
+      roleId: this.props.roles[0].id
+    });
   }
 
   onInputChange(name, event) {
     this.setState({
       [name]: event.target.value,
     });
+  }
+
+  onDropdownSelectionChange(name, event) {
+    this.setState({
+      [name]: parseInt(event.target.id),
+    })
   }
 
   onToggleModal() {
@@ -113,6 +124,7 @@ class UsersMainPage extends React.Component {
     this.userProperties.forEach((property) => {
       newState[property] = '';
     });
+    newState['roleId'] = this.props.roles[0].id;
 
     this.setState(newState);
   }
@@ -142,7 +154,10 @@ class UsersMainPage extends React.Component {
             firstName={this.state.firstName}
             lastName={this.state.lastName}
             experience={this.state.experience}
+            roles={this.props.roles}
+            currentRoleId={this.state.roleId}
             onInputChange={this.onInputChange}
+            onDropdownSelectionChange={this.onDropdownSelectionChange}
           />
         </DataModal>
 
@@ -160,7 +175,10 @@ class UsersMainPage extends React.Component {
             firstName={this.state.firstName}
             lastName={this.state.lastName}
             experience={this.state.experience}
+            roles={this.props.roles}
+            currentRoleId={this.state.roleId}
             onInputChange={this.onInputChange}
+            onDropdownSelectionChange={this.onDropdownSelectionChange}
           />
         </DataModal>
 

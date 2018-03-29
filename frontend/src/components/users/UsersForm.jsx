@@ -6,6 +6,7 @@ import {
 } from 'reactstrap';
 
 import LabelInput from '../common/LabelInput';
+import LabelDropdown from "../common/LabelDropdown";
 
 const UsersForm = props => (
   <Form>
@@ -46,6 +47,16 @@ const UsersForm = props => (
         value={props.experience}
         onInputChange={props.onInputChange.bind(this, 'experience')}
       />
+      <LabelDropdown
+        labelName="Role"
+        dropdownId="users-table-role"
+        dropdownData={props.roles.map(role => ({
+          key: role.id,
+          value: role.name,
+        }))}
+        selectedKey={props.currentRoleId}
+        onChange={props.onDropdownSelectionChange.bind(this, 'roleId')}
+      />
     </FormGroup>
   </Form>
 );
@@ -60,10 +71,11 @@ UsersForm.propTypes = {
   ]),
   roles: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string,
-    isActive: PropTypes.bool,
+    name: PropTypes.string
   })),
+  currentRoleId: PropTypes.number,
   onInputChange: PropTypes.func,
+  onDropdownSelectionChange: PropTypes.func,
 };
 
 UsersForm.defaultProps = {
@@ -72,7 +84,9 @@ UsersForm.defaultProps = {
   lastName: '',
   experience: 0,
   roles: [],
+  currentRoleId: 0,
   onInputChange: null,
+  onDropdownSelectionChange: null,
 };
 
 export default UsersForm;
