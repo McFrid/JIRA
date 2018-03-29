@@ -150,21 +150,6 @@ public class UserServiceIntTest {
         userRepository.delete(user);
     }
 
-    @Test
-    @Transactional
-    public void testFindNotActivatedUsersByCreationDateBefore() {
-        Instant now = Instant.now();
-        user.setActivated(false);
-        User dbUser = userRepository.saveAndFlush(user);
-        dbUser.setCreatedDate(now.minus(4, ChronoUnit.DAYS));
-        userRepository.saveAndFlush(user);
-        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minus(3, ChronoUnit.DAYS));
-        assertThat(users).isNotEmpty();
-        userService.removeNotActivatedUsers();
-        users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minus(3, ChronoUnit.DAYS));
-        assertThat(users).isEmpty();
-    }
-
     private void generateUserToken(User user, String tokenSeries, LocalDate localDate) {
         PersistentToken token = new PersistentToken();
         token.setSeries(tokenSeries);
@@ -188,20 +173,6 @@ public class UserServiceIntTest {
         assertThat(allManagedUsers.getContent().stream()
             .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
             .isTrue();
-    }
-
-    @Test
-    @Transactional
-    public void testRemoveNotActivatedUsers() {
-        user.setActivated(false);
-        userRepository.saveAndFlush(user);
-        // Let the audit first set the creation date but then update it
-        user.setCreatedDate(Instant.now().minus(30, ChronoUnit.DAYS));
-        userRepository.saveAndFlush(user);
-
-        assertThat(userRepository.findOneByLogin("johndoe")).isPresent();
-        userService.removeNotActivatedUsers();
-        assertThat(userRepository.findOneByLogin("johndoe")).isNotPresent();
     }
 
 }
