@@ -13,7 +13,7 @@ class UsersTable extends React.Component {
       'firstName',
       'lastName',
       'experience',
-      'role'
+      'role',
     ];
 
     this.columnNames = {
@@ -21,7 +21,7 @@ class UsersTable extends React.Component {
       firstName: 'First Name',
       lastName: 'Last Name',
       experience: 'Experience',
-      role: 'Role'
+      role: 'Role',
     };
 
     this.buttons = id => (
@@ -43,7 +43,7 @@ class UsersTable extends React.Component {
   render() {
     const usersInfo = this.props.users.map(user => ({
       ...user,
-      role: this.props.roles.find(role => role.id === user.roleId).name
+      role: this.props.roles.find(role => role.id === user.roleId).name,
     }));
 
     return (

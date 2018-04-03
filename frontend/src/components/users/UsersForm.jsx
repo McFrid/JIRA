@@ -6,7 +6,7 @@ import {
 } from 'reactstrap';
 
 import LabelInput from '../common/LabelInput';
-import LabelDropdown from "../common/LabelDropdown";
+import LabelDropdown from '../common/LabelDropdown';
 
 const UsersForm = props => (
   <Form>
@@ -71,7 +71,7 @@ UsersForm.propTypes = {
   ]),
   roles: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string
+    name: PropTypes.string,
   })),
   currentRoleId: PropTypes.number,
   onInputChange: PropTypes.func,

@@ -36,7 +36,7 @@ class UsersMainPage extends React.Component {
     this.props.rolesActions.fetchRoles();
 
     this.setState({
-      roleId: this.props.roles[0].id
+      roleId: this.props.roles[0].id,
     });
   }
 
@@ -48,8 +48,8 @@ class UsersMainPage extends React.Component {
 
   onDropdownSelectionChange(name, event) {
     this.setState({
-      [name]: parseInt(event.target.id),
-    })
+      [name]: parseInt(event.target.id, 10),
+    });
   }
 
   onToggleModal() {
@@ -112,7 +112,7 @@ class UsersMainPage extends React.Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       experience: this.state.experience,
-      roleId: this.state.roleId
+      roleId: this.state.roleId,
     });
 
     this.setDefaultProperties();
@@ -124,7 +124,7 @@ class UsersMainPage extends React.Component {
     this.userProperties.forEach((property) => {
       newState[property] = '';
     });
-    newState['roleId'] = this.props.roles[0].id;
+    newState.roleId = this.props.roles[0].id;
 
     this.setState(newState);
   }
@@ -208,14 +208,14 @@ UsersMainPage.propTypes = {
   })),
   roles: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string
+    name: PropTypes.string,
   })),
   userActions: PropTypes.objectOf(PropTypes.func),
   usersActions: PropTypes.objectOf(PropTypes.func),
   rolesActions: PropTypes.objectOf(PropTypes.func),
   areUsersFetching: PropTypes.bool,
   areUsersLoaded: PropTypes.bool,
-  areRolesLoaded: PropTypes.bool
+  areRolesLoaded: PropTypes.bool,
 };
 
 UsersMainPage.defaultProps = {

@@ -6,7 +6,7 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  DropdownToggle
+  DropdownToggle,
 } from 'reactstrap';
 
 class LabelDropdown extends React.Component {
@@ -16,13 +16,13 @@ class LabelDropdown extends React.Component {
     this.onToggle = this.onToggle.bind(this);
 
     this.state = {
-      isDropdownOpened: false
-    }
+      isDropdownOpened: false,
+    };
   }
 
   onToggle() {
     this.setState({
-      isDropdownOpened: !this.state.isDropdownOpened
+      isDropdownOpened: !this.state.isDropdownOpened,
     });
   }
 
@@ -36,19 +36,20 @@ class LabelDropdown extends React.Component {
         <Label for={this.props.dropdownId}>{this.props.labelName}</Label>
         <Dropdown
           isOpen={this.state.isDropdownOpened}
-          toggle={this.onToggle}>
+          toggle={this.onToggle}
+        >
           <DropdownToggle caret>
             {selectedValue}
           </DropdownToggle>
           <DropdownMenu>
-            {this.props.dropdownData.map(pair =>
+            {this.props.dropdownData.map(pair => (
               <DropdownItem
                 id={pair.key}
                 key={pair.key}
-                onClick={this.props.onChange}>
+                onClick={this.props.onChange}
+              >
                 {pair.value}
-              </DropdownItem>
-            )}
+              </DropdownItem>))}
           </DropdownMenu>
         </Dropdown>
       </FormGroup>
@@ -62,16 +63,16 @@ LabelDropdown.propTypes = {
   dropdownData: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.oneOfType([
       PropTypes.number,
-      PropTypes.string
+      PropTypes.string,
     ]),
     value: PropTypes.oneOfType([
       PropTypes.number,
-      PropTypes.string
-    ])
+      PropTypes.string,
+    ]),
   })),
   selectedKey: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   onChange: PropTypes.func,
 };

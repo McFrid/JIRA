@@ -1,16 +1,16 @@
 import actionTypes from '../actionTypes';
-import rolesService from '../../services/roles-service'
+import rolesService from '../../services/roles-service';
 
 const storeRoles = roles => ({
   type: actionTypes.roles.ROLES_STORE,
   payload: {
     roles,
-  }
+  },
 });
 
 const fetchRoles = () => async (dispatch) => {
   dispatch({
-    type: actionTypes.roles.ROLES_FETCH
+    type: actionTypes.roles.ROLES_FETCH,
   });
 
   const roles = await rolesService.fetchRoles();
@@ -20,4 +20,4 @@ const fetchRoles = () => async (dispatch) => {
 
 export default {
   fetchRoles,
-}
+};

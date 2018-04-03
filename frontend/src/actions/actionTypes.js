@@ -11,11 +11,11 @@ const users = {
 
 const roles = {
   ROLES_FETCH: 'ROLES_FETCH',
-  ROLES_STORE: 'ROLES_STORE'
+  ROLES_STORE: 'ROLES_STORE',
 };
 
 export default {
   user,
   users,
-  roles
+  roles,
 };

@@ -3,16 +3,16 @@ import actionTypes from '../actions/actionTypes';
 const mockState = {
   items: [{
     id: 1,
-    name: 'Administrator'
+    name: 'Administrator',
   }, {
     id: 2,
-    name: 'Customer'
+    name: 'Customer',
   }, {
     id: 3,
-    name: 'Manager'
+    name: 'Manager',
   }, {
     id: 4,
-    name: 'Developer'
+    name: 'Developer',
   }],
   areLoaded: false,
 };
