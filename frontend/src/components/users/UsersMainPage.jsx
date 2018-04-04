@@ -8,11 +8,24 @@ import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
 
 class UsersMainPage extends React.Component {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.areRolesLoaded &&
+      !prevState.isCurrentRoleSet) {
+      return {
+        isCurrentRoleSet: true,
+        roleId: nextProps.roles[0].id,
+      };
+    }
+
+    return null;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       isActiveAddModal: false,
       isActiveUpdateModal: false,
+      isCurrentRoleSet: false,
     };
 
     this.userProperties = ['email', 'firstName', 'lastName', 'experience', 'roleId'];
@@ -31,13 +44,9 @@ class UsersMainPage extends React.Component {
     this.onDropdownSelectionChange = this.onDropdownSelectionChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.usersActions.fetchUsers();
     this.props.rolesActions.fetchRoles();
-
-    this.setState({
-      roleId: this.props.roles[0].id,
-    });
   }
 
   onInputChange(name, event) {
