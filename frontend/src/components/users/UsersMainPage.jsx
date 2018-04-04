@@ -8,29 +8,43 @@ import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
 
 class UsersMainPage extends React.Component {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.areRolesLoaded &&
+      !prevState.isCurrentRoleSet) {
+      return {
+        isCurrentRoleSet: true,
+        roleId: nextProps.roles[0].id,
+      };
+    }
+
+    return null;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       isActiveAddModal: false,
       isActiveUpdateModal: false,
+      isCurrentRoleSet: false,
     };
 
-    this.userProperties = ['email', 'firstName', 'lastName', 'experience'];
+    this.userProperties = ['email', 'firstName', 'lastName', 'experience', 'roleId'];
 
     this.userProperties.forEach((property) => {
       this.state[property] = '';
     });
 
-    this.onTogleModal = this.onTogleModal.bind(this);
+    this.onToggleModal = this.onToggleModal.bind(this);
     this.onAddUser = this.onAddUser.bind(this);
-    this.onCanceAddUser = this.onCanceAddUser.bind(this);
+    this.onCancelAddUser = this.onCancelAddUser.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
-    this.onTogleUpdateUserModal = this.onTogleUpdateUserModal.bind(this);
-    this.onCanceUpdateUser = this.onCanceUpdateUser.bind(this);
+    this.onToggleUpdateUserModal = this.onToggleUpdateUserModal.bind(this);
+    this.onCancelUpdateUser = this.onCancelUpdateUser.bind(this);
     this.onUpdateUser = this.onUpdateUser.bind(this);
+    this.onDropdownSelectionChange = this.onDropdownSelectionChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.usersActions.fetchUsers();
     this.props.rolesActions.fetchRoles();
   }
@@ -41,7 +55,13 @@ class UsersMainPage extends React.Component {
     });
   }
 
-  onTogleModal() {
+  onDropdownSelectionChange(name, event) {
+    this.setState({
+      [name]: parseInt(event.target.id, 10),
+    });
+  }
+
+  onToggleModal() {
     this.setDefaultProperties();
 
     this.setState({
@@ -49,13 +69,13 @@ class UsersMainPage extends React.Component {
     });
   }
 
-  onCanceAddUser() {
+  onCancelAddUser() {
     this.setState({
       isActiveAddModal: false,
     });
   }
 
-  onTogleUpdateUserModal(id) {
+  onToggleUpdateUserModal(id) {
     const currentUser = this.props.users.find(user => user.id === id);
 
     this.setState({
@@ -64,11 +84,12 @@ class UsersMainPage extends React.Component {
       firstName: currentUser.firstName,
       lastName: currentUser.lastName,
       experience: currentUser.experience,
+      roleId: currentUser.roleId,
       isActiveUpdateModal: true,
     });
   }
 
-  onCanceUpdateUser() {
+  onCancelUpdateUser() {
     this.setState({
       isActiveUpdateModal: false,
     });
@@ -84,6 +105,7 @@ class UsersMainPage extends React.Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       experience: this.state.experience,
+      roleId: this.state.roleId,
     });
 
     this.setDefaultProperties();
@@ -99,6 +121,7 @@ class UsersMainPage extends React.Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       experience: this.state.experience,
+      roleId: this.state.roleId,
     });
 
     this.setDefaultProperties();
@@ -110,6 +133,7 @@ class UsersMainPage extends React.Component {
     this.userProperties.forEach((property) => {
       newState[property] = '';
     });
+    newState.roleId = this.props.roles[0].id;
 
     this.setState(newState);
   }
@@ -130,16 +154,19 @@ class UsersMainPage extends React.Component {
           confirmName="Add"
           cancelName="Cancel"
           isActive={this.state.isActiveAddModal}
-          onTogleModal={this.onTogleModal}
+          onTogleModal={this.onToggleModal}
           onConfirm={this.onAddUser}
-          onCancel={this.onCanceAddUser}
+          onCancel={this.onCancelAddUser}
         >
           <UsersForm
             email={this.state.email}
             firstName={this.state.firstName}
             lastName={this.state.lastName}
             experience={this.state.experience}
+            roles={this.props.roles}
+            currentRoleId={this.state.roleId}
             onInputChange={this.onInputChange}
+            onDropdownSelectionChange={this.onDropdownSelectionChange}
           />
         </DataModal>
 
@@ -148,25 +175,29 @@ class UsersMainPage extends React.Component {
           confirmName="Update"
           cancelName="Cancel"
           isActive={this.state.isActiveUpdateModal}
-          onTogleModal={this.onTogleUpdateUserModal}
+          onTogleModal={this.onToggleUpdateUserModal}
           onConfirm={this.onUpdateUser}
-          onCancel={this.onCanceUpdateUser}
+          onCancel={this.onCancelUpdateUser}
         >
           <UsersForm
             email={this.state.email}
             firstName={this.state.firstName}
             lastName={this.state.lastName}
             experience={this.state.experience}
+            roles={this.props.roles}
+            currentRoleId={this.state.roleId}
             onInputChange={this.onInputChange}
+            onDropdownSelectionChange={this.onDropdownSelectionChange}
           />
         </DataModal>
 
         <UsersTable
           users={this.props.users}
-          updateUser={this.onTogleUpdateUserModal}
+          roles={this.props.roles}
+          updateUser={this.onToggleUpdateUserModal}
           removeUser={this.props.userActions.removeUser}
         />
-        <Button color="success" onClick={this.onTogleModal} >Add New User</Button>
+        <Button color="success" onClick={this.onToggleModal} >Add New User</Button>
       </div>
     );
   }
@@ -178,23 +209,33 @@ UsersMainPage.propTypes = {
     email: PropTypes.string,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
+    roleId: PropTypes.number,
     experience: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
     ]),
   })),
+  roles: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+  })),
   userActions: PropTypes.objectOf(PropTypes.func),
   usersActions: PropTypes.objectOf(PropTypes.func),
-  isFetching: PropTypes.bool,
-  isLoaded: PropTypes.bool,
+  rolesActions: PropTypes.objectOf(PropTypes.func),
+  areUsersFetching: PropTypes.bool,
+  areUsersLoaded: PropTypes.bool,
+  areRolesLoaded: PropTypes.bool,
 };
 
 UsersMainPage.defaultProps = {
   users: [],
+  roles: [],
   userActions: {},
   usersActions: {},
-  isFetching: false,
-  isLoaded: false,
+  rolesActions: {},
+  areUsersFetching: false,
+  areUsersLoaded: false,
+  areRolesLoaded: false,
 };
 
 export default UsersMainPage;
