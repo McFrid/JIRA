@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Issue.
+    -->
+    <changeSet id="20180421154425-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="solution_id"
+                                 baseTableName="issue"
+                                 constraintName="fk_issue_solution_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="solution"/>
+
+        <addForeignKeyConstraint baseColumnNames="story_id"
+                                 baseTableName="issue"
+                                 constraintName="fk_issue_story_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="story"/>
+
+        <addForeignKeyConstraint baseColumnNames="issues_id"
+                                 baseTableName="issue_user"
+                                 constraintName="fk_issue_user_issues_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="issue"/>
+        <addForeignKeyConstraint baseColumnNames="users_id"
+                                 baseTableName="issue_user"
+                                 constraintName="fk_issue_user_users_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
+
+    </changeSet>
+</databaseChangeLog>

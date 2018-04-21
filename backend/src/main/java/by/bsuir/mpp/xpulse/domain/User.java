@@ -99,6 +99,15 @@ public class User implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PersistentToken> persistentTokens = new HashSet<>();
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users")
+    private Set<Issue> issues = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users")
+    private Set<Product> products = new HashSet<>();
+
+
     public Long getId() {
         return id;
     }
@@ -210,6 +219,14 @@ public class User implements Serializable {
 
     public void setPersistentTokens(Set<PersistentToken> persistentTokens) {
         this.persistentTokens = persistentTokens;
+    }
+
+    public Set<Issue> getIssues() {
+        return issues;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
     }
 
     @Override
