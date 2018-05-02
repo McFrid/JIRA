@@ -8,7 +8,7 @@
     "packageName": "by.bsuir.mpp.xpulse",
     "packageFolder": "by/bsuir/mpp/xpulse",
     "serverPort": "8080",
-    "authenticationType": "session",
+    "authenticationType": "jwt",
     "cacheProvider": "ehcache",
     "enableHibernateCache": true,
     "websocket": false,
@@ -21,11 +21,11 @@
     "buildTool": "maven",
     "enableSocialSignIn": false,
     "enableSwaggerCodegen": false,
-    "rememberMeKey": "1677dca5d790f0151577079954a24697c13554be",
+    "jwtSecretKey": "f872fce72094dc51ec023e80208799787f1dc938",
     "enableTranslation": false,
     "applicationType": "monolith",
     "testFrameworks": [],
-    "jhiPrefix": "jhi",
+    "jhiPrefix": "",
     "clientPackageManager": "yarn",
     "skipClient": true
   }
