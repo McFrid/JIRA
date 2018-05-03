@@ -4,13 +4,13 @@ import auth from './auth';
 
 const baseUrl = 'http://localhost:8080/api';
 
-const generateHeaders = (customHeaders) => {
+const generateHeaders = (customHeaders = {}) => {
   let headers = {
     'Content-Type': 'application/json',
   };
 
   if (auth.isAuthorized()) {
-    headers.Authorization = auth.getAccessToken();
+    headers.Authorization = `Bearer ${auth.getAccessToken()}`;
   }
   headers = {
     ...headers,
