@@ -4,13 +4,14 @@ import {
   FormGroup,
   Label,
   Input,
+  FormFeedback,
 } from 'reactstrap';
 
 const LabelInput = props => (
   <FormGroup>
     <Label for={props.inputId}>{props.labelName}</Label>
 
-    {props.inputType === 'text' && (
+    {!props.isError && (
       <Input
         type={props.inputType}
         name={props.inputName}
@@ -19,6 +20,22 @@ const LabelInput = props => (
         value={props.value}
         onChange={props.onInputChange}
       />
+    )}
+
+    {props.isError && (
+      <Input
+        invalid
+        type={props.inputType}
+        name={props.inputName}
+        id={props.inputId}
+        placeholder={props.placeholder}
+        value={props.value}
+        onChange={props.onInputChange}
+      />
+    )}
+
+    {props.isError && (
+      <FormFeedback>{props.errorMessage}</FormFeedback>
     )}
   </FormGroup>
 );
@@ -33,6 +50,8 @@ LabelInput.propTypes = {
     PropsTypes.number,
     PropsTypes.string,
   ]),
+  isError: PropsTypes.bool,
+  errorMessage: PropsTypes.string,
   onInputChange: PropsTypes.func,
 };
 
@@ -43,6 +62,8 @@ LabelInput.defaultProps = {
   inputName: '',
   placeholder: '',
   value: '',
+  isError: false,
+  errorMessage: '',
   onInputChange: null,
 };
 
