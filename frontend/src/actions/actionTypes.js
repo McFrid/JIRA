@@ -14,8 +14,15 @@ const roles = {
   ROLES_STORE: 'ROLES_STORE',
 };
 
+const account = {
+  ACCOUNT_FETCH: 'ACCOUNT_FETCH',
+  ACCOUNT_FETCH_ERROR: 'ACCOUNT_FETCH_ERROR',
+  ACCOUNT_SAVE: 'ACCOUNT_SAVE',
+};
+
 export default {
   user,
   users,
   roles,
+  account,
 };
