@@ -42,9 +42,9 @@ public class UserMapper {
             user.setImageUrl(userDTO.getImageUrl());
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
-            Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
-            if (authorities != null) {
-                user.setAuthorities(authorities);
+            Authority authority = this.authoritiesFromStrings(userDTO.getAuthority());
+            if (authority != null) {
+                user.setAuthority(authority);
             }
             return user;
         }
@@ -66,11 +66,9 @@ public class UserMapper {
         return user;
     }
 
-    public Set<Authority> authoritiesFromStrings(Set<String> strings) {
-        return strings.stream().map(string -> {
-            Authority auth = new Authority();
-            auth.setName(string);
-            return auth;
-        }).collect(Collectors.toSet());
+    public Authority authoritiesFromStrings(String string) {
+        Authority auth = new Authority();
+        auth.setName(string);
+        return auth;
     }
 }

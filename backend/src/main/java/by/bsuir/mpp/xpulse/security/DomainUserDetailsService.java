@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Authenticate a user from the database.
@@ -34,9 +33,9 @@ public class DomainUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String login) {
         log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
-        Optional<User> userByEmailFromDatabase = userRepository.findOneWithAuthoritiesByEmail(lowercaseLogin);
+        Optional<User> userByEmailFromDatabase = userRepository.findOneWithAuthorityByEmail(lowercaseLogin);
         return userByEmailFromDatabase.map(user -> createSpringSecurityUser(lowercaseLogin, user)).orElseGet(() -> {
-            Optional<User> userByLoginFromDatabase = userRepository.findOneWithAuthoritiesByLogin(lowercaseLogin);
+            Optional<User> userByLoginFromDatabase = userRepository.findOneWithAuthorityByLogin(lowercaseLogin);
             return userByLoginFromDatabase.map(user -> createSpringSecurityUser(lowercaseLogin, user))
                 .orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the " +
                     "database"));
@@ -47,11 +46,9 @@ public class DomainUserDetailsService implements UserDetailsService {
         if (!user.getActivated()) {
             throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
         }
-        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-            .map(authority -> new SimpleGrantedAuthority(authority.getName()))
-            .collect(Collectors.toList());
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getAuthority().getName());
         return new org.springframework.security.core.userdetails.User(user.getLogin(),
             user.getPassword(),
-            grantedAuthorities);
+            Collections.singletonList(grantedAuthority));
     }
 }
