@@ -20,9 +20,15 @@ const account = {
   ACCOUNT_SAVE: 'ACCOUNT_SAVE',
 };
 
+const app = {
+  APP_AUTHENTICATED_SET: 'APP_AUTHENTICATED_SET',
+  APP_AUTHENTICATION_ERROR: 'APP_AUTHENTICATION_ERROR',
+};
+
 export default {
   user,
   users,
   roles,
   account,
+  app,
 };

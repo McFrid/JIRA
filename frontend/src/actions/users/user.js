@@ -4,6 +4,8 @@ import accountService from '../../services/account-service';
 import auth from '../../utils/auth';
 import account from '../../utils/account';
 
+import actions from '../index';
+
 const storeUser = user => ({
   type: actionTypes.user.USER_STORE,
   payload: {
@@ -53,6 +55,8 @@ const login = (username, password) => async (dispatch) => {
 
     account.setAccountId(accountDetails.data.id);
     account.setAccountUsername(accountDetails.data.login);
+
+    dispatch(actions.app.setAuthenticated(true));
   } catch (error) {
     dispatch(fetchAccountError());
     auth.logout();

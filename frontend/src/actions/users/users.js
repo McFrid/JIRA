@@ -1,5 +1,5 @@
 import actionTypes from '../actionTypes';
-
+import actions from '../index';
 import usersService from '../../services/users-service';
 
 const storeUsers = users => ({
@@ -14,9 +14,14 @@ const fetchUsers = () => async (dispatch) => {
     type: actionTypes.users.USERS_FETCH,
   });
 
-  const users = await usersService.fetchUsers();
-
-  dispatch(storeUsers(users));
+  try {
+    const users = await usersService.fetchUsers();
+    dispatch(storeUsers(users.data));
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
 };
 
 export default {
