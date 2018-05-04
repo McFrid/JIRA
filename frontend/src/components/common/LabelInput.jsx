@@ -11,28 +11,15 @@ const LabelInput = props => (
   <FormGroup>
     <Label for={props.inputId}>{props.labelName}</Label>
 
-    {!props.isError && (
-      <Input
-        type={props.inputType}
-        name={props.inputName}
-        id={props.inputId}
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={props.onInputChange}
-      />
-    )}
-
-    {props.isError && (
-      <Input
-        invalid
-        type={props.inputType}
-        name={props.inputName}
-        id={props.inputId}
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={props.onInputChange}
-      />
-    )}
+    <Input
+      invalid={props.isError}
+      type={props.inputType}
+      name={props.inputName}
+      id={props.inputId}
+      placeholder={props.placeholder}
+      value={props.value}
+      onChange={props.onInputChange}
+    />
 
     {props.isError && (
       <FormFeedback>{props.errorMessage}</FormFeedback>

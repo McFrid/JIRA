@@ -33,11 +33,11 @@ class App extends React.Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <Route path="/" exact render={() => <Redirect to="/users" />} />
         <Route path="/login" component={LoginContainer} />
         <Route path="/users" component={UsersTableContainer} />
-      </div>
+      </React.Fragment>
     );
   }
 }
