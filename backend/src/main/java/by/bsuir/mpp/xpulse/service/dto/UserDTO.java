@@ -43,7 +43,7 @@ public class UserDTO {
     @Size(min = 2, max = 6)
     private String langKey;
 
-    private Set<String> authorities;
+    private String authorities;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -58,9 +58,7 @@ public class UserDTO {
         this.activated = user.getActivated();
         this.imageUrl = user.getImageUrl();
         this.langKey = user.getLangKey();
-        this.authorities = user.getAuthorities().stream()
-            .map(Authority::getName)
-            .collect(Collectors.toSet());
+        this.authorities = user.getAuthority().getName();
     }
 
     public Long getId() {
@@ -128,12 +126,12 @@ public class UserDTO {
     }
 
 
-    public Set<String> getAuthorities() {
+    public String getAuthority() {
         return authorities;
     }
 
-    public void setAuthorities(Set<String> authorities) {
-        this.authorities = authorities;
+    public void setAuthority(String authority) {
+        this.authorities = authority;
     }
 
     @Override

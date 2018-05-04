@@ -13,16 +13,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -130,11 +127,8 @@ public class UserService {
         } else {
             user.setLangKey(userDTO.getLangKey());
         }
-        if (userDTO.getAuthorities() != null) {
-            Set<Authority> authorities = userDTO.getAuthorities().stream()
-                .map(authorityRepository::findOne)
-                .collect(Collectors.toSet());
-            user.setAuthorities(authorities);
+        if (userDTO.getAuthority() != null) {
+            user.setAuthority(authorityRepository.findOne(userDTO.getAuthority()));
         }
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
@@ -190,11 +184,7 @@ public class UserService {
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
-                Set<Authority> managedAuthorities = user.getAuthorities();
-                managedAuthorities.clear();
-                userDTO.getAuthorities().stream()
-                    .map(authorityRepository::findOne)
-                    .forEach(managedAuthorities::add);
+                user.setAuthority(authorityRepository.findOne(userDTO.getAuthority()));
                 cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(user.getLogin());
                 cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).evict(user.getEmail());
                 log.debug("Changed Information for User: {}", user);
@@ -231,17 +221,17 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneWithAuthoritiesByLogin(login);
+        return userRepository.findOneWithAuthorityByLogin(login);
     }
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities(Long id) {
-        return userRepository.findOneWithAuthoritiesById(id);
+        return userRepository.findOneWithAuthorityById(id);
     }
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthorityByLogin);
     }
 
     /**

@@ -38,6 +38,9 @@
             <column name="reset_date" type="timestamp">
                 <constraints nullable="true"/>
             </column>
+            <column name="authority_name" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
         </createTable>
         <createIndex indexName="idx_user_login"
             tableName="user"
@@ -50,52 +53,23 @@
             unique="true">
             <column name="email" type="varchar(100)"/>
         </createIndex>
+
         <createTable tableName="authority">
             <column name="name" type="varchar(50)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
         </createTable>
 
-        <createTable tableName="user_authority">
-            <column name="user_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="authority_name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="user_id, authority_name" tableName="user_authority"/>
-
-        <createTable tableName="persistent_token">
-            <column name="series" type="varchar(20)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="user_id" type="bigint"/>
-            <column name="token_value" type="varchar(20)">
-                <constraints nullable="false" />
-            </column>
-            <column name="token_date" type="date"/>
-            <column name="ip_address" type="varchar(39)"/>
-            <column name="user_agent" type="varchar(255)"/>
-        </createTable>
-
         <addForeignKeyConstraint baseColumnNames="authority_name"
-                                 baseTableName="user_authority"
-                                 constraintName="fk_authority_name"
+                                 baseTableName="user"
+                                 constraintName="fk_user_authority"
                                  referencedColumnNames="name"
                                  referencedTableName="authority"/>
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="user_authority"
-                                 constraintName="fk_user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="user"/>
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="persistent_token"
-                                 constraintName="fk_user_persistent_token"
-                                 referencedColumnNames="id"
-                                 referencedTableName="user"/>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/authorities.csv"
+                  separator=";"
+                  tableName="authority"/>
         <loadData encoding="UTF-8"
                   file="config/liquibase/users.csv"
                   separator=";"
@@ -103,15 +77,11 @@
             <column name="activated" type="boolean"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/authorities.csv"
-                  separator=";"
-                  tableName="authority"/>
 
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/users_authorities.csv"
-                  separator=";"
-                  tableName="user_authority"/>
+        <!--<loadData encoding="UTF-8"-->
+                  <!--file="config/liquibase/users_authorities.csv"-->
+                  <!--separator=";"-->
+                  <!--tableName="user_authority"/>-->
 
     </changeSet>
 </databaseChangeLog>
