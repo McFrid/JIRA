@@ -10,7 +10,7 @@ import auth from '../../utils/auth';
 
 class App extends React.Component {
   componentDidMount() {
-    this.props.appActions.setAuthenticated(auth.isAuthorized());
+    this.props.appActions.setAuthenticatedState(auth.isAuthorized());
   }
 
   render() {

@@ -39,7 +39,7 @@ const saveAccountDetails = details => ({
   },
 });
 
-const fetchAccountError = () => ({
+const setAccountFetchError = () => ({
   type: actionTypes.account.ACCOUNT_FETCH_ERROR,
 });
 
@@ -56,9 +56,9 @@ const login = (username, password) => async (dispatch) => {
     account.setAccountId(accountDetails.data.id);
     account.setAccountUsername(accountDetails.data.login);
 
-    dispatch(actions.app.setAuthenticated(true));
+    dispatch(actions.app.setAuthenticatedState(true));
   } catch (error) {
-    dispatch(fetchAccountError());
+    dispatch(setAccountFetchError());
     auth.logout();
   }
 };

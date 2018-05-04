@@ -18,11 +18,11 @@ const store = Store.configureStore();
 store.subscribe(() => {
   const currentState = store.getState();
 
-  if (currentState.app.isAuthenticationError) {
+  if (currentState.app.doesAuthenticationErrorExist) {
     auth.logout();
     account.removeAccount();
 
-    store.dispatch(actions.app.setAuthenticated(false));
+    store.dispatch(actions.app.setAuthenticatedState(false));
   }
 });
 

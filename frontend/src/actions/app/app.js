@@ -1,7 +1,7 @@
 import actionTypes from '../actionTypes';
 
-const setAuthenticated = isAuthenticated => ({
-  type: actionTypes.app.APP_AUTHENTICATED_SET,
+const setAuthenticatedState = isAuthenticated => ({
+  type: actionTypes.app.APP_SET_AUTHENTICATED_STATE,
   payload: {
     isAuthenticated,
   },
@@ -12,6 +12,6 @@ const setAuthenticationError = () => ({
 });
 
 export default {
-  setAuthenticated,
+  setAuthenticatedState,
   setAuthenticationError,
 };
