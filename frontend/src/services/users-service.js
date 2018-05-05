@@ -1,8 +1,8 @@
-const fetchUsers = () => new Promise((resolve) => {
-  setTimeout(() => {
-    resolve();
-  }, 2000);
-});
+import request from '../utils/request';
+
+const USERS_FETCH = 'users';
+
+const fetchUsers = () => request.get(USERS_FETCH);
 
 export default {
   fetchUsers,

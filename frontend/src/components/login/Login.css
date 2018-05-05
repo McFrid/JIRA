@@ -1,0 +1,14 @@
+.login_form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 700px;
+    border: 1px solid grey;
+    padding: 10px 20px;
+    margin: 5px;
+}
+
+.login_form__submit_button {
+    width: 100px;
+    margin: 0 auto;
+}
