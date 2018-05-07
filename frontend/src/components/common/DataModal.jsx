@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 
 const DataModal = props => (
-  <Modal isOpen={props.isActive} toggle={props.onToggleModal}>
+  <Modal isOpen={props.isActive} toggle={props.onToggleModal} zIndex={1}>
     <ModalHeader toggle={props.onCancel}>{props.actionType}</ModalHeader>
     <ModalBody>
       {props.children}
