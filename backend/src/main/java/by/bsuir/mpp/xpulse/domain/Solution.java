@@ -28,8 +28,11 @@ public class Solution implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "date")
+    @Column(name = "jhi_date")
     private LocalDate date;
+
+    @Column(name = "estimation")
+    private Float estimation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -65,6 +68,19 @@ public class Solution implements Serializable {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    public Float getEstimation() {
+        return estimation;
+    }
+
+    public Solution estimation(Float estimation) {
+        this.estimation = estimation;
+        return this;
+    }
+
+    public void setEstimation(Float estimation) {
+        this.estimation = estimation;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -93,6 +109,7 @@ public class Solution implements Serializable {
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
             ", date='" + getDate() + "'" +
+            ", estimation=" + getEstimation() +
             "}";
     }
 }
