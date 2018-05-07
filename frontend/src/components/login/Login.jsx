@@ -52,7 +52,7 @@ class Login extends React.Component {
     event.preventDefault();
 
     if (this.state.username && this.state.password) {
-      this.props.userActions.login(this.state.username, this.state.password);
+      this.props.login(this.state.username, this.state.password);
     } else {
       this.setState({
         isUsernameError: !this.state.username,
@@ -99,11 +99,11 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  userActions: PropTypes.objectOf(PropTypes.func),
+  login: PropTypes.func,
 };
 
 Login.defaultProps = {
-  userActions: {},
+  login: null,
 };
 
 export default Login;
