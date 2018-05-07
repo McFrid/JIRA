@@ -12,12 +12,16 @@
         {
             "fieldName": "date",
             "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "estimation",
+            "fieldType": "Float"
         }
     ],
     "changelogDate": "20180421154426",
-    "entityTableName": "solution",
     "dto": "mapstruct",
-    "pagination": "pagination",
     "service": "serviceClass",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "solution",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
 }
