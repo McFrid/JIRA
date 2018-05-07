@@ -39,7 +39,9 @@ class App extends React.Component {
         <Route path="/login" component={LoginContainer} />
         <Route path="/users" component={UsersTableContainer} />
 
-        <FullScreenSpinner />
+        {this.props.isActiveRequest && (
+          <FullScreenSpinner />
+        )}
       </main>
     );
   }
@@ -52,6 +54,7 @@ App.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),
+  isActiveRequest: PropTypes.bool,
 };
 
 App.defaultProps = {
@@ -59,6 +62,7 @@ App.defaultProps = {
   isChecking: true,
   isAuthenticated: false,
   location: null,
+  isActiveRequest: false,
 };
 
 export default App;

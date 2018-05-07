@@ -4,6 +4,7 @@ const initState = {
   isAuthenticated: false,
   isChecking: true,
   doesAuthenticationErrorExist: false,
+  isActiveRequest: false,
 };
 
 const appState = (state = initState, action) => {
@@ -20,6 +21,18 @@ const appState = (state = initState, action) => {
       return {
         ...state,
         doesAuthenticationErrorExist: true,
+      };
+
+    case actionTypes.app.APP_REQUEST:
+      return {
+        ...state,
+        isActiveRequest: true,
+      };
+
+    case actionTypes.app.APP_REQUEST_COMPLETED:
+      return {
+        ...state,
+        isActiveRequest: false,
       };
 
     default:
