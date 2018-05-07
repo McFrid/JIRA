@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import actions from '../../actions';
+import requestDecorator from '../../utils/requestDecorator';
 
 import Login from '../../components/login/Login';
 
@@ -10,7 +10,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  userActions: bindActionCreators(actions.user, dispatch),
+  login: (userName, password) => {
+    dispatch(requestDecorator(actions.user.login(userName, password)));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

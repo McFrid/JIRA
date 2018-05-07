@@ -9,6 +9,7 @@ import actions from '../../actions';
 const mapStateToProps = state => ({
   isAuthenticated: state.app.isAuthenticated,
   isChecking: state.app.isChecking,
+  isActiveRequest: state.app.isActiveRequest,
 });
 
 const mapDispatchToProps = dispatch => ({

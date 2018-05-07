@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import UsersTableContainer from '../../containers/users/UsersContainer';
 import LoginContainer from '../../containers/login/LoginContainer';
 import Spinner from '../../components/common/Spinner';
+import FullScreenSpinner from '../../components/common/FullScreenSpinner';
 
 import auth from '../../utils/auth';
 
@@ -33,11 +34,15 @@ class App extends React.Component {
     }
 
     return (
-      <React.Fragment>
+      <main>
         <Route path="/" exact render={() => <Redirect to="/users" />} />
         <Route path="/login" component={LoginContainer} />
         <Route path="/users" component={UsersTableContainer} />
-      </React.Fragment>
+
+        {this.props.isActiveRequest && (
+          <FullScreenSpinner />
+        )}
+      </main>
     );
   }
 }
@@ -49,6 +54,7 @@ App.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),
+  isActiveRequest: PropTypes.bool,
 };
 
 App.defaultProps = {
@@ -56,6 +62,7 @@ App.defaultProps = {
   isChecking: true,
   isAuthenticated: false,
   location: null,
+  isActiveRequest: false,
 };
 
 export default App;
