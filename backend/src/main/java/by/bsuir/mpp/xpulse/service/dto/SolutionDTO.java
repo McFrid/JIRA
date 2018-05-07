@@ -18,6 +18,8 @@ public class SolutionDTO implements Serializable {
 
     private LocalDate date;
 
+    private Float estimation;
+
     public Long getId() {
         return id;
     }
@@ -40,6 +42,14 @@ public class SolutionDTO implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Float getEstimation() {
+        return estimation;
+    }
+
+    public void setEstimation(Float estimation) {
+        this.estimation = estimation;
     }
 
     @Override
@@ -69,6 +79,7 @@ public class SolutionDTO implements Serializable {
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
             ", date='" + getDate() + "'" +
+            ", estimation=" + getEstimation() +
             "}";
     }
 }
