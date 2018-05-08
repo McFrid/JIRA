@@ -155,7 +155,7 @@ public class UserResourceIntTest {
         managedUserVM.setActivated(true);
         managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
-        managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.DEVELOPER));
+        managedUserVM.setAuthority(AuthoritiesConstants.DEVELOPER);
 
         restUserMockMvc.perform(post("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -189,7 +189,7 @@ public class UserResourceIntTest {
         managedUserVM.setActivated(true);
         managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
-        managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.DEVELOPER));
+        managedUserVM.setAuthority(AuthoritiesConstants.DEVELOPER);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserMockMvc.perform(post("/api/users")
@@ -218,7 +218,7 @@ public class UserResourceIntTest {
         managedUserVM.setActivated(true);
         managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
-        managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.DEVELOPER));
+        managedUserVM.setAuthority(AuthoritiesConstants.DEVELOPER);
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")
@@ -247,7 +247,7 @@ public class UserResourceIntTest {
         managedUserVM.setActivated(true);
         managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
-        managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.DEVELOPER));
+        managedUserVM.setAuthority(AuthoritiesConstants.DEVELOPER);
 
         // Create the User
         restUserMockMvc.perform(post("/api/users")
@@ -328,7 +328,7 @@ public class UserResourceIntTest {
         managedUserVM.setActivated(updatedUser.getActivated());
         managedUserVM.setImageUrl(UPDATED_IMAGEURL);
         managedUserVM.setLangKey(UPDATED_LANGKEY);
-        managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.DEVELOPER));
+        managedUserVM.setAuthority(AuthoritiesConstants.DEVELOPER);
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -366,7 +366,7 @@ public class UserResourceIntTest {
         managedUserVM.setActivated(updatedUser.getActivated());
         managedUserVM.setImageUrl(UPDATED_IMAGEURL);
         managedUserVM.setLangKey(UPDATED_LANGKEY);
-        managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.DEVELOPER));
+        managedUserVM.setAuthority(AuthoritiesConstants.DEVELOPER);
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -415,7 +415,7 @@ public class UserResourceIntTest {
         managedUserVM.setActivated(updatedUser.getActivated());
         managedUserVM.setImageUrl(updatedUser.getImageUrl());
         managedUserVM.setLangKey(updatedUser.getLangKey());
-        managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.DEVELOPER));
+        managedUserVM.setAuthority(AuthoritiesConstants.DEVELOPER);
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -453,7 +453,7 @@ public class UserResourceIntTest {
         managedUserVM.setActivated(updatedUser.getActivated());
         managedUserVM.setImageUrl(updatedUser.getImageUrl());
         managedUserVM.setLangKey(updatedUser.getLangKey());
-        managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.DEVELOPER));
+        managedUserVM.setAuthority(AuthoritiesConstants.DEVELOPER);
 
         restUserMockMvc.perform(put("/api/users")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -524,7 +524,7 @@ public class UserResourceIntTest {
         userDTO.setActivated(true);
         userDTO.setImageUrl(DEFAULT_IMAGEURL);
         userDTO.setLangKey(DEFAULT_LANGKEY);
-        userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.DEVELOPER));
+        userDTO.setAuthority(AuthoritiesConstants.DEVELOPER);
 
         User user = userMapper.userDTOToUser(userDTO);
         assertThat(user.getId()).isEqualTo(DEFAULT_ID);
@@ -535,17 +535,15 @@ public class UserResourceIntTest {
         assertThat(user.getActivated()).isEqualTo(true);
         assertThat(user.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(user.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
-        assertThat(user.getAuthorities()).extracting("name").containsExactly(AuthoritiesConstants.DEVELOPER);
+        assertThat(user.getAuthority()).extracting("name").containsExactly(AuthoritiesConstants.DEVELOPER);
     }
 
     @Test
     public void testUserToUserDTO() {
         user.setId(DEFAULT_ID);
-        Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
         authority.setName(AuthoritiesConstants.DEVELOPER);
-        authorities.add(authority);
-        user.setAuthorities(authorities);
+        user.setAuthority(authority);
 
         UserDTO userDTO = userMapper.userToUserDTO(user);
 
@@ -557,7 +555,7 @@ public class UserResourceIntTest {
         assertThat(userDTO.isActivated()).isEqualTo(true);
         assertThat(userDTO.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(userDTO.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
-        assertThat(userDTO.getAuthorities()).containsExactly(AuthoritiesConstants.DEVELOPER);
+        assertThat(userDTO.getAuthority()).isEqualToIgnoringCase(AuthoritiesConstants.DEVELOPER);
         assertThat(userDTO.toString()).isNotNull();
     }
 

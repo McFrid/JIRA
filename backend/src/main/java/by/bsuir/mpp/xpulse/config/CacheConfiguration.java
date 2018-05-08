@@ -40,9 +40,7 @@ public class CacheConfiguration {
             cm.createCache(by.bsuir.mpp.xpulse.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
             cm.createCache(by.bsuir.mpp.xpulse.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(by.bsuir.mpp.xpulse.domain.Authority.class.getName(), jcacheConfiguration);
-            cm.createCache(by.bsuir.mpp.xpulse.domain.User.class.getName() + ".authorities", jcacheConfiguration);
-            cm.createCache(by.bsuir.mpp.xpulse.domain.PersistentToken.class.getName(), jcacheConfiguration);
-            cm.createCache(by.bsuir.mpp.xpulse.domain.User.class.getName() + ".persistentTokens", jcacheConfiguration);
+            cm.createCache(by.bsuir.mpp.xpulse.domain.User.class.getName() + ".authority", jcacheConfiguration);
             cm.createCache(by.bsuir.mpp.xpulse.domain.Product.class.getName(), jcacheConfiguration);
             cm.createCache(by.bsuir.mpp.xpulse.domain.Product.class.getName() + ".users", jcacheConfiguration);
             cm.createCache(by.bsuir.mpp.xpulse.domain.Issue.class.getName(), jcacheConfiguration);

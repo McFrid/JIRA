@@ -1,9 +1,5 @@
 package by.bsuir.mpp.xpulse.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-
-import by.bsuir.mpp.xpulse.domain.PersistentToken;
-import by.bsuir.mpp.xpulse.repository.PersistentTokenRepository;
 import by.bsuir.mpp.xpulse.domain.User;
 import by.bsuir.mpp.xpulse.repository.UserRepository;
 import by.bsuir.mpp.xpulse.security.SecurityUtils;
@@ -13,18 +9,15 @@ import by.bsuir.mpp.xpulse.service.dto.UserDTO;
 import by.bsuir.mpp.xpulse.web.rest.errors.*;
 import by.bsuir.mpp.xpulse.web.rest.vm.KeyAndPasswordVM;
 import by.bsuir.mpp.xpulse.web.rest.vm.ManagedUserVM;
-
+import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.*;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
@@ -40,7 +33,6 @@ public class AccountResource {
     private final UserService userService;
 
     private final MailService mailService;
-
 
     public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
 
@@ -107,7 +99,7 @@ public class AccountResource {
     @GetMapping("/account")
     @Timed
     public UserDTO getAccount() {
-        return userService.getUserWithAuthorities()
+        return userService.getUserWithAuthority()
             .map(UserDTO::new)
             .orElseThrow(() -> new InternalServerErrorException("User could not be found"));
     }
