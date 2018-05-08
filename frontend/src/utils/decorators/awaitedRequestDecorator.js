@@ -1,6 +1,6 @@
-import actionTypes from '../actions/actionTypes';
+import actionTypes from '../../actions/actionTypes';
 
-const requestDecorator = thunk => async (dispatch) => {
+const awaitedRequestDecorator = thunk => async (dispatch) => {
   dispatch({
     type: actionTypes.app.APP_REQUEST,
   });
@@ -12,4 +12,4 @@ const requestDecorator = thunk => async (dispatch) => {
   });
 };
 
-export default requestDecorator;
+export default awaitedRequestDecorator;

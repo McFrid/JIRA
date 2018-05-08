@@ -6,12 +6,21 @@ import account from '../../utils/account';
 
 import actions from '../index';
 
-const storeUser = user => ({
-  type: actionTypes.user.USER_STORE,
-  payload: {
-    user,
-  },
-});
+import usersService from '../../services/users-service';
+
+const storeUser = user => async (dispatch) => {
+  const response = await usersService.saveUser(user);
+
+  dispatch({
+    type: actionTypes.user.USER_STORE,
+    payload: {
+      user: {
+        ...response.data,
+        authority: user.authority,
+      },
+    },
+  });
+};
 
 const updateUser = (id, user) => ({
   type: actionTypes.user.USER_UPDATE,

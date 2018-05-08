@@ -15,7 +15,7 @@ const fetchRoles = () => async (dispatch) => {
 
   const roles = await rolesService.fetchRoles();
 
-  dispatch(storeRoles(roles));
+  dispatch(storeRoles(roles.data));
 };
 
 export default {
