@@ -68,11 +68,8 @@ UsersForm.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   login: PropTypes.string,
-  roles: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  })),
-  currentRoleId: PropTypes.number,
+  roles: PropTypes.arrayOf(PropTypes.string),
+  currentRoleId: PropTypes.string,
   onInputChange: PropTypes.func,
   onDropdownSelectionChange: PropTypes.func,
 };
@@ -83,7 +80,7 @@ UsersForm.defaultProps = {
   lastName: '',
   login: '',
   roles: [],
-  currentRoleId: 0,
+  currentRoleId: '',
   onInputChange: null,
   onDropdownSelectionChange: null,
 };

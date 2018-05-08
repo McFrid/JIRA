@@ -28,8 +28,8 @@ const mapDispatchToProps = dispatch => ({
       user,
     ))));
   },
-  removeUser: (id) => {
-    dispatch(awaitedRequestDecorator(actions.user.removeUser(id)));
+  removeUser: (login) => {
+    dispatch(awaitedRequestDecorator(actions.user.removeUser(login)));
   },
 });
 

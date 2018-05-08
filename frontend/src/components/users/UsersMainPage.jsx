@@ -9,7 +9,7 @@ import Spinner from '../common/Spinner';
 
 class UsersMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
-    let newState = {}
+    let newState = {};
     if (nextProps.areRolesLoaded &&
       !prevState.isCurrentRoleSet) {
       newState = {
@@ -234,10 +234,7 @@ UsersMainPage.propTypes = {
       PropTypes.number,
     ]),
   })),
-  roles: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  })),
+  roles: PropTypes.arrayOf(PropTypes.string),
   usersActions: PropTypes.objectOf(PropTypes.func),
   rolesActions: PropTypes.objectOf(PropTypes.func),
   storeUser: PropTypes.func,

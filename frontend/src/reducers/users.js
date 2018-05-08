@@ -22,10 +22,9 @@ const userState = (state = initState, action) => {
       return {
         ...state,
         items: state.items.map((user) => {
-          if (user.id === action.payload.id) {
+          if (user.id === action.payload.user.id) {
             return {
               ...action.payload.user,
-              id: action.payload.id,
             };
           }
 
@@ -36,7 +35,7 @@ const userState = (state = initState, action) => {
     case actionTypes.user.USER_REMOVE:
       return {
         ...state,
-        items: state.items.filter(user => user.id !== action.payload.id),
+        items: state.items.filter(user => user.login !== action.payload.login),
       };
 
     case actionTypes.users.USERS_FETCH:

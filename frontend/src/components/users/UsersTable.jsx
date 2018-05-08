@@ -28,10 +28,10 @@ class UsersTable extends React.Component {
       activated: 'Activated',
     };
 
-    this.buttons = id => (
+    this.buttons = userInfo => (
       <div>
-        <Button color="primary" onClick={this.onEditClick.bind(this, id)}>Edit</Button>
-        <Button color="danger" onClick={this.onDeleteClick.bind(this, id)}>Delete</Button>
+        <Button color="primary" onClick={this.onEditClick.bind(this, userInfo.id)}>Edit</Button>
+        <Button color="danger" onClick={this.onDeleteClick.bind(this, userInfo.login)}>Delete</Button>
       </div>
     );
   }

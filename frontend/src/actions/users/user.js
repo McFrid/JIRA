@@ -22,20 +22,34 @@ const storeUser = user => async (dispatch) => {
   });
 };
 
-const updateUser = (id, user) => ({
-  type: actionTypes.user.USER_UPDATE,
-  payload: {
+const updateUser = (id, user) => async (dispatch) => {
+  const response = await usersService.updateUser({
+    ...user,
     id,
-    user,
-  },
-});
+  });
 
-const removeUser = id => ({
-  type: actionTypes.user.USER_REMOVE,
-  payload: {
-    id,
-  },
-});
+  dispatch({
+    type: actionTypes.user.USER_UPDATE,
+    payload: {
+      user: response.data,
+    },
+  });
+};
+
+const removeUser = login => async (dispatch) => {
+  try {
+    await usersService.removeUser(login);
+
+    dispatch({
+      type: actionTypes.user.USER_REMOVE,
+      payload: {
+        login,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const fetchAccount = () => ({
   type: actionTypes.account.ACCOUNT_FETCH,

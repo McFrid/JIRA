@@ -1,6 +1,6 @@
 import actionTypes from '../../actions/actionTypes';
 
-const awaitedUserActionsDecorator = () => thunk => async (dispatch) => {
+const awaitedUserActionsDecorator = thunk => async (dispatch) => {
   dispatch({
     type: actionTypes.user.USER_REQUEST,
   });
@@ -14,4 +14,4 @@ const awaitedUserActionsDecorator = () => thunk => async (dispatch) => {
   }
 };
 
-export default awaitedUserActionsDecorator();
+export default awaitedUserActionsDecorator;
