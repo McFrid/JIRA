@@ -8,6 +8,8 @@ import {
 import LabelInput from '../common/LabelInput';
 import LabelDropdown from '../common/LabelDropdown';
 
+import getAuthority from '../../utils/mapUserAuthority';
+
 const UsersForm = props => (
   <Form>
     <FormGroup>
@@ -39,20 +41,20 @@ const UsersForm = props => (
         onInputChange={props.onInputChange.bind(this, 'lastName')}
       />
       <LabelInput
-        labelName="Experience"
+        labelName="Login"
         inputType="text"
-        inputName="experience"
-        inputId="users-table-experience"
-        placeholder="Enter user experience"
-        value={props.experience}
-        onInputChange={props.onInputChange.bind(this, 'experience')}
+        inputName="login"
+        inputId="users-table-login"
+        placeholder="Enter user login"
+        value={props.login}
+        onInputChange={props.onInputChange.bind(this, 'login')}
       />
       <LabelDropdown
         labelName="Role"
         dropdownId="users-table-role"
         dropdownData={props.roles.map(role => ({
-          key: role.id,
-          value: role.name,
+          key: role,
+          value: getAuthority(role),
         }))}
         selectedKey={props.currentRoleId}
         onChange={props.onDropdownSelectionChange.bind(this, 'roleId')}
@@ -65,15 +67,9 @@ UsersForm.propTypes = {
   email: PropTypes.string,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
-  experience: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  roles: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  })),
-  currentRoleId: PropTypes.number,
+  login: PropTypes.string,
+  roles: PropTypes.arrayOf(PropTypes.string),
+  currentRoleId: PropTypes.string,
   onInputChange: PropTypes.func,
   onDropdownSelectionChange: PropTypes.func,
 };
@@ -82,9 +78,9 @@ UsersForm.defaultProps = {
   email: '',
   firstName: '',
   lastName: '',
-  experience: 0,
+  login: '',
   roles: [],
-  currentRoleId: 0,
+  currentRoleId: '',
   onInputChange: null,
   onDropdownSelectionChange: null,
 };

@@ -43,7 +43,7 @@ export default {
     return makeRequest(url, params, 'GET', headers);
   },
 
-  del(url, params, headers) {
+  delete(url, params, headers) {
     return makeRequest(url, params, 'DELETE', headers);
   },
 

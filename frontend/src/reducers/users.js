@@ -1,23 +1,10 @@
 import actionTypes from '../actions/actionTypes';
 
 const initState = {
-  items: [{
-    id: 1,
-    email: 'test@google.com',
-    firstName: 'Firts Name 1',
-    lastName: 'Last Name 1',
-    experience: 1.2,
-    roleId: 1,
-  }, {
-    id: 2,
-    email: 'test2@google.com',
-    firstName: 'Firts Name 2',
-    lastName: 'Last Name 2',
-    experience: 2.2,
-    roleId: 4,
-  }],
+  items: [],
   isFetching: false,
   isLoaded: false,
+  isError: false,
 };
 
 const userState = (state = initState, action) => {
@@ -27,11 +14,7 @@ const userState = (state = initState, action) => {
         ...state,
         items: [
           ...state.items,
-          {
-            ...action.payload.user,
-            id: Math.random(),
-            experience: Number.parseFloat(action.payload.user.experience),
-          },
+          action.payload.user,
         ],
       };
 
@@ -39,11 +22,9 @@ const userState = (state = initState, action) => {
       return {
         ...state,
         items: state.items.map((user) => {
-          if (user.id === action.payload.id) {
+          if (user.id === action.payload.user.id) {
             return {
               ...action.payload.user,
-              id: action.payload.id,
-              experience: Number.parseFloat(action.payload.user.experience),
             };
           }
 
@@ -54,12 +35,13 @@ const userState = (state = initState, action) => {
     case actionTypes.user.USER_REMOVE:
       return {
         ...state,
-        items: state.items.filter(user => user.id !== action.payload.id),
+        items: state.items.filter(user => user.login !== action.payload.login),
       };
 
     case actionTypes.users.USERS_FETCH:
       return {
         ...state,
+        items: [],
         isFetching: true,
         isLoaded: false,
       };
@@ -67,8 +49,21 @@ const userState = (state = initState, action) => {
     case actionTypes.users.USERS_STORE:
       return {
         ...state,
+        items: action.payload.users,
         isFetching: false,
         isLoaded: true,
+      };
+
+    case actionTypes.user.USER_REQUEST:
+      return {
+        ...state,
+        isError: false,
+      };
+
+    case actionTypes.user.USER_REQUEST_ERROR:
+      return {
+        ...state,
+        isError: true,
       };
 
     default:

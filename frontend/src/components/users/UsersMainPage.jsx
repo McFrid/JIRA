@@ -9,15 +9,37 @@ import Spinner from '../common/Spinner';
 
 class UsersMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = {};
     if (nextProps.areRolesLoaded &&
       !prevState.isCurrentRoleSet) {
-      return {
+      newState = {
+        ...newState,
         isCurrentRoleSet: true,
-        roleId: nextProps.roles[0].id,
+        roleId: nextProps.roles[0],
       };
     }
 
-    return null;
+    if (!nextProps.isActiveRequest && prevState.isActiveRequest) {
+      if (!nextProps.isUsersError) {
+        newState = {
+          ...newState,
+          email: '',
+          firstName: '',
+          lastName: '',
+          login: '',
+          authority: '',
+          isActiveAddModal: false,
+          isActiveUpdateModal: false,
+        };
+      }
+
+      newState = {
+        ...newState,
+        isActiveRequest: false,
+      };
+    }
+
+    return newState;
   }
 
   constructor(props) {
@@ -26,9 +48,10 @@ class UsersMainPage extends React.Component {
       isActiveAddModal: false,
       isActiveUpdateModal: false,
       isCurrentRoleSet: false,
+      isActiveRequest: false,
     };
 
-    this.userProperties = ['email', 'firstName', 'lastName', 'experience', 'roleId'];
+    this.userProperties = ['email', 'firstName', 'lastName', 'login', 'roleId'];
 
     this.userProperties.forEach((property) => {
       this.state[property] = '';
@@ -57,7 +80,7 @@ class UsersMainPage extends React.Component {
 
   onDropdownSelectionChange(name, event) {
     this.setState({
-      [name]: parseInt(event.target.id, 10),
+      [name]: event.target.id,
     });
   }
 
@@ -83,8 +106,8 @@ class UsersMainPage extends React.Component {
       email: currentUser.email,
       firstName: currentUser.firstName,
       lastName: currentUser.lastName,
-      experience: currentUser.experience,
-      roleId: currentUser.roleId,
+      login: currentUser.login,
+      roleId: currentUser.authority,
       isActiveUpdateModal: true,
     });
   }
@@ -97,34 +120,30 @@ class UsersMainPage extends React.Component {
 
   onAddUser() {
     this.setState({
-      isActiveAddModal: false,
+      isActiveRequest: true,
     });
 
-    this.props.userActions.storeUser({
+    this.props.storeUser({
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      experience: this.state.experience,
-      roleId: this.state.roleId,
+      login: this.state.login,
+      authority: this.state.roleId,
     });
-
-    this.setDefaultProperties();
   }
 
   onUpdateUser() {
     this.setState({
-      isActiveUpdateModal: false,
+      isActiveRequest: true,
     });
 
-    this.props.userActions.updateUser(this.state.id, {
+    this.props.updateUser(this.state.id, {
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      experience: this.state.experience,
-      roleId: this.state.roleId,
+      login: this.state.login,
+      authority: this.state.roleId,
     });
-
-    this.setDefaultProperties();
   }
 
   setDefaultProperties() {
@@ -133,7 +152,7 @@ class UsersMainPage extends React.Component {
     this.userProperties.forEach((property) => {
       newState[property] = '';
     });
-    newState.roleId = this.props.roles[0].id;
+    [newState.roleId] = this.props.roles;
 
     this.setState(newState);
   }
@@ -162,7 +181,7 @@ class UsersMainPage extends React.Component {
             email={this.state.email}
             firstName={this.state.firstName}
             lastName={this.state.lastName}
-            experience={this.state.experience}
+            login={this.state.login}
             roles={this.props.roles}
             currentRoleId={this.state.roleId}
             onInputChange={this.onInputChange}
@@ -183,7 +202,7 @@ class UsersMainPage extends React.Component {
             email={this.state.email}
             firstName={this.state.firstName}
             lastName={this.state.lastName}
-            experience={this.state.experience}
+            login={this.state.login}
             roles={this.props.roles}
             currentRoleId={this.state.roleId}
             onInputChange={this.onInputChange}
@@ -195,7 +214,7 @@ class UsersMainPage extends React.Component {
           users={this.props.users}
           roles={this.props.roles}
           updateUser={this.onToggleUpdateUserModal}
-          removeUser={this.props.userActions.removeUser}
+          removeUser={this.props.removeUser}
         />
         <Button color="success" onClick={this.onToggleModal} >Add New User</Button>
       </div>
@@ -215,13 +234,12 @@ UsersMainPage.propTypes = {
       PropTypes.number,
     ]),
   })),
-  roles: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  })),
-  userActions: PropTypes.objectOf(PropTypes.func),
+  roles: PropTypes.arrayOf(PropTypes.string),
   usersActions: PropTypes.objectOf(PropTypes.func),
   rolesActions: PropTypes.objectOf(PropTypes.func),
+  storeUser: PropTypes.func,
+  updateUser: PropTypes.func,
+  removeUser: PropTypes.func,
   areUsersFetching: PropTypes.bool,
   areUsersLoaded: PropTypes.bool,
   areRolesLoaded: PropTypes.bool,
@@ -230,9 +248,11 @@ UsersMainPage.propTypes = {
 UsersMainPage.defaultProps = {
   users: [],
   roles: [],
-  userActions: {},
   usersActions: {},
   rolesActions: {},
+  storeUser: null,
+  updateUser: null,
+  removeUser: null,
   areUsersFetching: false,
   areUsersLoaded: false,
   areRolesLoaded: false,

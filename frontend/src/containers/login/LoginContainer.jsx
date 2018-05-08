@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import actions from '../../actions';
-import requestDecorator from '../../utils/requestDecorator';
+import awaitedRequestDecorator from '../../utils/decorators/awaitedRequestDecorator';
 
 import Login from '../../components/login/Login';
 
@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   login: (userName, password) => {
-    dispatch(requestDecorator(actions.user.login(userName, password)));
+    dispatch(awaitedRequestDecorator(actions.user.login(userName, password)));
   },
 });
 

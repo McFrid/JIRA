@@ -4,6 +4,8 @@ import { Button } from 'reactstrap';
 
 import DataTable from '../../components/common/DataTable';
 
+import getAuthority from '../../utils/mapUserAuthority';
+
 class UsersTable extends React.Component {
   constructor(props) {
     super(props);
@@ -12,22 +14,24 @@ class UsersTable extends React.Component {
       'email',
       'firstName',
       'lastName',
-      'experience',
       'role',
+      'login',
+      'activated',
     ];
 
     this.columnNames = {
       email: 'Email',
       firstName: 'First Name',
       lastName: 'Last Name',
-      experience: 'Experience',
       role: 'Role',
+      login: 'Login',
+      activated: 'Activated',
     };
 
-    this.buttons = id => (
+    this.buttons = userInfo => (
       <div>
-        <Button color="primary" onClick={this.onEditClick.bind(this, id)}>Edit</Button>
-        <Button color="danger" onClick={this.onDeleteClick.bind(this, id)}>Delete</Button>
+        <Button color="primary" onClick={this.onEditClick.bind(this, userInfo.id)}>Edit</Button>
+        <Button color="danger" onClick={this.onDeleteClick.bind(this, userInfo.login)}>Delete</Button>
       </div>
     );
   }
@@ -43,7 +47,8 @@ class UsersTable extends React.Component {
   render() {
     const usersInfo = this.props.users.map(user => ({
       ...user,
-      role: this.props.roles.find(role => role.id === user.roleId).name,
+      role: getAuthority(this.props.roles.find(role => role === user.authority)),
+      activated: user.activated ? 'Yes' : 'No',
     }));
 
     return (
@@ -63,15 +68,12 @@ UsersTable.propTypes = {
     email: PropTypes.string,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
-    experience: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    authority: PropTypes.string,
+    login: PropTypes.string,
+    activated: PropTypes.bool,
+
   })),
-  roles: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  })),
+  roles: PropTypes.arrayOf(PropTypes.string),
   updateUser: PropTypes.func,
   removeUser: PropTypes.func,
 };

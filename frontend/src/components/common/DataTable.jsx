@@ -23,7 +23,7 @@ const DataTable = props => (
           ))}
 
           {props.actions && (
-            <td>{props.actions(row.id)}</td>
+            <td>{props.actions(row)}</td>
           )}
         </tr>
       ))}

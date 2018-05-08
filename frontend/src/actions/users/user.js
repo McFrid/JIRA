@@ -6,27 +6,50 @@ import account from '../../utils/account';
 
 import actions from '../index';
 
-const storeUser = user => ({
-  type: actionTypes.user.USER_STORE,
-  payload: {
-    user,
-  },
-});
+import usersService from '../../services/users-service';
 
-const updateUser = (id, user) => ({
-  type: actionTypes.user.USER_UPDATE,
-  payload: {
-    id,
-    user,
-  },
-});
+const storeUser = user => async (dispatch) => {
+  const response = await usersService.saveUser(user);
 
-const removeUser = id => ({
-  type: actionTypes.user.USER_REMOVE,
-  payload: {
+  dispatch({
+    type: actionTypes.user.USER_STORE,
+    payload: {
+      user: {
+        ...response.data,
+        authority: user.authority,
+      },
+    },
+  });
+};
+
+const updateUser = (id, user) => async (dispatch) => {
+  const response = await usersService.updateUser({
+    ...user,
     id,
-  },
-});
+  });
+
+  dispatch({
+    type: actionTypes.user.USER_UPDATE,
+    payload: {
+      user: response.data,
+    },
+  });
+};
+
+const removeUser = login => async (dispatch) => {
+  try {
+    await usersService.removeUser(login);
+
+    dispatch({
+      type: actionTypes.user.USER_REMOVE,
+      payload: {
+        login,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const fetchAccount = () => ({
   type: actionTypes.account.ACCOUNT_FETCH,
