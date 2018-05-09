@@ -55,6 +55,19 @@ const stories = {
   STORIES_STORE: 'STORIES_STORE',
 };
 
+const issue = {
+  ISSUE_REQUEST: 'ISSUE_REQUEST',
+  ISSUE_REQUEST_ERROR: 'ISSUE_REQUEST_ERROR',
+  ISSUE_STORE: 'ISSUE_STORE',
+  ISSUE_UPDATE: 'ISSUE_UPDATE',
+  ISSUE_REMOVE: 'ISSUE_REMOVE',
+};
+
+const issues = {
+  ISSUES_FETCH: 'ISSUES_FETCH',
+  ISSUES_STORE: 'ISSUES_STORE',
+};
+
 export default {
   user,
   users,
@@ -65,4 +78,6 @@ export default {
   products,
   story,
   stories,
+  issue,
+  issues,
 };
