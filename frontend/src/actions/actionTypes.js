@@ -29,10 +29,25 @@ const app = {
   APP_REQUEST_COMPLETED: 'APP_REQUEST_COMPLETED',
 };
 
+const product = {
+  PRODUCT_REQUEST: 'PRODUCT_REQUEST',
+  PRODUCT_REQUEST_ERROR: 'PRODUCT_REQUEST_ERROR',
+  PRODUCT_STORE: 'PRODUCT_STORE',
+  PRODUCT_UPDATE: 'PRODUCT_UPDATE',
+  PRODUCT_REMOVE: 'PRODUCT_REMOVE',
+};
+
+const products = {
+  PRODUCTS_FETCH: 'PRODUCTS_FETCH',
+  PRODUCTS_STORE: 'PRODUCTS_STORE',
+};
+
 export default {
   user,
   users,
   roles,
   account,
   app,
+  product,
+  products,
 };
