@@ -29,10 +29,40 @@ const app = {
   APP_REQUEST_COMPLETED: 'APP_REQUEST_COMPLETED',
 };
 
+const product = {
+  PRODUCT_REQUEST: 'PRODUCT_REQUEST',
+  PRODUCT_REQUEST_ERROR: 'PRODUCT_REQUEST_ERROR',
+  PRODUCT_STORE: 'PRODUCT_STORE',
+  PRODUCT_UPDATE: 'PRODUCT_UPDATE',
+  PRODUCT_REMOVE: 'PRODUCT_REMOVE',
+};
+
+const products = {
+  PRODUCTS_FETCH: 'PRODUCTS_FETCH',
+  PRODUCTS_STORE: 'PRODUCTS_STORE',
+};
+
+const story = {
+  STORY_REQUEST: 'STORY_REQUEST',
+  STORY_REQUEST_ERROR: 'STORY_REQUEST_ERROR',
+  STORY_STORE: 'STORY_STORE',
+  STORY_UPDATE: 'STORY_UPDATE',
+  STORY_REMOVE: 'STORY_REMOVE',
+};
+
+const stories = {
+  STORIES_FETCH: 'STORIES_FETCH',
+  STORIES_STORE: 'STORIES_STORE',
+};
+
 export default {
   user,
   users,
   roles,
   account,
   app,
+  product,
+  products,
+  story,
+  stories,
 };

@@ -49,13 +49,14 @@ class UsersMainPage extends React.Component {
       isActiveUpdateModal: false,
       isCurrentRoleSet: false,
       isActiveRequest: false,
+      email: '',
+      firstName: '',
+      lastName: '',
+      login: '',
+      roleId: '',
     };
 
     this.userProperties = ['email', 'firstName', 'lastName', 'login', 'roleId'];
-
-    this.userProperties.forEach((property) => {
-      this.state[property] = '';
-    });
 
     this.onToggleModal = this.onToggleModal.bind(this);
     this.onAddUser = this.onAddUser.bind(this);
@@ -229,10 +230,8 @@ UsersMainPage.propTypes = {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     roleId: PropTypes.number,
-    experience: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    login: PropTypes.string,
+    activated: PropTypes.bool,
   })),
   roles: PropTypes.arrayOf(PropTypes.string),
   usersActions: PropTypes.objectOf(PropTypes.func),
