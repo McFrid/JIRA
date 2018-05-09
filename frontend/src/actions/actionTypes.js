@@ -42,6 +42,19 @@ const products = {
   PRODUCTS_STORE: 'PRODUCTS_STORE',
 };
 
+const story = {
+  STORY_REQUEST: 'STORY_REQUEST',
+  STORY_REQUEST_ERROR: 'STORY_REQUEST_ERROR',
+  STORY_STORE: 'STORY_STORE',
+  STORY_UPDATE: 'STORY_UPDATE',
+  STORY_REMOVE: 'STORY_REMOVE',
+};
+
+const stories = {
+  STORIES_FETCH: 'STORIES_FETCH',
+  STORIES_STORE: 'STORIES_STORE',
+};
+
 export default {
   user,
   users,
@@ -50,4 +63,6 @@ export default {
   app,
   product,
   products,
+  story,
+  stories,
 };

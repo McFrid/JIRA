@@ -4,6 +4,7 @@ import roles from './roles';
 import account from './account';
 import app from './app';
 import products from './products';
+import stories from './stories';
 
 export default combineReducers({
   users,
@@ -11,4 +12,5 @@ export default combineReducers({
   account,
   app,
   products,
+  stories,
 });

@@ -29,8 +29,8 @@ const mapDispatchToProps = dispatch => ({
       product,
     ))));
   },
-  removeProduct: (login) => {
-    dispatch(awaitedRequestDecorator(actions.product.removeProduct(login)));
+  removeProduct: (id) => {
+    dispatch(awaitedRequestDecorator(actions.product.removeProduct(id)));
   },
 });
 

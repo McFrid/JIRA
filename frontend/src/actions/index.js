@@ -4,6 +4,8 @@ import roles from './roles/roles';
 import app from './app/app';
 import product from './products/product';
 import products from './products/products';
+import story from './stories/story';
+import stories from './stories/stories';
 
 export default {
   user,
@@ -12,4 +14,6 @@ export default {
   app,
   product,
   products,
+  story,
+  stories,
 };
