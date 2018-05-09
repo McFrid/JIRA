@@ -21,8 +21,6 @@ public class SolutionDTO implements Serializable {
 
     private Float estimation;
 
-    private Float estimation;
-
     public Long getId() {
         return id;
     }

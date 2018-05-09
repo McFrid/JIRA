@@ -1,6 +1,5 @@
 package by.bsuir.mpp.xpulse.repository;
 
-import by.bsuir.mpp.xpulse.domain.Issue;
 import by.bsuir.mpp.xpulse.domain.User;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
