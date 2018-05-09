@@ -26,4 +26,10 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
 
     List<Issue> findBySolutionNotNull();
 
+    @Query("select i from Issue i " +
+        "join i.users u " +
+        "where u.login = ?1 " +
+        "and i.solution is not null")
+    List<Issue> findSolvedIssuesByLogin(String login);
+
 }
