@@ -43,4 +43,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthorityByEmail(String email);
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
+
+    @Query("select u from User u join u.issues i " +
+        "where u.authority = 'ROLE_DEVELOPER' " +
+        "and i.solution is not null")
+    Collection<User> findAllWithContributions();
 }

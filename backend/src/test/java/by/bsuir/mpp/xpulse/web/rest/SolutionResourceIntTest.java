@@ -53,6 +53,9 @@ public class SolutionResourceIntTest {
     private static final Float DEFAULT_ESTIMATION = 1F;
     private static final Float UPDATED_ESTIMATION = 2F;
 
+    private static final Float DEFAULT_ESTIMATION = 1F;
+    private static final Float UPDATED_ESTIMATION = 2F;
+
     @Autowired
     private SolutionRepository solutionRepository;
 
