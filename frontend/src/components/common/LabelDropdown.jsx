@@ -27,9 +27,12 @@ class LabelDropdown extends React.Component {
   }
 
   render() {
-    const selectedValue = this.props.dropdownData
-      .find(pair => pair.key === this.props.selectedKey)
-      .value;
+    const selectedValue = this.props.selectedKey
+      ? this.props.dropdownData
+        .find(pair => pair.key === this.props.selectedKey)
+        .value
+      : '';
+
 
     return (
       <FormGroup>

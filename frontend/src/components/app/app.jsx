@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import NavigationBar from '../../components/common/NavigationBar';
 import UsersTableContainer from '../../containers/users/UsersContainer';
 import LoginContainer from '../../containers/login/LoginContainer';
+import ProductsContainer from '../../containers/products/ProductsContainer';
+import StoriesContainer from '../../containers/stories/StoriesContainer';
 import Spinner from '../../components/common/Spinner';
 import FullScreenSpinner from '../../components/common/FullScreenSpinner';
 
@@ -21,6 +23,14 @@ class App extends React.Component {
       {
         name: 'Users',
         route: '/users',
+      },
+      {
+        name: 'Products',
+        route: '/products',
+      },
+      {
+        name: 'Stories',
+        route: '/stories',
       },
     ]
   }
@@ -60,6 +70,8 @@ class App extends React.Component {
           <Route path="/" exact render={() => <Redirect to="/users" />} />
           <Route path="/login" component={LoginContainer} />
           <Route path="/users" component={UsersTableContainer} />
+          <Route path="/products" component={ProductsContainer} />
+          <Route path="/stories" component={StoriesContainer} />
 
           {this.props.isActiveRequest && (
             <FullScreenSpinner />
