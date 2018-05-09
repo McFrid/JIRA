@@ -4,12 +4,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Product.
@@ -36,6 +36,9 @@ public class Product implements Serializable {
                joinColumns = @JoinColumn(name="products_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="users_id", referencedColumnName="id"))
     private Set<User> users = new HashSet<>();
+
+    @OneToMany(mappedBy = "product")
+    private Set<Story> stories = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -78,6 +81,14 @@ public class Product implements Serializable {
         this.users.remove(user);
         user.getProducts().remove(this);
         return this;
+    }
+
+    public Set<Story> getStories() {
+        return stories;
+    }
+
+    public void setStories(Set<Story> stories) {
+        this.stories = stories;
     }
 
     public void setUsers(Set<User> users) {

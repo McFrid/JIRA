@@ -16,7 +16,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
-import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 
 
 @Service

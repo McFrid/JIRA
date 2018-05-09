@@ -8,6 +8,7 @@ import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.awt.*;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;

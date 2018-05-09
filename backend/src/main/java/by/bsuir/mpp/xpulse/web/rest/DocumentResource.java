@@ -108,7 +108,7 @@ public class DocumentResource {
     }
 
     /**
-     * Product statistics (issues number, solved, manager, etc.)
+     * Product statistics (issue number, solved, manager, etc.)
      * @param format
      * @return
      */
