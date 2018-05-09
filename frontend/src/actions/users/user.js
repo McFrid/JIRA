@@ -86,9 +86,15 @@ const login = (username, password) => async (dispatch) => {
   }
 };
 
+const logout = () => (dispatch) => {
+  auth.logout();
+  dispatch(actions.app.setAuthenticatedState(false));
+};
+
 export default {
   storeUser,
   updateUser,
   removeUser,
   login,
+  logout,
 };
