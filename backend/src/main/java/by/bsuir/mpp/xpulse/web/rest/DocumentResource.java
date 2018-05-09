@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@SuppressWarnings("Duplicates")
 @RestController
 @RequestMapping("/api")
 public class DocumentResource {
@@ -56,6 +57,7 @@ public class DocumentResource {
         try {
             JasperReportBuilder reportBuilder = contributionsReport.generateReport(login);
             byte[] bytes = documentService.writeTo(reportBuilder, format);
+            logger.debug("Contribution report generated.");
             ByteArrayResource bar = new ByteArrayResource(bytes);
             return ResponseEntity.ok()
                 .contentLength(bytes.length)
@@ -83,7 +85,26 @@ public class DocumentResource {
     @GetMapping("/solutions/statistic")
     @Timed
     public ResponseEntity<Resource> downloadSolutionStatistics(@RequestParam String format) {
-        return null;
+        try {
+            JasperReportBuilder reportBuilder = solutionStatisticsReport.generateReport(null);
+            byte[] bytes = documentService.writeTo(reportBuilder, format);
+            logger.debug("Solution statistics generated.");
+            ByteArrayResource bar = new ByteArrayResource(bytes);
+            return ResponseEntity.ok()
+                .contentLength(bytes.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(bar);
+
+        }
+        catch (Exception e) {
+            byte[] error = e.getMessage().getBytes();
+            ByteArrayResource bar = new ByteArrayResource(error);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentLength(error.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(bar);
+        }
     }
 
     /**
@@ -94,7 +115,26 @@ public class DocumentResource {
     @GetMapping("/products/statistic")
     @Timed
     public ResponseEntity<Resource> downloadProductStatistics(@RequestParam String format) {
-        return null;
+        try {
+            JasperReportBuilder reportBuilder = productStatisticsReport.generateReport(null);
+            byte[] bytes = documentService.writeTo(reportBuilder, format);
+            logger.debug("Product statistics generated.");
+            ByteArrayResource bar = new ByteArrayResource(bytes);
+            return ResponseEntity.ok()
+                .contentLength(bytes.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(bar);
+
+        }
+        catch (Exception e) {
+            byte[] error = e.getMessage().getBytes();
+            ByteArrayResource bar = new ByteArrayResource(error);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentLength(error.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(bar);
+        }
     }
 
     /**
@@ -108,7 +148,26 @@ public class DocumentResource {
     public ResponseEntity<Resource> downloadResolvedIssues
         (@PathVariable String login, @RequestParam String format) {
 
-        return null;
+        try {
+            JasperReportBuilder reportBuilder = resolvedIssuesReport.generateReport(login);
+            byte[] bytes = documentService.writeTo(reportBuilder, format);
+            logger.debug("Resolved issues report generated.");
+            ByteArrayResource bar = new ByteArrayResource(bytes);
+            return ResponseEntity.ok()
+                .contentLength(bytes.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(bar);
+
+        }
+        catch (Exception e) {
+            byte[] error = e.getMessage().getBytes();
+            ByteArrayResource bar = new ByteArrayResource(error);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentLength(error.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(bar);
+        }
 
     }
 

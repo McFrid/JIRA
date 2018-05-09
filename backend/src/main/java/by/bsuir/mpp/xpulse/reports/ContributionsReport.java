@@ -1,8 +1,5 @@
 package by.bsuir.mpp.xpulse.reports;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.*;
-
-import by.bsuir.mpp.xpulse.domain.Issue;
 import by.bsuir.mpp.xpulse.repository.IssueRepository;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
@@ -12,12 +9,10 @@ import net.sf.dynamicreports.report.definition.ReportParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.awt.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.LinkedList;
+
+import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 
 @Service
