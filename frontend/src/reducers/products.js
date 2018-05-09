@@ -2,8 +2,8 @@ import actionTypes from '../actions/actionTypes';
 
 const initState = {
   items: [],
-  isFetching: false,
-  isLoaded: false,
+  areFetching: false,
+  areLoaded: false,
   isError: false,
 };
 
@@ -42,16 +42,16 @@ const productsState = (state = initState, action) => {
       return {
         ...state,
         items: [],
-        isFetching: true,
-        isLoaded: false,
+        areFetching: true,
+        areLoaded: false,
       };
 
     case actionTypes.products.PRODUCTS_STORE:
       return {
         ...state,
         items: action.payload.products,
-        isFetching: false,
-        isLoaded: true,
+        areFetching: false,
+        areLoaded: true,
       };
 
     case actionTypes.product.PRODUCT_REQUEST:

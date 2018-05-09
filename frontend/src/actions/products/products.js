@@ -1,5 +1,5 @@
 import actionTypes from '../actionTypes';
-import actions from '../../index';
+import actions from '../index';
 import productsService from '../../services/products-service';
 
 const storeProducts = products => ({
