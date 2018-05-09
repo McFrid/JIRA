@@ -24,4 +24,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
         "where u.login = ?1")
     List<Issue> findAllByUserLogin(String login);
 
+    List<Issue> findBySolutionNotNull();
+
 }
