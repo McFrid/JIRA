@@ -1,5 +1,6 @@
 package by.bsuir.mpp.xpulse.web.rest;
 
+import by.bsuir.mpp.xpulse.repository.IssueRepository;
 import com.codahale.metrics.annotation.Timed;
 import by.bsuir.mpp.xpulse.service.IssueService;
 import by.bsuir.mpp.xpulse.web.rest.errors.BadRequestAlertException;
@@ -35,9 +36,11 @@ public class IssueResource {
     private static final String ENTITY_NAME = "issue";
 
     private final IssueService issueService;
+    private final IssueRepository issueRepository;
 
-    public IssueResource(IssueService issueService) {
+    public IssueResource(IssueService issueService, IssueRepository issueRepository) {
         this.issueService = issueService;
+        this.issueRepository = issueRepository;
     }
 
     /**
@@ -95,6 +98,13 @@ public class IssueResource {
         Page<IssueDTO> page = issueService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/issues");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/issues/count")
+    @Timed
+    public ResponseEntity<Long> getIssueNumber() {
+        log.debug("REST request to get a number of Issues");
+        return new ResponseEntity<>(issueRepository.count(), HttpStatus.OK);
     }
 
     /**
