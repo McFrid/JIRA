@@ -1,5 +1,6 @@
 package by.bsuir.mpp.xpulse.web.rest;
 
+import by.bsuir.mpp.xpulse.repository.ProductRepository;
 import com.codahale.metrics.annotation.Timed;
 import by.bsuir.mpp.xpulse.service.ProductService;
 import by.bsuir.mpp.xpulse.web.rest.errors.BadRequestAlertException;
@@ -35,9 +36,11 @@ public class ProductResource {
     private static final String ENTITY_NAME = "product";
 
     private final ProductService productService;
+    private final ProductRepository productRepository;
 
-    public ProductResource(ProductService productService) {
+    public ProductResource(ProductService productService, ProductRepository productRepository) {
         this.productService = productService;
+        this.productRepository = productRepository;
     }
 
     /**
@@ -95,6 +98,13 @@ public class ProductResource {
         Page<ProductDTO> page = productService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/products");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/count")
+    @Timed
+    public ResponseEntity<Long> getProductNumber() {
+        log.debug("REST request to get a number of Products");
+        return new ResponseEntity<>(productRepository.count(), HttpStatus.OK);
     }
 
     /**

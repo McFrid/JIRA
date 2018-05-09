@@ -77,7 +77,7 @@ public class IssueResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final IssueResource issueResource = new IssueResource(issueService);
+        final IssueResource issueResource = new IssueResource(issueService, issueRepository);
         this.restIssueMockMvc = MockMvcBuilders.standaloneSetup(issueResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -1,5 +1,6 @@
 package by.bsuir.mpp.xpulse.web.rest;
 
+import by.bsuir.mpp.xpulse.repository.StoryRepository;
 import com.codahale.metrics.annotation.Timed;
 import by.bsuir.mpp.xpulse.service.StoryService;
 import by.bsuir.mpp.xpulse.web.rest.errors.BadRequestAlertException;
@@ -35,9 +36,11 @@ public class StoryResource {
     private static final String ENTITY_NAME = "story";
 
     private final StoryService storyService;
+    private final StoryRepository storyRepository;
 
-    public StoryResource(StoryService storyService) {
+    public StoryResource(StoryService storyService, StoryRepository storyRepository) {
         this.storyService = storyService;
+        this.storyRepository = storyRepository;
     }
 
     /**
@@ -95,6 +98,13 @@ public class StoryResource {
         Page<StoryDTO> page = storyService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stories");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/stories/count")
+    @Timed
+    public ResponseEntity<Long> getStoryNumber() {
+        log.debug("REST request to get a number of Stories");
+        return new ResponseEntity<>(storyRepository.count(), HttpStatus.OK);
     }
 
     /**
