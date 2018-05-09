@@ -4,6 +4,7 @@ package by.bsuir.mpp.xpulse.service.dto;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class StoryDTO implements Serializable {
     @NotNull
     private String description;
 
-    private LocalDate date;
+    private ZonedDateTime date;
 
     private Long productId;
 
@@ -38,11 +39,11 @@ public class StoryDTO implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 

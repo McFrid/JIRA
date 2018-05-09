@@ -8,6 +8,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -29,7 +31,7 @@ public class Story implements Serializable {
     private String description;
 
     @Column(name = "date")
-    private LocalDate date;
+    private ZonedDateTime date;
 
     @ManyToOne
     private Product product;
@@ -56,16 +58,16 @@ public class Story implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public Story date(LocalDate date) {
+    public Story date(ZonedDateTime date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 

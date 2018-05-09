@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static by.bsuir.mpp.xpulse.web.rest.TestUtil.createFormattingConversionService;
@@ -46,8 +47,8 @@ public class SolutionResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.now();
+    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault());
 
     private static final Float DEFAULT_ESTIMATION = 1F;
     private static final Float UPDATED_ESTIMATION = 2F;

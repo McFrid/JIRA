@@ -4,6 +4,7 @@ package by.bsuir.mpp.xpulse.service.dto;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -16,7 +17,7 @@ public class SolutionDTO implements Serializable {
     @NotNull
     private String description;
 
-    private LocalDate date;
+    private ZonedDateTime date;
 
     private Float estimation;
 
@@ -36,11 +37,11 @@ public class SolutionDTO implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 

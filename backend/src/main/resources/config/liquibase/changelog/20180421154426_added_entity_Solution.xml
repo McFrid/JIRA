@@ -28,7 +28,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="jhi_date" type="date">
+            <column name="date" type="timestamp">
                 <constraints nullable="true" />
             </column>
 

@@ -23,17 +23,17 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.export;
 @Service
 public class DocumentService {
 
-    private ByteArrayOutputStream baos;
+    private ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-    public byte[] writeTo(JasperReportBuilder jp, final String format) throws Exception {
+    public byte[] writeTo(JasperReportBuilder reportBuilder, final String format) throws Exception {
         if (format.equalsIgnoreCase(Constants.PDF)) {
-            writeToPdf(jp);
+            writeToPdf(reportBuilder);
         }
         else if (format.equalsIgnoreCase(Constants.XLS)) {
-            writeToXls(jp);
+            writeToXls(reportBuilder);
         }
         else {
-            writeToCsv(jp);
+            writeToCsv(reportBuilder);
         }
         return baos.toByteArray();
     }
