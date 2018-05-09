@@ -230,10 +230,8 @@ UsersMainPage.propTypes = {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     roleId: PropTypes.number,
-    experience: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    login: PropTypes.string,
+    activated: PropTypes.bool,
   })),
   roles: PropTypes.arrayOf(PropTypes.string),
   usersActions: PropTypes.objectOf(PropTypes.func),
