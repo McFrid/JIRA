@@ -23,7 +23,7 @@ public class ContributionReportIntTest {
     @Test
     public void generateReport() {
         try {
-            JasperReportBuilder reportBuilder = contributionsReport.generateReport();
+            JasperReportBuilder reportBuilder = contributionsReport.generateReport(null);
             JasperPdfExporterBuilder pdfExporterBuilder = export
                 .pdfExporter("test.pdf")
                 .setCharacterEncoding("UTF-8");

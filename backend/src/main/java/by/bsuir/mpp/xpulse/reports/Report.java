@@ -4,5 +4,5 @@ import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 
 public interface Report {
 
-    JasperReportBuilder generateReport();
+    JasperReportBuilder generateReport(Object parameter);
 }

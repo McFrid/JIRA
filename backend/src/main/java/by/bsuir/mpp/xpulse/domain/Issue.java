@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -31,7 +32,7 @@ public class Issue implements Serializable {
     private String description;
 
     @Column(name = "date")
-    private LocalDate date;
+    private ZonedDateTime date;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -69,16 +70,16 @@ public class Issue implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public Issue date(LocalDate date) {
+    public Issue date(ZonedDateTime date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 

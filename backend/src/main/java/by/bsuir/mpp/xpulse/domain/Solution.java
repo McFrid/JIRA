@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -28,8 +29,8 @@ public class Solution implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "jhi_date")
-    private LocalDate date;
+    @Column(name = "date")
+    private ZonedDateTime date;
 
     @Column(name = "estimation")
     private Float estimation;
@@ -56,16 +57,16 @@ public class Solution implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public Solution date(LocalDate date) {
+    public Solution date(ZonedDateTime date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 
