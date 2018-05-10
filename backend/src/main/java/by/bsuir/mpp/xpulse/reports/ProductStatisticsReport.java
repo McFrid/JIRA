@@ -83,6 +83,23 @@ public class ProductStatisticsReport implements Report {
                         return manager;
                     }
                 }),
+                col.column("Customer", new AbstractSimpleExpression<String>() {
+                    @Override
+                    public String evaluate(ReportParameters reportParameters) {
+                        Product product = reportParameters.getValue("product");
+                        String customer = "";
+
+                        User user = product.getUsers().stream().filter(
+                            _user -> _user.getAuthority().getName().equals(AuthoritiesConstants.CUSTOMER)
+                        ).findFirst().orElse(null);
+
+                        if (user != null) {
+                            customer = String.format("%s %s [%s]", user.getFirstName(), user.getLastName(), user.getLogin());
+                        }
+
+                        return customer;
+                    }
+                }),
                 col.column("Developers number", new AbstractSimpleExpression<String>() {
                     @Override
                     public String evaluate(ReportParameters reportParameters) {
