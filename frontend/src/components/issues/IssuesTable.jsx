@@ -5,43 +5,49 @@ import moment from 'moment';
 
 import DataTable from '../../components/common/DataTable';
 
-class StoriesTable extends React.Component {
+class IssuesTable extends React.Component {
   constructor(props) {
     super(props);
 
     this.columns = [
       'description',
-      'product',
+      'story',
       'createdDate',
+      'developers',
+      'manager'
     ];
 
     this.columnNames = {
       description: 'Description',
-      product: 'Product',
+      story: 'Story',
       createdDate: 'Created Date',
+      developers: 'Developers',
+      manager: 'Manager',
     };
 
-    this.buttons = storyInfo => (
+    this.buttons = issueInfo => (
       <div>
-        <Button color="primary" onClick={this.onEditClick.bind(this, storyInfo.id)}>Edit</Button>
-        <Button color="danger" onClick={this.onDeleteClick.bind(this, storyInfo.id)}>Delete</Button>
+        <Button color="primary" onClick={this.onEditClick.bind(this, issueInfo.id)}>Edit</Button>
+        <Button color="danger" onClick={this.onDeleteClick.bind(this, issueInfo.id)}>Delete</Button>
       </div>
     );
   }
 
   onEditClick(id) {
-    this.props.updateStory(id);
+    this.props.updateIssue(id);
   }
 
   onDeleteClick(id) {
-    this.props.removeStory(id);
+    this.props.removeIssue(id);
   }
 
   render() {
-    const productsInfo = this.props.stories.map(story => ({
-      ...story,
-      product: story.productId ? this.props.products.find(product => product.id === story.productId).name : '',
-      createdDate: moment(story.date).format('MM/DD/YY'),
+    const issuesInfo = this.props.issues.map(issue => ({
+      ...issue,
+      story: issue.storyId ? this.props.stories.find(story => story.id === issue.storyId).name : '',
+      //solution: issue.solutionId ? this.props.
+      createdDate: moment(issue.date).format('MM/DD/YY'),
+      manager: issue.users.find(user => user.authority)
     }));
 
     return (

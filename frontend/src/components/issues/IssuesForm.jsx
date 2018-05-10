@@ -9,36 +9,62 @@ import LabelInput from '../common/LabelInput';
 import LabelDropdown from '../common/LabelDropdown';
 import LabelMultiSelect from '../common/LabelMultiSelect';
 
-const StoriesForm = props => (
+const IssuesForm = props => (
   <Form>
     <FormGroup>
       <LabelInput
         labelName="Description"
         inputType="text"
         inputName="description"
-        inputId="stories-table-description"
-        placeholder="Enter user description"
+        inputId="issues-table-description"
+        placeholder="Enter description"
         value={props.description}
         onInputChange={props.onInputChange.bind(this, 'description')}
       />
 
-      {!!props.products.length && (
+      {!!props.stories.length && (
         <LabelDropdown
-          labelName="Product"
-          dropdownId="stories-table-product"
-          dropdownData={props.products.map(product => ({
-            key: product.id,
-            value: product.name,
+          labelName="Story"
+          dropdownId="issues-table-story"
+          dropdownData={props.stories.map(story => ({
+            key: story.id,
+            value: story.description,
           }))}
-          selectedKey={props.product ? props.product.id : null}
-          onChange={props.onProductChange}
+          selectedKey={props.story ? props.story.id : null}
+          onChange={props.onStoryChange}
+        />
+      )}
+
+      {!!props.developers.length && (
+        <LabelMultiSelect
+          labelName="Developers"
+          inputName="developers"
+          inputId="issues-table-developers"
+          options={props.developers.map(developer => ({
+            key: developer.id,
+            value: `${developer.firstName} ${developer.lastName}`,
+          }))}
+          value={props.currentDevelopers.map(developer => developer.id)}
+          onOptionClick={props.onDevelopersChange}
+        />
+      )}
+
+      {!props.isAdding && (
+        <LabelInput
+          labelName="Solution"
+          inputType="text"
+          inputName="solution"
+          inputId="issues=table-solution"
+          placeholder="Enter Solution"
+          value={props.solution}
+          onInputChange={props.onInputChange.bind(this, 'solution')}
         />
       )}
     </FormGroup>
   </Form>
 );
 
-StoriesForm.propTypes = {
+IssuesForm.propTypes = {
   description: PropTypes.string,
   products: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
@@ -68,7 +94,7 @@ StoriesForm.propTypes = {
   onProductChange: PropTypes.func,
 };
 
-StoriesForm.defaultProps = {
+IssuesForm.defaultProps = {
   description: '',
   products: [],
   product: null,
@@ -76,4 +102,4 @@ StoriesForm.defaultProps = {
   onProductChange: null,
 };
 
-export default StoriesForm;
+export default IssuesForm;

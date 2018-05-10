@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import moment from 'moment';
 
-import StoriesTable from './StoriesTable';
-import StoriesForm from './StoriesForm';
+import StoriesTable from './IssuesTable';
+import StoriesForm from './IssuesForm';
 import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
 
