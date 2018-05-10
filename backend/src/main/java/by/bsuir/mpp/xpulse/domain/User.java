@@ -14,6 +14,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
@@ -57,6 +58,9 @@ public class User implements Serializable {
     @Size(min = 5, max = 100)
     @Column(length = 100, unique = true)
     private String email;
+
+    @Column(name = "birthdate", nullable = true)
+    private LocalDate birthdate;
 
     @NotNull
     @Column(nullable = false)

@@ -20,6 +20,8 @@ public class ProductDTO implements Serializable {
 
     private Set<UserDTO> users = new HashSet<>();
 
+    private Set<StoryDTO> stories = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -42,6 +44,14 @@ public class ProductDTO implements Serializable {
 
     public void setUsers(Set<UserDTO> users) {
         this.users = users;
+    }
+
+    public Set<StoryDTO> getStories() {
+        return stories;
+    }
+
+    public void setStories(Set<StoryDTO> stories) {
+        this.stories = stories;
     }
 
     @Override
