@@ -68,6 +68,19 @@ const issues = {
   ISSUES_STORE: 'ISSUES_STORE',
 };
 
+const solution = {
+  SOLUTION_REQUEST: 'SOLUTION_REQUEST',
+  SOLUTION_REQUEST_ERROR: 'SOLUTION_REQUEST_ERROR',
+  SOLUTION_STORE: 'SOLUTION_STORE',
+  SOLUTION_UPDATE: 'SOLUTION_UPDATE',
+  SOLUTION_REMOVE: 'SOLUTION_REMOVE',
+};
+
+const solutions = {
+  SOLUTIONS_FETCH: 'SOLUTIONS_FETCH',
+  SOLUTIONS_STORE: 'SOLUTIONS_STORE',
+};
+
 export default {
   user,
   users,
@@ -80,4 +93,6 @@ export default {
   stories,
   issue,
   issues,
+  solution,
+  solutions,
 };
