@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -29,7 +30,14 @@ public class Solution implements Serializable {
     private String description;
 
     @Column(name = "date")
-    private LocalDate date;
+    private ZonedDateTime date;
+
+    @Column(name = "estimation")
+    private Float estimation;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Issue issue;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -53,17 +61,43 @@ public class Solution implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public Solution date(LocalDate date) {
+    public Solution date(ZonedDateTime date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
+    }
+
+    public Float getEstimation() {
+        return estimation;
+    }
+
+    public Solution estimation(Float estimation) {
+        this.estimation = estimation;
+        return this;
+    }
+
+    public void setEstimation(Float estimation) {
+        this.estimation = estimation;
+    }
+
+    public Issue getIssue() {
+        return issue;
+    }
+
+    public Solution issue(Issue issue) {
+        this.issue = issue;
+        return this;
+    }
+
+    public void setIssue(Issue issue) {
+        this.issue = issue;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -93,6 +127,7 @@ public class Solution implements Serializable {
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
             ", date='" + getDate() + "'" +
+            ", estimation=" + getEstimation() +
             "}";
     }
 }

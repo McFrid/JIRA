@@ -2,19 +2,15 @@ package by.bsuir.mpp.xpulse.service.dto;
 
 import by.bsuir.mpp.xpulse.config.Constants;
 
-import by.bsuir.mpp.xpulse.domain.Authority;
 import by.bsuir.mpp.xpulse.domain.User;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.*;
-import java.time.Instant;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * A DTO representing a user, with his authorities.
+ * A DTO representing a user, with his authority.
  */
 public class UserDTO {
 
@@ -43,7 +39,7 @@ public class UserDTO {
     @Size(min = 2, max = 6)
     private String langKey;
 
-    private String authorities;
+    private String authority;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -58,7 +54,7 @@ public class UserDTO {
         this.activated = user.getActivated();
         this.imageUrl = user.getImageUrl();
         this.langKey = user.getLangKey();
-        this.authorities = user.getAuthority().getName();
+        this.authority = user.getAuthority().getName();
     }
 
     public Long getId() {
@@ -127,11 +123,11 @@ public class UserDTO {
 
 
     public String getAuthority() {
-        return authorities;
+        return authority;
     }
 
     public void setAuthority(String authority) {
-        this.authorities = authority;
+        this.authority = authority;
     }
 
     @Override
@@ -144,7 +140,7 @@ public class UserDTO {
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
-            ", authorities=" + authorities +
+            ", authority=" + authority +
             "}";
     }
 }

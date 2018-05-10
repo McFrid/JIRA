@@ -19,4 +19,17 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     @Query("select issue from Issue issue left join fetch issue.users where issue.id =:id")
     Issue findOneWithEagerRelationships(@Param("id") Long id);
 
+    @Query("select i from Issue i " +
+        "join i.users u " +
+        "where u.login = ?1")
+    List<Issue> findAllByUserLogin(String login);
+
+    List<Issue> findBySolutionNotNull();
+
+    @Query("select i from Issue i " +
+        "join i.users u " +
+        "where u.login = ?1 " +
+        "and i.solution is not null")
+    List<Issue> findSolvedIssuesByLogin(String login);
+
 }

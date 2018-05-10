@@ -1,7 +1,6 @@
 package by.bsuir.mpp.xpulse.domain;
 
 import by.bsuir.mpp.xpulse.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
@@ -14,11 +13,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.time.Instant;
 
 /**
  * A user.
@@ -58,6 +58,9 @@ public class User implements Serializable {
     @Size(min = 5, max = 100)
     @Column(length = 100, unique = true)
     private String email;
+
+    @Column(name = "birthdate", nullable = true)
+    private LocalDate birthdate;
 
     @NotNull
     @Column(nullable = false)

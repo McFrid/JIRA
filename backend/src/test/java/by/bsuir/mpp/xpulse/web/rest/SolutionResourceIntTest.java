@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static by.bsuir.mpp.xpulse.web.rest.TestUtil.createFormattingConversionService;
@@ -46,8 +47,11 @@ public class SolutionResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.now();
+    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault());
+
+    private static final Float DEFAULT_ESTIMATION = 1F;
+    private static final Float UPDATED_ESTIMATION = 2F;
 
     @Autowired
     private SolutionRepository solutionRepository;
@@ -94,7 +98,8 @@ public class SolutionResourceIntTest {
     public static Solution createEntity(EntityManager em) {
         Solution solution = new Solution()
             .description(DEFAULT_DESCRIPTION)
-            .date(DEFAULT_DATE);
+            .date(DEFAULT_DATE)
+            .estimation(DEFAULT_ESTIMATION);
         return solution;
     }
 
@@ -121,6 +126,7 @@ public class SolutionResourceIntTest {
         Solution testSolution = solutionList.get(solutionList.size() - 1);
         assertThat(testSolution.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testSolution.getDate()).isEqualTo(DEFAULT_DATE);
+        assertThat(testSolution.getEstimation()).isEqualTo(DEFAULT_ESTIMATION);
     }
 
     @Test
@@ -174,7 +180,8 @@ public class SolutionResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(solution.getId().intValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
+            .andExpect(jsonPath("$.[*].estimation").value(hasItem(DEFAULT_ESTIMATION.doubleValue())));
     }
 
     @Test
@@ -189,7 +196,8 @@ public class SolutionResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(solution.getId().intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
+            .andExpect(jsonPath("$.estimation").value(DEFAULT_ESTIMATION.doubleValue()));
     }
 
     @Test
@@ -213,7 +221,8 @@ public class SolutionResourceIntTest {
         em.detach(updatedSolution);
         updatedSolution
             .description(UPDATED_DESCRIPTION)
-            .date(UPDATED_DATE);
+            .date(UPDATED_DATE)
+            .estimation(UPDATED_ESTIMATION);
         SolutionDTO solutionDTO = solutionMapper.toDto(updatedSolution);
 
         restSolutionMockMvc.perform(put("/api/solutions")
@@ -227,6 +236,7 @@ public class SolutionResourceIntTest {
         Solution testSolution = solutionList.get(solutionList.size() - 1);
         assertThat(testSolution.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testSolution.getDate()).isEqualTo(UPDATED_DATE);
+        assertThat(testSolution.getEstimation()).isEqualTo(UPDATED_ESTIMATION);
     }
 
     @Test
