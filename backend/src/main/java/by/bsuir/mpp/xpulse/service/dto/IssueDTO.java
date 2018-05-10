@@ -1,12 +1,12 @@
 package by.bsuir.mpp.xpulse.service.dto;
 
 
-import java.time.LocalDate;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Issue entity.
@@ -18,7 +18,7 @@ public class IssueDTO implements Serializable {
     @NotNull
     private String description;
 
-    private LocalDate date;
+    private ZonedDateTime date;
 
     private Long solutionId;
 
@@ -42,11 +42,11 @@ public class IssueDTO implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 
