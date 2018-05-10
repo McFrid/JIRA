@@ -4,8 +4,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -32,6 +34,10 @@ public class Solution implements Serializable {
 
     @Column(name = "estimation")
     private Float estimation;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Issue issue;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -79,6 +85,19 @@ public class Solution implements Serializable {
 
     public void setEstimation(Float estimation) {
         this.estimation = estimation;
+    }
+
+    public Issue getIssue() {
+        return issue;
+    }
+
+    public Solution issue(Issue issue) {
+        this.issue = issue;
+        return this;
+    }
+
+    public void setIssue(Issue issue) {
+        this.issue = issue;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

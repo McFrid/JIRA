@@ -1,8 +1,7 @@
 package by.bsuir.mpp.xpulse.service.dto;
 
 
-import java.time.LocalDate;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -20,6 +19,8 @@ public class SolutionDTO implements Serializable {
     private ZonedDateTime date;
 
     private Float estimation;
+
+    private Long issueId;
 
     public Long getId() {
         return id;
@@ -51,6 +52,14 @@ public class SolutionDTO implements Serializable {
 
     public void setEstimation(Float estimation) {
         this.estimation = estimation;
+    }
+
+    public Long getIssueId() {
+        return issueId;
+    }
+
+    public void setIssueId(Long issueId) {
+        this.issueId = issueId;
     }
 
     @Override
