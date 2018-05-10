@@ -2,10 +2,7 @@ package by.bsuir.mpp.xpulse.web.rest;
 
 
 import by.bsuir.mpp.xpulse.config.Constants;
-import by.bsuir.mpp.xpulse.reports.ContributionsReport;
-import by.bsuir.mpp.xpulse.reports.ProductStatisticsReport;
-import by.bsuir.mpp.xpulse.reports.ResolvedIssuesReport;
-import by.bsuir.mpp.xpulse.reports.SolutionStatisticsReport;
+import by.bsuir.mpp.xpulse.reports.*;
 import by.bsuir.mpp.xpulse.service.DocumentService;
 import com.codahale.metrics.annotation.Timed;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -31,16 +28,18 @@ public class DocumentResource {
     private final ProductStatisticsReport productStatisticsReport;
     private final ResolvedIssuesReport resolvedIssuesReport;
     private final SolutionStatisticsReport solutionStatisticsReport;
+    private final UsersStatisticsReport usersStatisticsReport;
 
     @Autowired
     public DocumentResource(DocumentService documentService, ContributionsReport contributionsReport,
                             ProductStatisticsReport productStatisticsReport, ResolvedIssuesReport resolvedIssuesReport,
-                            SolutionStatisticsReport solutionStatisticsReport) {
+                            SolutionStatisticsReport solutionStatisticsReport, UsersStatisticsReport usersStatisticsReport) {
         this.documentService = documentService;
         this.contributionsReport = contributionsReport;
         this.productStatisticsReport = productStatisticsReport;
         this.resolvedIssuesReport = resolvedIssuesReport;
         this.solutionStatisticsReport = solutionStatisticsReport;
+        this.usersStatisticsReport = usersStatisticsReport;
     }
 
     /**
@@ -86,7 +85,7 @@ public class DocumentResource {
     @Timed
     public ResponseEntity<Resource> downloadSolutionStatistics(@RequestParam String format) {
         try {
-            JasperReportBuilder reportBuilder = solutionStatisticsReport.generateReport(null);
+            JasperReportBuilder reportBuilder = usersStatisticsReport.generateReport(null);
             byte[] bytes = documentService.writeTo(reportBuilder, format);
             logger.debug("Solution statistics generated.");
             ByteArrayResource bar = new ByteArrayResource(bytes);
@@ -150,6 +149,39 @@ public class DocumentResource {
 
         try {
             JasperReportBuilder reportBuilder = resolvedIssuesReport.generateReport(login);
+            byte[] bytes = documentService.writeTo(reportBuilder, format);
+            logger.debug("Resolved issues report generated.");
+            ByteArrayResource bar = new ByteArrayResource(bytes);
+            return ResponseEntity.ok()
+                .contentLength(bytes.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(bar);
+
+        }
+        catch (Exception e) {
+            byte[] error = e.getMessage().getBytes();
+            ByteArrayResource bar = new ByteArrayResource(error);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentLength(error.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(bar);
+        }
+
+    }
+
+    /**
+     *  Full information about all users
+     * @param format
+     * @return
+     */
+    @GetMapping("/users/statistics")
+    @Timed
+    public ResponseEntity<Resource> downloadUsersStatistics
+    (@RequestParam String format) {
+
+        try {
+            JasperReportBuilder reportBuilder = usersStatisticsReport.generateReport(null);
             byte[] bytes = documentService.writeTo(reportBuilder, format);
             logger.debug("Resolved issues report generated.");
             ByteArrayResource bar = new ByteArrayResource(bytes);
