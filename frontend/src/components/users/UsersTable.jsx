@@ -71,7 +71,6 @@ UsersTable.propTypes = {
     authority: PropTypes.string,
     login: PropTypes.string,
     activated: PropTypes.bool,
-
   })),
   roles: PropTypes.arrayOf(PropTypes.string),
   updateUser: PropTypes.func,

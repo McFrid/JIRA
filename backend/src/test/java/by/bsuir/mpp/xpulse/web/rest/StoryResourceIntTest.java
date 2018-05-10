@@ -79,7 +79,7 @@ public class StoryResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final StoryResource storyResource = new StoryResource(storyService);
+        final StoryResource storyResource = new StoryResource(storyService, storyRepository);
         this.restStoryMockMvc = MockMvcBuilders.standaloneSetup(storyResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

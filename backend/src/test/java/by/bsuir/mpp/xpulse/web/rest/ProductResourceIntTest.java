@@ -72,7 +72,7 @@ public class ProductResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductResource productResource = new ProductResource(productService);
+        final ProductResource productResource = new ProductResource(productService, productRepository);
         this.restProductMockMvc = MockMvcBuilders.standaloneSetup(productResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

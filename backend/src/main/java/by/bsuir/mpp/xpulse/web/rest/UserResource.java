@@ -148,6 +148,12 @@ public class UserResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/users/count")
+    @Timed
+    public ResponseEntity<Long> getUserNumber() {
+        return new ResponseEntity<>(userRepository.count(), HttpStatus.OK);
+    }
+
     /**
      * @return a string list of the all of the roles
      */
