@@ -17,9 +17,7 @@
     <!--
         Added the entity Solution.
     -->
-
     <changeSet id="20180421154426-1" author="jhipster">
-        <validCheckSum>7:49087fee288ab8b10ac9a7d8743057f0</validCheckSum>
         <createTable tableName="solution">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
@@ -35,7 +33,9 @@
             <column name="estimation" type="${floatType}">
                 <constraints nullable="true" />
             </column>
-
+            <column name="issue_id" type="bigint">
+                <constraints unique="true" nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 

@@ -1,13 +1,12 @@
 package by.bsuir.mpp.xpulse.service.dto;
 
 
-import java.time.LocalDate;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Story entity.
@@ -22,6 +21,8 @@ public class StoryDTO implements Serializable {
     private ZonedDateTime date;
 
     private Long productId;
+
+    private Set<IssueDTO> issues = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -53,6 +54,14 @@ public class StoryDTO implements Serializable {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public Set<IssueDTO> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(Set<IssueDTO> issues) {
+        this.issues = issues;
     }
 
     @Override
