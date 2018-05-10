@@ -59,9 +59,6 @@ public class User implements Serializable {
     @Column(length = 100, unique = true)
     private String email;
 
-    @Column(name = "birthdate", nullable = true)
-    private LocalDate birthdate;
-
     @NotNull
     @Column(nullable = false)
     private boolean activated = false;
