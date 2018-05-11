@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 
 /**
  * A DTO representing a user, with his authority.
@@ -30,6 +31,8 @@ public class UserDTO {
     @Email
     @Size(min = 5, max = 100)
     private String email;
+
+    private LocalDate birthdate;
 
     @Size(max = 256)
     private String imageUrl;
@@ -55,6 +58,7 @@ public class UserDTO {
         this.imageUrl = user.getImageUrl();
         this.langKey = user.getLangKey();
         this.authority = user.getAuthority().getName();
+        this.birthdate = user.getBirthdate();
     }
 
     public Long getId() {
@@ -95,6 +99,14 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getImageUrl() {
@@ -141,6 +153,7 @@ public class UserDTO {
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
             ", authority=" + authority +
+            ", birthdate=" + birthdate +
             "}";
     }
 }
