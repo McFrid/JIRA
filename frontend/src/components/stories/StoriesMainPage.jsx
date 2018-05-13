@@ -118,7 +118,7 @@ class StoriesMainPage extends React.Component {
     this.props.storeStory({
       description: this.state.description,
       productId: this.state.product ? this.state.product.id : 0,
-      date: moment().format('YYYY-MM-DD'),
+      date: moment(),
     });
   }
 
@@ -130,7 +130,7 @@ class StoriesMainPage extends React.Component {
     this.props.updateStory(this.state.id, {
       description: this.state.description,
       productId: this.state.product ? this.state.product.id : 0,
-      date: moment().format('YYYY-MM-DD'),
+      date: moment(),
     });
   }
 
