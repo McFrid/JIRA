@@ -59,6 +59,9 @@ public class User implements Serializable {
     @Column(length = 100, unique = true)
     private String email;
 
+    @Column(name = "birthdate")
+    private LocalDate birthdate;
+
     @NotNull
     @Column(nullable = false)
     private boolean activated = false;
@@ -148,6 +151,14 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getImageUrl() {

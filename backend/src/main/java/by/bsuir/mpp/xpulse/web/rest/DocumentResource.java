@@ -81,11 +81,11 @@ public class DocumentResource {
      * @param format
      * @return
      */
-    @GetMapping("/solutions/statistic")
+    @GetMapping("/solutions/statistics")
     @Timed
     public ResponseEntity<Resource> downloadSolutionStatistics(@RequestParam String format) {
         try {
-            JasperReportBuilder reportBuilder = usersStatisticsReport.generateReport(null);
+            JasperReportBuilder reportBuilder = solutionStatisticsReport.generateReport(null);
             byte[] bytes = documentService.writeTo(reportBuilder, format);
             logger.debug("Solution statistics generated.");
             ByteArrayResource bar = new ByteArrayResource(bytes);
@@ -111,7 +111,7 @@ public class DocumentResource {
      * @param format
      * @return
      */
-    @GetMapping("/products/statistic")
+    @GetMapping("/products/statistics")
     @Timed
     public ResponseEntity<Resource> downloadProductStatistics(@RequestParam String format) {
         try {

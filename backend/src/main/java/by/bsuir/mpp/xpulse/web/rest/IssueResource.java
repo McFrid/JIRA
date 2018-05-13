@@ -1,6 +1,7 @@
 package by.bsuir.mpp.xpulse.web.rest;
 
 import by.bsuir.mpp.xpulse.repository.IssueRepository;
+import by.bsuir.mpp.xpulse.security.AuthoritiesConstants;
 import com.codahale.metrics.annotation.Timed;
 import by.bsuir.mpp.xpulse.service.IssueService;
 import by.bsuir.mpp.xpulse.web.rest.errors.BadRequestAlertException;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
