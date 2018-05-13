@@ -171,7 +171,7 @@ class IssuesMainPage extends React.Component {
         : Promise.resolve();
     }
 
-    const {description} = this.state;
+    const { description } = this.state;
 
     solutionPromise
       .then(solution => this.props.updateIssue(this.state.id, {

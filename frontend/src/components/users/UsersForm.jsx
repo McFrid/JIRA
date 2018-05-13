@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  Label,
   Form,
   FormGroup,
 } from 'reactstrap';
+import DatePicker from 'react-date-picker';
 
 import LabelInput from '../common/LabelInput';
 import LabelDropdown from '../common/LabelDropdown';
@@ -59,6 +61,15 @@ const UsersForm = props => (
         selectedKey={props.currentRoleId}
         onChange={props.onDropdownSelectionChange.bind(this, 'roleId')}
       />
+      <FormGroup>
+        <Label>Birth Day</Label><br />
+
+        <DatePicker
+          value={props.birthday}
+          maxDate={new Date()}
+          onChange={props.onDateChange}
+        />
+      </FormGroup>
     </FormGroup>
   </Form>
 );
