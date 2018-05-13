@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
+import moment from 'moment';
 
 import DataTable from '../../components/common/DataTable';
 
@@ -17,6 +18,7 @@ class UsersTable extends React.Component {
       'role',
       'login',
       'activated',
+      'birthday',
     ];
 
     this.columnNames = {
@@ -26,6 +28,7 @@ class UsersTable extends React.Component {
       role: 'Role',
       login: 'Login',
       activated: 'Activated',
+      birthday: 'Birth Day',
     };
 
     this.buttons = userInfo => (
@@ -49,6 +52,7 @@ class UsersTable extends React.Component {
       ...user,
       role: getAuthority(this.props.roles.find(role => role === user.authority)),
       activated: user.activated ? 'Yes' : 'No',
+      birthday: user.birthdate ? moment(user.birthdate).format('MM/DD/YYYY') : '',
     }));
 
     return (

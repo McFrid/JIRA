@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 
+import moment from 'moment';
+
 import UsersTable from './UsersTable';
 import UsersForm from './UsersForm';
 import DataModal from '../common/DataModal';
@@ -28,6 +30,7 @@ class UsersMainPage extends React.Component {
           lastName: '',
           login: '',
           authority: '',
+          birthday: new Date(),
           isActiveAddModal: false,
           isActiveUpdateModal: false,
         };
@@ -54,6 +57,7 @@ class UsersMainPage extends React.Component {
       lastName: '',
       login: '',
       roleId: '',
+      birthday: new Date(),
     };
 
     this.userProperties = ['email', 'firstName', 'lastName', 'login', 'roleId'];
@@ -66,6 +70,7 @@ class UsersMainPage extends React.Component {
     this.onCancelUpdateUser = this.onCancelUpdateUser.bind(this);
     this.onUpdateUser = this.onUpdateUser.bind(this);
     this.onDropdownSelectionChange = this.onDropdownSelectionChange.bind(this);
+    this.onDateChange = this.onDateChange.bind(this);
   }
 
   componentDidMount() {
@@ -110,6 +115,7 @@ class UsersMainPage extends React.Component {
       login: currentUser.login,
       roleId: currentUser.authority,
       isActiveUpdateModal: true,
+      birthday: currentUser.birthdate ? new Date(currentUser.birthdate) : new Date(),
     });
   }
 
@@ -130,6 +136,7 @@ class UsersMainPage extends React.Component {
       lastName: this.state.lastName,
       login: this.state.login,
       authority: this.state.roleId,
+      birthdate: moment(this.state.birthday).format('YYYY-MM-DD'),
     });
   }
 
@@ -145,6 +152,13 @@ class UsersMainPage extends React.Component {
       login: this.state.login,
       authority: this.state.roleId,
       activated: true,
+      birthdate: moment(this.state.birthday).format('YYYY-MM-DD'),
+    });
+  }
+
+  onDateChange(date) {
+    this.setState({
+      birthday: date,
     });
   }
 
@@ -155,6 +169,7 @@ class UsersMainPage extends React.Component {
       newState[property] = '';
     });
     [newState.roleId] = this.props.roles;
+    newState.birthday = new Date();
 
     this.setState(newState);
   }
@@ -186,6 +201,8 @@ class UsersMainPage extends React.Component {
             login={this.state.login}
             roles={this.props.roles}
             currentRoleId={this.state.roleId}
+            birthday={this.state.birthday}
+            onDateChange={this.onDateChange}
             onInputChange={this.onInputChange}
             onDropdownSelectionChange={this.onDropdownSelectionChange}
           />
@@ -207,6 +224,8 @@ class UsersMainPage extends React.Component {
             login={this.state.login}
             roles={this.props.roles}
             currentRoleId={this.state.roleId}
+            birthday={this.state.birthday}
+            onDateChange={this.onDateChange}
             onInputChange={this.onInputChange}
             onDropdownSelectionChange={this.onDropdownSelectionChange}
           />
