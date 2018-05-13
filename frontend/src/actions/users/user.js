@@ -76,6 +76,7 @@ const login = (username, password) => async (dispatch) => {
 
     account.setAccountId(accountDetails.data.id);
     account.setAccountUsername(accountDetails.data.login);
+    account.setAccountRole(accountDetails.data.authority);
 
     dispatch(actions.app.setAuthenticatedState(true));
   } catch (error) {
@@ -87,6 +88,7 @@ const login = (username, password) => async (dispatch) => {
 
 const logout = () => (dispatch) => {
   auth.logout();
+  account.removeAccount();
   dispatch(actions.app.setAuthenticatedState(false));
   toastr.info('Logged out successfully');
 };

@@ -144,6 +144,7 @@ class UsersMainPage extends React.Component {
       lastName: this.state.lastName,
       login: this.state.login,
       authority: this.state.roleId,
+      activated: true,
     });
   }
 
