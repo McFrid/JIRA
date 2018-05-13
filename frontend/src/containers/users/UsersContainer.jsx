@@ -38,6 +38,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(awaitedRequestDecorator(notificationDecorator(
       actions.user.removeUser(login),
       'Successfully removed user',
+      'The user is connected to some other entity',
     )));
   },
 });

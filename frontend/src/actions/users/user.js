@@ -39,18 +39,14 @@ const updateUser = (id, user) => async (dispatch) => {
 };
 
 const removeUser = login => async (dispatch) => {
-  try {
-    await usersService.removeUser(login);
+  await usersService.removeUser(login);
 
-    dispatch({
-      type: actionTypes.user.USER_REMOVE,
-      payload: {
-        login,
-      },
-    });
-  } catch (e) {
-    console.error(e);
-  }
+  dispatch({
+    type: actionTypes.user.USER_REMOVE,
+    payload: {
+      login,
+    },
+  });
 };
 
 const fetchAccount = () => ({

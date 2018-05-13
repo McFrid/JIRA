@@ -48,6 +48,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(awaitedRequestDecorator(notificationDecorator(
       actions.issue.removeIssue(id),
       'Successfully removed issue',
+      'The issue is connected to some other entity',
     )));
   },
   storeSolution: solution => dispatch(actions.solution.storeSolution(solution)),

@@ -39,6 +39,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(awaitedRequestDecorator(notificationDecorator(
       actions.product.removeProduct(id),
       'Successfully removed product',
+      'The product is connected to some other entity',
     )));
   },
 });
