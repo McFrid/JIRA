@@ -6,7 +6,7 @@ import account from '../../utils/account';
 
 import actions from '../index';
 
-import { toastr } from 'react-redux-toastr'
+import toastr from 'toastr';
 
 import usersService from '../../services/users-service';
 

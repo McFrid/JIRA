@@ -1,4 +1,4 @@
-import { toastr } from 'react-redux-toastr';
+import toastr from 'toastr';
 
 const notificationDecorator = (thunk, textOnSuccess, textOnFail) => async (dispatch) => {
   try {

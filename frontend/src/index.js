@@ -2,10 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter as Router, Switch } from 'react-router-dom';
-import ReduxToastr from 'react-redux-toastr';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
+import 'toastr/build/toastr.css';
 
 import AppContainer from './containers/app/AppContainer';
 import Store from './store/store';
@@ -30,19 +29,11 @@ store.subscribe(() => {
 
 ReactDOM.render(
   <Provider store={store}>
-    <React.Fragment>
       <Router>
         <Switch>
           <AppContainer />
         </Switch>
       </Router>
-      <ReduxToastr
-        timeOut={4000}
-        newestOnTop
-        transitionIn="fadeIn"
-        transitionOut="fadeOut"
-      />
-    </React.Fragment>
   </Provider>,
   document.getElementById('root'),
 );
