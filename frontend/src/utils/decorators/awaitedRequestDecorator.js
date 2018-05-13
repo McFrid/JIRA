@@ -1,15 +1,18 @@
 import actionTypes from '../../actions/actionTypes';
 
 const awaitedRequestDecorator = thunk => async (dispatch) => {
-  dispatch({
-    type: actionTypes.app.APP_REQUEST,
-  });
+  try {
+    dispatch({
+      type: actionTypes.app.APP_REQUEST,
+    });
 
-  await thunk(dispatch);
-
-  dispatch({
-    type: actionTypes.app.APP_REQUEST_COMPLETED,
-  });
+    await thunk(dispatch);
+  } catch (e) {
+  } finally {
+    dispatch({
+      type: actionTypes.app.APP_REQUEST_COMPLETED,
+    });
+  }
 };
 
 export default awaitedRequestDecorator;

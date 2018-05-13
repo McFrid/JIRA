@@ -5,6 +5,7 @@ import account from './account';
 import app from './app';
 import products from './products';
 import stories from './stories';
+import { reducer as toastrReducer } from 'react-redux-toastr';
 
 export default combineReducers({
   users,
@@ -13,4 +14,5 @@ export default combineReducers({
   app,
   products,
   stories,
+  toastr: toastrReducer,
 });
