@@ -2,6 +2,7 @@ package by.bsuir.mpp.xpulse.service;
 
 import by.bsuir.mpp.xpulse.domain.User;
 
+import by.bsuir.mpp.xpulse.repository.UserRepository;
 import io.github.jhipster.config.JHipsterProperties;
 
 import org.apache.commons.lang3.CharEncoding;
@@ -11,11 +12,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
+import java.time.LocalDate;
 import java.util.Locale;
 
 /**
@@ -34,16 +37,19 @@ public class MailService {
 
     private final JHipsterProperties jHipsterProperties;
 
+    private final UserRepository userRepository;
+
     private final JavaMailSender javaMailSender;
 
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
 
-    public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailService(JHipsterProperties jHipsterProperties, UserRepository userRepository, JavaMailSender javaMailSender,
+                       MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.jHipsterProperties = jHipsterProperties;
+        this.userRepository = userRepository;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
@@ -92,6 +98,12 @@ public class MailService {
     }
 
     @Async
+    public void sendBirthdayEmail(User user) {
+        log.debug("Sending birthday email to '{}'", user.getEmail());
+        sendEmailFromTemplate(user, "birthdayEmail", "email.birthday.congratulations");
+    }
+
+    @Async
     public void sendCreationEmail(User user) {
         log.debug("Sending creation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "creationEmail", "email.activation.title");
@@ -101,5 +113,10 @@ public class MailService {
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "passwordResetEmail", "email.reset.title");
+    }
+
+    @Scheduled(cron = "0 0 12 * * ?")
+    public void checkBirthday() {
+        userRepository.findAll().stream().filter(user -> user.getBirthdate().equals(LocalDate.now())).forEach(this::sendBirthdayEmail);
     }
 }

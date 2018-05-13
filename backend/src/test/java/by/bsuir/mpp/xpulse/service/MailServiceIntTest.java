@@ -3,6 +3,7 @@ import by.bsuir.mpp.xpulse.config.Constants;
 
 import by.bsuir.mpp.xpulse.XPulseApp;
 import by.bsuir.mpp.xpulse.domain.User;
+import by.bsuir.mpp.xpulse.repository.UserRepository;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,9 @@ public class MailServiceIntTest {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Spy
     private JavaMailSenderImpl javaMailSender;
 
@@ -54,7 +58,7 @@ public class MailServiceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(javaMailSender).send(any(MimeMessage.class));
-        mailService = new MailService(jHipsterProperties, javaMailSender, messageSource, templateEngine);
+        mailService = new MailService(jHipsterProperties, userRepository, javaMailSender, messageSource, templateEngine);
     }
 
     @Test
