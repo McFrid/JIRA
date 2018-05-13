@@ -60,46 +60,75 @@ const IssuesForm = props => (
           onInputChange={props.onInputChange.bind(this, 'solution')}
         />
       )}
+
+      {!props.isAdding && (
+        <LabelInput
+          labelName="Estimation"
+          inputType="number"
+          inputName="estimation"
+          inputId="issues=table-estimation"
+          placeholder="Enter Estimation"
+          value={props.estimation}
+          onInputChange={props.onInputChange.bind(this, 'estimation')}
+        />
+      )}
     </FormGroup>
   </Form>
 );
 
 IssuesForm.propTypes = {
   description: PropTypes.string,
-  products: PropTypes.arrayOf(PropTypes.shape({
+  stories: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string,
-    users: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      email: PropTypes.string,
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      authority: PropTypes.string,
-      login: PropTypes.string,
-    })),
+    description: PropTypes.string,
+    productId: PropTypes.number,
+    createdDate: PropTypes.string,
   })),
-  product: PropTypes.shape({
+  story: PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string,
-    users: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      email: PropTypes.string,
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      authority: PropTypes.string,
-      login: PropTypes.string,
-    })),
+    description: PropTypes.string,
+    productId: PropTypes.number,
+    createdDate: PropTypes.string,
   }),
+  developers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    authority: PropTypes.string,
+    login: PropTypes.string,
+  })),
+  currentDevelopers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    authority: PropTypes.string,
+    login: PropTypes.string,
+  })),
+  solution: PropTypes.string,
+  estimation: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  isAdding: PropTypes.bool,
   onInputChange: PropTypes.func,
-  onProductChange: PropTypes.func,
+  onStoryChange: PropTypes.func,
+  onDevelopersChange: PropTypes.func,
 };
 
 IssuesForm.defaultProps = {
   description: '',
-  products: [],
-  product: null,
+  stories: [],
+  story: null,
+  developers: [],
+  currentDevelopers: [],
+  isAdding: true,
+  solution: '',
+  estimation: 0,
   onInputChange: null,
-  onProductChange: null,
+  onStoryChange: null,
+  onDevelopersChange: null,
 };
 
 export default IssuesForm;

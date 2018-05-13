@@ -3,20 +3,23 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import moment from 'moment';
 
-import StoriesTable from './IssuesTable';
-import StoriesForm from './IssuesForm';
+import IssuesTable from './IssuesTable';
+import IssuesForm from './IssuesForm';
 import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
+import account from '../../utils/account';
 
-class StoriesMainPage extends React.Component {
+const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
+
+class IssuesMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     let newState = {};
-    if (nextProps.areProductsLoaded &&
-      !prevState.isCurrentProductSet) {
+    if (nextProps.areStoriesLoaded &&
+      !prevState.isCurrentStorySet) {
       newState = {
         ...newState,
-        isCurrentProductSet: true,
-        product: nextProps.products.find(product => product),
+        isCurrentStorySet: true,
+        story: nextProps.stories.find(story => story),
       };
     }
 
@@ -25,7 +28,9 @@ class StoriesMainPage extends React.Component {
         newState = {
           ...newState,
           description: '',
-          product: nextProps.products.find(product => product),
+          solution: '',
+          estimation: '0',
+          story: nextProps.stories.find(story => story),
           isActiveAddModal: false,
           isActiveUpdateModal: false,
         };
@@ -45,25 +50,31 @@ class StoriesMainPage extends React.Component {
     this.state = {
       isActiveAddModal: false,
       isActiveUpdateModal: false,
-      isCurrentProductSet: false,
+      isCurrentStorySet: false,
       isActiveRequest: false,
       description: '',
-      product: null,
+      story: null,
+      solution: '',
+      developers: [],
+      estimation: '0',
     };
 
     this.onToggleModal = this.onToggleModal.bind(this);
-    this.onAddStory = this.onAddStory.bind(this);
-    this.onCancelAddStory = this.onCancelAddStory.bind(this);
+    this.onAddIssue = this.onAddIssue.bind(this);
+    this.onCancelAddIssue = this.onCancelAddIssue.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
-    this.onToggleUpdateStoryModal = this.onToggleUpdateStoryModal.bind(this);
-    this.onCancelUpdateStory = this.onCancelUpdateStory.bind(this);
-    this.onUpdateStory = this.onUpdateStory.bind(this);
-    this.onProductChange = this.onProductChange.bind(this);
+    this.onToggleUpdateIssueModal = this.onToggleUpdateIssueModal.bind(this);
+    this.onCancelUpdateIssue = this.onCancelUpdateIssue.bind(this);
+    this.onUpdateIssue = this.onUpdateIssue.bind(this);
+    this.onStoryChange = this.onStoryChange.bind(this);
+    this.onDevelopersChange = this.onDevelopersChange.bind(this);
   }
 
   componentDidMount() {
-    this.props.productsActions.fetchProducts();
+    this.props.issuesActions.fetchIssues();
     this.props.storiesActions.fetchStories();
+    this.props.solutionsActions.fetchSolutions();
+    this.props.usersActions.fetchUsers();
   }
 
   onInputChange(name, event) {
@@ -72,10 +83,10 @@ class StoriesMainPage extends React.Component {
     });
   }
 
-  onProductChange(event) {
+  onStoryChange(event) {
     this.setState({
-      product: this.props.products
-        .find(product => product.id === Number.parseInt(event.target.id, 10)),
+      story: this.props.stories
+        .find(story => story.id === Number.parseInt(event.target.id, 10)),
     });
   }
 
@@ -87,67 +98,129 @@ class StoriesMainPage extends React.Component {
     });
   }
 
-  onCancelAddStory() {
+  onCancelAddIssue() {
     this.setState({
       isActiveAddModal: false,
     });
   }
 
-  onToggleUpdateStoryModal(id) {
-    const currentStory = this.props.stories.find(story => story.id === id);
+  onToggleUpdateIssueModal(id) {
+    const currentIssue = this.props.issues.find(issue => issue.id === id);
 
     this.setState({
       id,
-      description: currentStory.description,
-      product: this.props.products.find(product => product.id === currentStory.productId),
+      description: currentIssue.description,
+      developers: currentIssue.users.filter(user => user.authority === ROLE_DEVELOPER),
+      story: this.props.stories.find(story => story.id === currentIssue.storyId),
       isActiveUpdateModal: true,
+      solution: currentIssue.solutionId
+        ? this.props.solutions.find(solution => solution.id === currentIssue.solutionId).description
+        : '',
+      estimation: currentIssue.solutionId
+        ? this.props.solutions.find(solution => solution.id === currentIssue.solutionId).estimation
+        : '0',
     });
   }
 
-  onCancelUpdateStory() {
+  onCancelUpdateIssue() {
     this.setState({
       isActiveUpdateModal: false,
     });
   }
 
-  onAddStory() {
+  onAddIssue() {
     this.setState({
       isActiveRequest: true,
     });
 
-    this.props.storeStory({
+    this.props.storeIssue({
       description: this.state.description,
-      productId: this.state.product ? this.state.product.id : 0,
-      date: moment().format('YYYY-MM-DD'),
+      storyId: this.state.story ? this.state.story.id : 0,
+      date: moment(),
+      users: [
+        ...this.state.developers,
+        this.props.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)),
+      ],
     });
   }
 
-  onUpdateStory() {
+  onUpdateIssue() {
     this.setState({
       isActiveRequest: true,
     });
 
-    this.props.updateStory(this.state.id, {
-      description: this.state.description,
-      productId: this.state.product ? this.state.product.id : 0,
-      date: moment().format('YYYY-MM-DD'),
+    const currentIssue = this.props.issues.find(issue => issue.id === this.state.id);
+
+    let solutionPromise;
+
+    if (currentIssue.solutionId) {
+      solutionPromise = this.state.solution
+        ? this.props.updateSolution(currentIssue.solutionId, {
+          date: moment(),
+          description: this.state.solution,
+          estimation: this.state.estimation,
+        })
+        : Promise.resolve();
+    } else {
+      solutionPromise = this.state.solution
+        ? this.props.storeSolution({
+          date: moment(),
+          description: this.state.solution,
+          estimation: this.state.estimation,
+        })
+        : Promise.resolve();
+    }
+
+    const {description} = this.state;
+
+    solutionPromise
+      .then(solution => this.props.updateIssue(this.state.id, {
+        date: currentIssue.date,
+        description,
+        solutionId: solution ? solution.id : null,
+        storyId: this.state.story ? this.state.story.id : 0,
+        users: [
+          ...this.state.developers,
+          this.props.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)),
+        ],
+      }));
+  }
+
+  onDevelopersChange(event) {
+    const id = Number.parseInt(event.target.value, 10);
+    const { developers } = this.state;
+    const currentDeveloper = developers.find(developer => developer.id === id);
+
+    if (currentDeveloper) {
+      developers.splice(developers.indexOf(currentDeveloper), 1);
+    } else {
+      developers.push(this.props.users.find(user => user.id === id));
+    }
+
+    this.setState({
+      developers,
     });
   }
 
   setDefaultProperties() {
     const newState = {
       description: '',
-      product: this.props.products.find(product => product),
+      solution: '',
+      story: this.props.stories.find(story => story),
     };
 
     this.setState(newState);
   }
 
   render() {
-    if (this.props.areProductsFetching ||
+    if (this.props.areIssuesFetching ||
         this.props.areStoriesFetching ||
-      !this.props.areProductsLoaded ||
-      !this.props.areStoriesLoaded) {
+        this.props.areSolutionsFetching ||
+        this.props.areUsersFetching ||
+      !this.props.areIssuesLoaded ||
+      !this.props.areStoriesLoaded ||
+      !this.props.areSolutionsLoaded ||
+      !this.props.areUsersLoaded) {
       return (
         <Spinner />
       );
@@ -156,54 +229,67 @@ class StoriesMainPage extends React.Component {
     return (
       <div>
         <DataModal
-          actionType="Add New Story"
+          actionType="Add New Issue"
           confirmName="Add"
           cancelName="Cancel"
           isActive={this.state.isActiveAddModal}
           onTogleModal={this.onToggleModal}
-          onConfirm={this.onAddStory}
-          onCancel={this.onCancelAddStory}
+          onConfirm={this.onAddIssue}
+          onCancel={this.onCancelAddIssue}
         >
-          <StoriesForm
+          <IssuesForm
             description={this.state.description}
-            product={this.state.product}
-            products={this.props.products}
+            stories={this.props.stories}
+            story={this.state.story}
+            developers={this.props.users.filter(user => user.authority === ROLE_DEVELOPER)}
+            currentDevelopers={this.state.developers}
+            isAdding={true}
+            solution={this.state.solution}
+            estimation={this.state.estimation}
             onInputChange={this.onInputChange}
-            onProductChange={this.onProductChange}
+            onStoryChange={this.onStoryChange}
+            onDevelopersChange={this.onDevelopersChange}
           />
         </DataModal>
 
         <DataModal
-          actionType="Update Story"
+          actionType="Update Issue"
           confirmName="Update"
           cancelName="Cancel"
           isActive={this.state.isActiveUpdateModal}
-          onTogleModal={this.onToggleUpdateStoryModal}
-          onConfirm={this.onUpdateStory}
-          onCancel={this.onCancelUpdateStory}
+          onTogleModal={this.onToggleUpdateIssueModal}
+          onConfirm={this.onUpdateIssue}
+          onCancel={this.onCancelUpdateIssue}
         >
-          <StoriesForm
+          <IssuesForm
             description={this.state.description}
-            product={this.state.product}
-            products={this.props.products}
+            stories={this.props.stories}
+            story={this.state.story}
+            developers={this.props.users.filter(user => user.authority === ROLE_DEVELOPER)}
+            currentDevelopers={this.state.developers}
+            isAdding={false}
+            solution={this.state.solution}
+            estimation={this.state.estimation}
             onInputChange={this.onInputChange}
-            onProductChange={this.onProductChange}
+            onStoryChange={this.onStoryChange}
+            onDevelopersChange={this.onDevelopersChange}
           />
         </DataModal>
 
-        <StoriesTable
+        <IssuesTable
           stories={this.props.stories}
-          products={this.props.products}
-          updateStory={this.onToggleUpdateStoryModal}
-          removeStory={this.props.removeStory}
+          issues={this.props.issues}
+          solutions={this.props.solutions}
+          updateIssue={this.onToggleUpdateIssueModal}
+          removeIssue={this.props.removeIssue}
         />
-        <Button color="success" onClick={this.onToggleModal} >Add New Product</Button>
+        <Button color="success" onClick={this.onToggleModal} >Add New Issue</Button>
       </div>
     );
   }
 }
 
-StoriesMainPage.propTypes = {
+IssuesMainPage.propTypes = {
   stories: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     description: PropTypes.string,
@@ -221,42 +307,67 @@ StoriesMainPage.propTypes = {
       })),
     }),
   })),
-  products: PropTypes.arrayOf(PropTypes.shape({
+  issues: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string,
-    users: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      email: PropTypes.string,
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      authority: PropTypes.string,
-      login: PropTypes.string,
-    })),
+    createdDate: PropTypes.string,
+    description: PropTypes.string,
+    solutionId: PropTypes.number,
+    storyId: PropTypes.number,
   })),
-  productsActions: PropTypes.objectOf(PropTypes.func),
+  solutions: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    description: PropTypes.string,
+  })),
+  users: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    authority: PropTypes.string,
+    login: PropTypes.string,
+  })),
+  issuesActions: PropTypes.objectOf(PropTypes.func),
   storiesActions: PropTypes.objectOf(PropTypes.func),
-  storeStory: PropTypes.func,
-  updateStory: PropTypes.func,
-  removeStory: PropTypes.func,
-  areProductsFetching: PropTypes.bool,
-  areProductsLoaded: PropTypes.bool,
+  usersActions: PropTypes.objectOf(PropTypes.func),
+  solutionsActions: PropTypes.objectOf(PropTypes.func),
+  storeIssue: PropTypes.func,
+  updateIssue: PropTypes.func,
+  removeIssue: PropTypes.func,
+  storeSolution: PropTypes.func,
+  updateSolution: PropTypes.func,
+  areIssuesFetching: PropTypes.bool,
+  areIssuesLoaded: PropTypes.bool,
   areStoriesFetching: PropTypes.bool,
   areStoriesLoaded: PropTypes.bool,
+  areUsersFetching: PropTypes.bool,
+  areUsersLoaded: PropTypes.bool,
+  areSolutionsFetching: PropTypes.bool,
+  areSolutionsLoaded: PropTypes.bool,
 };
 
-StoriesMainPage.defaultProps = {
+IssuesMainPage.defaultProps = {
   stories: [],
-  products: [],
+  issues: [],
+  users: [],
+  solutions: [],
   storiesActions: {},
-  productsActions: {},
-  storeStory: null,
-  updateStory: null,
-  removeStory: null,
-  areProductsFetching: false,
-  areProductsLoaded: false,
+  issuesActions: {},
+  usersActions: {},
+  solutionsActions: {},
+  storeIssue: null,
+  updateIssue: null,
+  removeIssue: null,
+  storeSolution: null,
+  updateSolution: null,
+  areIssuesFetching: false,
+  areIssuesLoaded: false,
   areStoriesFetching: false,
   areStoriesLoaded: false,
+  areUsersFetching: false,
+  areUsersLoaded: false,
+  areSolutionsFetching: false,
+  areSolutionsLoaded: false,
 };
 
-export default StoriesMainPage;
+export default IssuesMainPage;
 

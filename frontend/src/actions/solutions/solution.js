@@ -13,6 +13,8 @@ const storeSolution = solution => async (dispatch) => {
       },
     },
   });
+
+  return response.data;
 };
 
 const updateSolution = (id, solution) => async (dispatch) => {
@@ -27,6 +29,8 @@ const updateSolution = (id, solution) => async (dispatch) => {
       solution: response.data,
     },
   });
+
+  return response.data;
 };
 
 const removeSolution = id => async (dispatch) => {

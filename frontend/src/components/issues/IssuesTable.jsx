@@ -5,6 +5,11 @@ import moment from 'moment';
 
 import DataTable from '../../components/common/DataTable';
 
+import account from '../../utils/account';
+
+const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
+const DELIMETER = ', ';
+
 class IssuesTable extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +19,8 @@ class IssuesTable extends React.Component {
       'story',
       'createdDate',
       'developers',
-      'manager'
+      'solution',
+      'estimation',
     ];
 
     this.columnNames = {
@@ -22,7 +28,8 @@ class IssuesTable extends React.Component {
       story: 'Story',
       createdDate: 'Created Date',
       developers: 'Developers',
-      manager: 'Manager',
+      solution: 'Solution',
+      estimation: 'Estimation',
     };
 
     this.buttons = issueInfo => (
@@ -42,53 +49,63 @@ class IssuesTable extends React.Component {
   }
 
   render() {
-    const issuesInfo = this.props.issues.map(issue => ({
-      ...issue,
-      story: issue.storyId ? this.props.stories.find(story => story.id === issue.storyId).name : '',
-      //solution: issue.solutionId ? this.props.
-      createdDate: moment(issue.date).format('MM/DD/YY'),
-      manager: issue.users.find(user => user.authority)
-    }));
+    const issuesInfo = this.props.issues
+      .filter(issue => !!issue.users
+        .find(user => user.id === Number.parseInt(account.getAccountId(), 10)))
+      .map(issue => ({
+        ...issue,
+        story: issue.storyId ? this.props.stories
+          .find(story => story.id === issue.storyId).description : '',
+        solution: issue.solutionId ? this.props.solutions
+          .find(solution => solution.id === issue.solutionId).description : '',
+        createdDate: moment(issue.date).format('MM/DD/YY'),
+        developers: issue.users
+          .filter(user => user.authority === ROLE_DEVELOPER)
+          .map(user => `${user.firstName} ${user.lastName}`)
+          .join(DELIMETER),
+        estimation: issue.solutionId ? this.props.solutions
+          .find(solution => solution.id === issue.solutionId).estimation : '',
+      }));
 
     return (
       <DataTable
         columns={this.columns}
         columnNames={this.columnNames}
-        data={productsInfo}
+        data={issuesInfo}
         actions={this.buttons}
       />
     );
   }
 }
 
-StoriesTable.propTypes = {
+IssuesTable.propTypes = {
   stories: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     description: PropTypes.string,
     productId: PropTypes.number,
     createdDate: PropTypes.string,
   })),
-  products: PropTypes.arrayOf(PropTypes.shape({
+  issues: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string,
-    users: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      email: PropTypes.string,
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      authority: PropTypes.string,
-      login: PropTypes.string,
-    })),
+    createdDate: PropTypes.string,
+    description: PropTypes.string,
+    solutionId: PropTypes.number,
+    storyId: PropTypes.number,
   })),
-  updateStory: PropTypes.func,
-  removeStory: PropTypes.func,
+  solutions: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    description: PropTypes.string,
+  })),
+  updateIssue: PropTypes.func,
+  removeIssue: PropTypes.func,
 };
 
-StoriesTable.defaultProps = {
+IssuesTable.defaultProps = {
   stories: [],
-  products: [],
-  updateStory: null,
-  removeStory: null,
+  issues: [],
+  solutions: [],
+  updateIssue: null,
+  removeIssue: null,
 };
 
-export default StoriesTable;
+export default IssuesTable;

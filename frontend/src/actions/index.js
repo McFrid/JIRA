@@ -6,6 +6,8 @@ import product from './products/product';
 import products from './products/products';
 import story from './stories/story';
 import stories from './stories/stories';
+import issue from './issues/issue';
+import issues from './issues/issues';
 import solution from './solutions/solution';
 import solutions from './solutions/solutions';
 
@@ -18,6 +20,8 @@ export default {
   products,
   story,
   stories,
+  issue,
+  issues,
   solution,
   solutions,
 };
