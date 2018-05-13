@@ -6,6 +6,8 @@ import account from '../../utils/account';
 
 import actions from '../index';
 
+import { toastr } from 'react-redux-toastr'
+
 import usersService from '../../services/users-service';
 
 const storeUser = user => async (dispatch) => {
@@ -83,12 +85,14 @@ const login = (username, password) => async (dispatch) => {
   } catch (error) {
     dispatch(setAccountFetchError());
     auth.logout();
+    throw error;
   }
 };
 
 const logout = () => (dispatch) => {
   auth.logout();
   dispatch(actions.app.setAuthenticatedState(false));
+  toastr.info('Logged out successfully');
 };
 
 export default {

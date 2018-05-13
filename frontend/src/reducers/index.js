@@ -1,3 +1,5 @@
+import { reducer as toastrReducer } from 'react-redux-toastr';
+
 import { combineReducers } from 'redux';
 import users from './users';
 import roles from './roles';
@@ -17,4 +19,5 @@ export default combineReducers({
   stories,
   issues,
   solutions,
+  toastr: toastrReducer,
 });

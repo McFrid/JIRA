@@ -5,6 +5,7 @@ import actions from '../../actions';
 import IssuesMainPage from '../../components/issues/IssuesMainPage';
 import awaitedRequestDecorator from '../../utils/decorators/awaitedRequestDecorator';
 import awaitedIssueActionsDecorator from '../../utils/decorators/awaitedIssueActionsDecorator';
+import notificationDecorator from '../../utils/decorators/notificationDecorator';
 
 const mapStateToProps = state => ({
   issues: state.issues.items,
@@ -30,16 +31,24 @@ const mapDispatchToProps = dispatch => ({
   usersActions: bindActionCreators(actions.users, dispatch),
   solutionsActions: bindActionCreators(actions.solutions, dispatch),
   storeIssue: (issue) => {
-    dispatch(awaitedRequestDecorator(awaitedIssueActionsDecorator(actions.issue.storeIssue(issue))));
+    dispatch(awaitedRequestDecorator(awaitedIssueActionsDecorator(notificationDecorator(
+      actions.issue.storeIssue(issue),
+      'Successfully added issue',
+      'There is an input error in field(s)',
+    ))));
   },
   updateIssue: (id, issue) => {
-    dispatch(awaitedRequestDecorator(awaitedIssueActionsDecorator(actions.issue.updateIssue(
-      id,
-      issue,
+    dispatch(awaitedRequestDecorator(awaitedIssueActionsDecorator(notificationDecorator(
+      actions.issue.updateIssue(id, issue),
+      'Successfully updated issue',
+      'There is an input error in field(s)',
     ))));
   },
   removeIssue: (id) => {
-    dispatch(awaitedRequestDecorator(actions.issue.removeIssue(id)));
+    dispatch(awaitedRequestDecorator(notificationDecorator(
+      actions.issue.removeIssue(id),
+      'Successfully removed issue',
+    )));
   },
   storeSolution: solution => dispatch(actions.solution.storeSolution(solution)),
   updateSolution: (id, solution) => dispatch(actions.solution.updateSolution(id, solution)),
