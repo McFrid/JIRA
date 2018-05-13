@@ -6,7 +6,7 @@ import account from '../../utils/account';
 
 import actions from '../index';
 
-import { toastr } from 'react-redux-toastr'
+import toastr from 'toastr';
 
 import usersService from '../../services/users-service';
 
@@ -39,18 +39,14 @@ const updateUser = (id, user) => async (dispatch) => {
 };
 
 const removeUser = login => async (dispatch) => {
-  try {
-    await usersService.removeUser(login);
+  await usersService.removeUser(login);
 
-    dispatch({
-      type: actionTypes.user.USER_REMOVE,
-      payload: {
-        login,
-      },
-    });
-  } catch (e) {
-    console.error(e);
-  }
+  dispatch({
+    type: actionTypes.user.USER_REMOVE,
+    payload: {
+      login,
+    },
+  });
 };
 
 const fetchAccount = () => ({
