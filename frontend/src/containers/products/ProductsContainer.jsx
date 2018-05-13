@@ -36,10 +36,10 @@ const mapDispatchToProps = dispatch => ({
     ))));
   },
   removeProduct: (id) => {
-    dispatch(awaitedRequestDecorator(
+    dispatch(awaitedRequestDecorator(notificationDecorator(
       actions.product.removeProduct(id),
       'Successfully removed product',
-    ));
+    )));
   },
 });
 

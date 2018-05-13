@@ -38,9 +38,10 @@ ReactDOM.render(
       </Router>
       <ReduxToastr
         timeOut={4000}
-        newestOnTop={true}
+        newestOnTop
         transitionIn="fadeIn"
-        transitionOut="fadeOut"/>
+        transitionOut="fadeOut"
+      />
     </React.Fragment>
   </Provider>,
   document.getElementById('root'),

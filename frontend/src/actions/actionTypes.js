@@ -55,6 +55,32 @@ const stories = {
   STORIES_STORE: 'STORIES_STORE',
 };
 
+const issue = {
+  ISSUE_REQUEST: 'ISSUE_REQUEST',
+  ISSUE_REQUEST_ERROR: 'ISSUE_REQUEST_ERROR',
+  ISSUE_STORE: 'ISSUE_STORE',
+  ISSUE_UPDATE: 'ISSUE_UPDATE',
+  ISSUE_REMOVE: 'ISSUE_REMOVE',
+};
+
+const issues = {
+  ISSUES_FETCH: 'ISSUES_FETCH',
+  ISSUES_STORE: 'ISSUES_STORE',
+};
+
+const solution = {
+  SOLUTION_REQUEST: 'SOLUTION_REQUEST',
+  SOLUTION_REQUEST_ERROR: 'SOLUTION_REQUEST_ERROR',
+  SOLUTION_STORE: 'SOLUTION_STORE',
+  SOLUTION_UPDATE: 'SOLUTION_UPDATE',
+  SOLUTION_REMOVE: 'SOLUTION_REMOVE',
+};
+
+const solutions = {
+  SOLUTIONS_FETCH: 'SOLUTIONS_FETCH',
+  SOLUTIONS_STORE: 'SOLUTIONS_STORE',
+};
+
 export default {
   user,
   users,
@@ -65,4 +91,8 @@ export default {
   products,
   story,
   stories,
+  issue,
+  issues,
+  solution,
+  solutions,
 };
