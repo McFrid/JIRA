@@ -5,6 +5,10 @@ import moment from 'moment';
 
 import DataTable from '../../components/common/DataTable';
 
+import account from '../../utils/account';
+
+const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
+
 class StoriesTable extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +28,10 @@ class StoriesTable extends React.Component {
     this.buttons = storyInfo => (
       <div>
         <Button color="primary" onClick={this.onEditClick.bind(this, storyInfo.id)}>Edit</Button>
-        <Button color="danger" onClick={this.onDeleteClick.bind(this, storyInfo.id)}>Delete</Button>
+
+        {storyInfo.canBeRemoved && (
+          <Button color="danger" onClick={this.onDeleteClick.bind(this, storyInfo.id)}>Delete</Button>
+        )}
       </div>
     );
   }
@@ -42,6 +49,8 @@ class StoriesTable extends React.Component {
       ...story,
       product: story.productId ? this.props.products.find(product => product.id === story.productId).name : '',
       createdDate: moment(story.date).format('MM/DD/YY'),
+      canBeRemoved: !this.props.issues
+        .find(issue => issue.storyId === story.id),
     }));
 
     return (
@@ -49,7 +58,7 @@ class StoriesTable extends React.Component {
         columns={this.columns}
         columnNames={this.columnNames}
         data={productsInfo}
-        actions={this.buttons}
+        actions={account.getAccountRole() === ROLE_CUSTOMER ? this.buttons : null}
       />
     );
   }

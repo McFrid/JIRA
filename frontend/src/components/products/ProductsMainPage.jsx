@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
+import styled from 'styled-components';
 
 import ProductsTable from './ProductsTable';
 import ProductsForm from './ProductsForm';
@@ -10,6 +11,12 @@ import account from '../../utils/account';
 
 const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
 const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+`;
 
 class ProductsMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -216,7 +223,9 @@ class ProductsMainPage extends React.Component {
         />
 
         {account.getAccountRole() === ROLE_CUSTOMER && (
-          <Button color="success" onClick={this.onToggleModal} >Add New Product</Button>
+          <ButtonWrapper>
+            <Button color="success" onClick={this.onToggleModal} >Add New Product</Button>
+          </ButtonWrapper>
         )}
       </div>
     );

@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'reactstrap';
 
+import './DataTable.css';
+
 const DataTable = props => (
-  <Table dark>
+  <Table dark className="data-table">
     <thead>
       <tr>
         {props.columns.map(column => (

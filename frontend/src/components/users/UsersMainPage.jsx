@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
+import styled from 'styled-components';
 
 import moment from 'moment';
 
@@ -10,6 +11,12 @@ import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
 
 import account from '../../utils/account';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+`;
 
 class UsersMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -248,7 +255,10 @@ class UsersMainPage extends React.Component {
           updateUser={this.onToggleUpdateUserModal}
           removeUser={this.props.removeUser}
         />
-        <Button color="success" onClick={this.onToggleModal} >Add New User</Button>
+
+        <ButtonWrapper>
+          <Button color="success" onClick={this.onToggleModal} >Add New User</Button>
+        </ButtonWrapper>
       </div>
     );
   }

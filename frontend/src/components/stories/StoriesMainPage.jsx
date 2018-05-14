@@ -2,11 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import moment from 'moment';
+import styled from 'styled-components';
 
 import StoriesTable from './StoriesTable';
 import StoriesForm from './StoriesForm';
 import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
+
+import account from '../../utils/account';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+`;
+
+const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
+const ROLE_MANAGER = 'ROLE_MANAGER';
 
 class StoriesMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -64,6 +76,7 @@ class StoriesMainPage extends React.Component {
   componentDidMount() {
     this.props.productsActions.fetchProducts();
     this.props.storiesActions.fetchStories();
+    this.props.issuesActions.fetchIssues();
   }
 
   onInputChange(name, event) {
@@ -146,12 +159,20 @@ class StoriesMainPage extends React.Component {
   render() {
     if (this.props.areProductsFetching ||
         this.props.areStoriesFetching ||
+        this.props.areIssuesFetching ||
       !this.props.areProductsLoaded ||
-      !this.props.areStoriesLoaded) {
+      !this.props.areStoriesLoaded ||
+      !this.props.areIssuesLoaded) {
       return (
         <Spinner />
       );
     }
+
+    const stories = account.getAccountRole() === ROLE_MANAGER
+      ? this.props.stories
+      : this.props.stories.filter(story =>
+        !!this.props.products.find(product => story.productId === product.id).users
+          .find(user => user.id === Number.parseInt(account.getAccountId(), 10)));
 
     return (
       <div>
@@ -192,12 +213,18 @@ class StoriesMainPage extends React.Component {
         </DataModal>
 
         <StoriesTable
-          stories={this.props.stories}
+          stories={stories}
           products={this.props.products}
+          issues={this.props.issues}
           updateStory={this.onToggleUpdateStoryModal}
           removeStory={this.props.removeStory}
         />
-        <Button color="success" onClick={this.onToggleModal} >Add New Product</Button>
+
+        {account.getAccountRole() === ROLE_CUSTOMER && (
+          <ButtonWrapper>
+            <Button color="success" onClick={this.onToggleModal} >Add New Story</Button>
+          </ButtonWrapper>
+        )}
       </div>
     );
   }
@@ -235,6 +262,7 @@ StoriesMainPage.propTypes = {
   })),
   productsActions: PropTypes.objectOf(PropTypes.func),
   storiesActions: PropTypes.objectOf(PropTypes.func),
+  issuesActions: PropTypes.objectOf(PropTypes.func),
   storeStory: PropTypes.func,
   updateStory: PropTypes.func,
   removeStory: PropTypes.func,
@@ -242,6 +270,8 @@ StoriesMainPage.propTypes = {
   areProductsLoaded: PropTypes.bool,
   areStoriesFetching: PropTypes.bool,
   areStoriesLoaded: PropTypes.bool,
+  areIssuesFetching: PropTypes.bool,
+  areIssuesLoaded: PropTypes.bool,
 };
 
 StoriesMainPage.defaultProps = {
@@ -249,6 +279,7 @@ StoriesMainPage.defaultProps = {
   products: [],
   storiesActions: {},
   productsActions: {},
+  issuesActions: {},
   storeStory: null,
   updateStory: null,
   removeStory: null,
@@ -256,6 +287,8 @@ StoriesMainPage.defaultProps = {
   areProductsLoaded: false,
   areStoriesFetching: false,
   areStoriesLoaded: false,
+  areIssuesFetching: false,
+  areIssuesLoaded: false,
 };
 
 export default StoriesMainPage;
