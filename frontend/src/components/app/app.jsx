@@ -11,6 +11,7 @@ import IssuesContainer from '../../containers/issues/IssuesContainer';
 
 import Spinner from '../../components/common/Spinner';
 import FullScreenSpinner from '../../components/common/FullScreenSpinner';
+import HomePage from '../../components/HomePage/HomePage';
 
 import RouteCondition from '../../components/common/RouteCondition';
 
@@ -84,8 +85,17 @@ class App extends React.Component {
           </header>
         }
         <main>
-          <Route path="/" exact render={() => <Redirect to="/users" />} />
+          <Route path="/" exact render={() => <Redirect to="/home" />} />
           <Route path="/login" component={LoginContainer} />
+
+          <RouteCondition
+            path="/home"
+            redirectTo="/login"
+            condition={auth.isAuthorized}
+            allowedRoles={[ROLE_ADMIN, ROLE_MANAGER, ROLE_CUSTOMER, ROLE_DEVELOPER]}
+          >
+            <HomePage />
+          </RouteCondition>
 
           <RouteCondition
             path="/users"
@@ -98,7 +108,7 @@ class App extends React.Component {
 
           <RouteCondition
             path="/products"
-            redirectTo="/stories"
+            redirectTo="/home"
             condition={auth.isAuthorized}
             allowedRoles={[ROLE_CUSTOMER, ROLE_DEVELOPER]}
           >
@@ -107,7 +117,7 @@ class App extends React.Component {
 
           <RouteCondition
             path="/stories"
-            redirectTo="/issues"
+            redirectTo="/home"
             condition={auth.isAuthorized}
             allowedRoles={[ROLE_CUSTOMER, ROLE_MANAGER]}
           >
@@ -116,7 +126,7 @@ class App extends React.Component {
 
           <RouteCondition
             path="/issues"
-            redirectTo="/"
+            redirectTo="/home"
             condition={auth.isAuthorized}
             allowedRoles={[ROLE_MANAGER, ROLE_DEVELOPER]}
           >
