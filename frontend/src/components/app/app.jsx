@@ -12,8 +12,15 @@ import IssuesContainer from '../../containers/issues/IssuesContainer';
 import Spinner from '../../components/common/Spinner';
 import FullScreenSpinner from '../../components/common/FullScreenSpinner';
 
+import RouteCondition from '../../components/common/RouteCondition';
+
 import auth from '../../utils/auth';
 import account from '../../utils/account';
+
+const ROLE_ADMIN = 'ROLE_ADMIN';
+const ROLE_MANAGER = 'ROLE_MANAGER';
+const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
+const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
 
 class App extends React.Component {
   componentDidMount() {
@@ -25,18 +32,22 @@ class App extends React.Component {
       {
         name: 'Users',
         route: '/users',
+        allowedRoles: [ROLE_ADMIN],
       },
       {
         name: 'Products',
         route: '/products',
+        allowedRoles: [ROLE_CUSTOMER, ROLE_DEVELOPER],
       },
       {
         name: 'Stories',
         route: '/stories',
+        allowedRoles: [ROLE_CUSTOMER, ROLE_MANAGER],
       },
       {
         name: 'Issues',
         route: '/issues',
+        allowedRoles: [ROLE_MANAGER, ROLE_DEVELOPER],
       },
     ];
   }
@@ -75,10 +86,42 @@ class App extends React.Component {
         <main>
           <Route path="/" exact render={() => <Redirect to="/users" />} />
           <Route path="/login" component={LoginContainer} />
-          <Route path="/users" component={UsersTableContainer} />
-          <Route path="/products" component={ProductsContainer} />
-          <Route path="/stories" component={StoriesContainer} />
-          <Route path="/issues" component={IssuesContainer} />
+
+          <RouteCondition
+            path="/users"
+            redirectTo="/products"
+            condition={auth.isAuthorized}
+            allowedRoles={[ROLE_ADMIN]}
+          >
+            <UsersTableContainer />
+          </RouteCondition>
+
+          <RouteCondition
+            path="/products"
+            redirectTo="/stories"
+            condition={auth.isAuthorized}
+            allowedRoles={[ROLE_CUSTOMER, ROLE_DEVELOPER]}
+          >
+            <ProductsContainer />
+          </RouteCondition>
+
+          <RouteCondition
+            path="/stories"
+            redirectTo="/issues"
+            condition={auth.isAuthorized}
+            allowedRoles={[ROLE_CUSTOMER, ROLE_MANAGER]}
+          >
+            <StoriesContainer />
+          </RouteCondition>
+
+          <RouteCondition
+            path="/issues"
+            redirectTo="/"
+            condition={auth.isAuthorized}
+            allowedRoles={[ROLE_MANAGER, ROLE_DEVELOPER]}
+          >
+            <IssuesContainer />
+          </RouteCondition>
 
           {this.props.isActiveRequest && (
             <FullScreenSpinner />

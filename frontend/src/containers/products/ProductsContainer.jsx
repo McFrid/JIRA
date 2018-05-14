@@ -10,8 +10,11 @@ import notificationDecorator from '../../utils/decorators/notificationDecorator'
 const mapStateToProps = state => ({
   products: state.products.items,
   users: state.users.items,
+  stories: state.stories.items,
   areProductsFetching: state.products.areFetching,
   areProductsLoaded: state.products.areLoaded,
+  areStoriesFetching: state.stories.areFetching,
+  areStoriesLoaded: state.stories.areLoaded,
   areUsersFetching: state.users.isFetching,
   areUsersLoaded: state.users.isLoaded,
   isProductsError: state.products.isError,
@@ -21,6 +24,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   usersActions: bindActionCreators(actions.users, dispatch),
   productsActions: bindActionCreators(actions.products, dispatch),
+  storiesActions: bindActionCreators(actions.stories, dispatch),
   storeProduct: (product) => {
     dispatch(awaitedRequestDecorator(awaitedProductActionsDecorator(notificationDecorator(
       actions.product.storeProduct(product),

@@ -11,6 +11,8 @@ import {
   NavLink,
 } from 'reactstrap';
 
+import account from '../../utils/account';
+
 class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
@@ -34,17 +36,21 @@ class NavigationBar extends React.Component {
   }
 
   render() {
+    const role = account.getAccountRole();
+
     return (
       <Navbar light expand="md">
         <NavbarBrand tag={Link} to="/">{this.props.title}</NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav navbar>
-            {this.props.links.map(item => (
-              <NavItem key={item.name}>
-                <NavLink tag={Link} to={item.route}>{item.name}</NavLink>
-              </NavItem>))
-            }
+            {this.props.links
+              .filter(item => item.allowedRoles.includes(role))
+              .map(item => (
+                <NavItem key={item.name}>
+                  <NavLink tag={Link} to={item.route}>{item.name}</NavLink>
+                </NavItem>
+              ))}
           </Nav>
           <Nav className="ml-auto" navbar>
             <span>

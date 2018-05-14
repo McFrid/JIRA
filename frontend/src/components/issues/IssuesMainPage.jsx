@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import moment from 'moment';
+import styled from 'styled-components';
 
 import IssuesTable from './IssuesTable';
 import IssuesForm from './IssuesForm';
@@ -9,7 +10,14 @@ import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
 import account from '../../utils/account';
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+`;
+
 const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
+const ROLE_MANAGER = 'ROLE_MANAGER';
 
 class IssuesMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -226,6 +234,11 @@ class IssuesMainPage extends React.Component {
       );
     }
 
+    const issues = account.getAccountRole() === ROLE_MANAGER
+      ? this.props.issues
+      : this.props.issues.filter(issue => !!issue.users
+        .find(user => user.id === Number.parseInt(account.getAccountId(), 10)));
+
     return (
       <div>
         <DataModal
@@ -278,12 +291,17 @@ class IssuesMainPage extends React.Component {
 
         <IssuesTable
           stories={this.props.stories}
-          issues={this.props.issues}
+          issues={issues}
           solutions={this.props.solutions}
           updateIssue={this.onToggleUpdateIssueModal}
           removeIssue={this.props.removeIssue}
         />
-        <Button color="success" onClick={this.onToggleModal} >Add New Issue</Button>
+
+        {account.getAccountRole() === ROLE_MANAGER && (
+          <ButtonWrapper>
+            <Button color="success" onClick={this.onToggleModal} >Add New Issue</Button>
+          </ButtonWrapper>
+        )}
       </div>
     );
   }

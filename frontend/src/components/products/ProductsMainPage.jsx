@@ -1,26 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
+import styled from 'styled-components';
 
 import ProductsTable from './ProductsTable';
 import ProductsForm from './ProductsForm';
 import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
+import account from '../../utils/account';
 
 const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
 const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+`;
+
 class ProductsMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     let newState = {};
-    if (nextProps.areUsersLoaded &&
-      !prevState.isCurrentCustomerSet) {
-      newState = {
-        ...newState,
-        isCurrentCustomerSet: true,
-        customer: nextProps.users.find(user => user.authority === ROLE_CUSTOMER),
-      };
-    }
 
     if (!nextProps.isActiveRequest && prevState.isActiveRequest) {
       if (!nextProps.isProductsError) {
@@ -28,7 +28,6 @@ class ProductsMainPage extends React.Component {
           ...newState,
           name: '',
           developers: [],
-          customer: nextProps.users.find(user => user.authority === ROLE_CUSTOMER),
           isActiveAddModal: false,
           isActiveUpdateModal: false,
         };
@@ -48,11 +47,9 @@ class ProductsMainPage extends React.Component {
     this.state = {
       isActiveAddModal: false,
       isActiveUpdateModal: false,
-      isCurrentCustomerSet: false,
       isActiveRequest: false,
       name: '',
       developers: [],
-      customer: null,
     };
 
     this.onToggleModal = this.onToggleModal.bind(this);
@@ -62,24 +59,18 @@ class ProductsMainPage extends React.Component {
     this.onToggleUpdateProductModal = this.onToggleUpdateProductModal.bind(this);
     this.onCancelUpdateProduct = this.onCancelUpdateProduct.bind(this);
     this.onUpdateProduct = this.onUpdateProduct.bind(this);
-    this.onCustomerChange = this.onCustomerChange.bind(this);
     this.onDevelopersChange = this.onDevelopersChange.bind(this);
   }
 
   componentDidMount() {
     this.props.productsActions.fetchProducts();
     this.props.usersActions.fetchUsers();
+    this.props.storiesActions.fetchStories();
   }
 
   onInputChange(name, event) {
     this.setState({
       [name]: event.target.value,
-    });
-  }
-
-  onCustomerChange(event) {
-    this.setState({
-      customer: this.props.users.find(user => user.id === Number.parseInt(event.target.id, 10)),
     });
   }
 
@@ -104,7 +95,6 @@ class ProductsMainPage extends React.Component {
       id,
       name: currentProduct.name,
       developers: currentProduct.users.filter(user => user.authority === ROLE_DEVELOPER),
-      customer: currentProduct.users.find(user => user.authority === ROLE_CUSTOMER),
       isActiveUpdateModal: true,
     });
   }
@@ -120,15 +110,14 @@ class ProductsMainPage extends React.Component {
       isActiveRequest: true,
     });
 
-    const users = this.state.customer
-      ? [this.state.customer]
-      : [];
+    const customer = this.props.users
+      .find(user => user.id === Number.parseInt(account.getAccountId(), 10));
 
     this.props.storeProduct({
       name: this.state.name,
       users: [
-        ...users,
         ...this.state.developers,
+        customer,
       ],
     });
   }
@@ -138,15 +127,14 @@ class ProductsMainPage extends React.Component {
       isActiveRequest: true,
     });
 
-    const users = this.state.customer
-      ? [this.state.customer]
-      : [];
+    const customer = this.props.users
+      .find(user => user.id === Number.parseInt(account.getAccountId(), 10));
 
     this.props.updateProduct(this.state.id, {
       name: this.state.name,
       users: [
-        ...users,
         ...this.state.developers,
+        customer,
       ],
     });
   }
@@ -171,7 +159,6 @@ class ProductsMainPage extends React.Component {
     const newState = {
       name: '',
       developers: [],
-      customer: this.props.users.find(user => user.authority === ROLE_CUSTOMER),
     };
 
     this.setState(newState);
@@ -180,8 +167,10 @@ class ProductsMainPage extends React.Component {
   render() {
     if (this.props.areUsersFetching ||
         this.props.areProductsFetching ||
+        this.props.areStoriesFetching ||
       !this.props.areUsersLoaded ||
-      !this.props.areProductsLoaded) {
+      !this.props.areProductsLoaded ||
+      !this.props.areStoriesLoaded) {
       return (
         <Spinner />
       );
@@ -201,11 +190,8 @@ class ProductsMainPage extends React.Component {
           <ProductsForm
             name={this.state.name}
             currentDevelopers={this.state.developers}
-            currentCustomer={this.state.customer}
             developers={this.props.users.filter(user => user.authority === ROLE_DEVELOPER)}
-            customers={this.props.users.filter(user => user.authority === ROLE_CUSTOMER)}
             onInputChange={this.onInputChange}
-            onCustomerChange={this.onCustomerChange}
             onDevelopersChange={this.onDevelopersChange}
           />
         </DataModal>
@@ -222,21 +208,25 @@ class ProductsMainPage extends React.Component {
           <ProductsForm
             name={this.state.name}
             currentDevelopers={this.state.developers}
-            currentCustomer={this.state.customer}
             developers={this.props.users.filter(user => user.authority === ROLE_DEVELOPER)}
-            customers={this.props.users.filter(user => user.authority === ROLE_CUSTOMER)}
             onInputChange={this.onInputChange}
-            onCustomerChange={this.onCustomerChange}
             onDevelopersChange={this.onDevelopersChange}
           />
         </DataModal>
 
         <ProductsTable
-          products={this.props.products}
+          products={this.props.products.filter(product =>
+            !!product.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)))}
+          stories={this.props.stories}
           updateProduct={this.onToggleUpdateProductModal}
           removeProduct={this.props.removeProduct}
         />
-        <Button color="success" onClick={this.onToggleModal} >Add New Product</Button>
+
+        {account.getAccountRole() === ROLE_CUSTOMER && (
+          <ButtonWrapper>
+            <Button color="success" onClick={this.onToggleModal} >Add New Product</Button>
+          </ButtonWrapper>
+        )}
       </div>
     );
   }
@@ -265,6 +255,7 @@ ProductsMainPage.propTypes = {
   })),
   usersActions: PropTypes.objectOf(PropTypes.func),
   productsActions: PropTypes.objectOf(PropTypes.func),
+  storiesActions: PropTypes.objectOf(PropTypes.func),
   storeProduct: PropTypes.func,
   updateProduct: PropTypes.func,
   removeProduct: PropTypes.func,
@@ -272,6 +263,8 @@ ProductsMainPage.propTypes = {
   areUsersLoaded: PropTypes.bool,
   areProductsFetching: PropTypes.bool,
   areProductsLoaded: PropTypes.bool,
+  areStoriesFetching: PropTypes.bool,
+  areStoriesLoaded: PropTypes.bool,
 };
 
 ProductsMainPage.defaultProps = {
@@ -279,6 +272,7 @@ ProductsMainPage.defaultProps = {
   users: [],
   usersActions: {},
   productsActions: {},
+  storiesActions: {},
   storeProduct: null,
   updateProduct: null,
   removeProduct: null,
@@ -286,6 +280,8 @@ ProductsMainPage.defaultProps = {
   areUsersLoaded: false,
   areProductsFetching: false,
   areProductsLoaded: false,
+  areStoriesFetching: false,
+  areStoriesLoaded: false,
 };
 
 export default ProductsMainPage;
