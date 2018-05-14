@@ -136,4 +136,12 @@ public class IssueResource {
         issueService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    @DeleteMapping("/issues")
+    @Timed
+    public ResponseEntity<Void> deleteIssues(@RequestBody List<Long> ids) {
+        log.debug("REST request to delete Issues : {}", ids);
+        issueService.delete(ids);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,4 +48,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
         "where u.authority = 'ROLE_DEVELOPER' " +
         "and i.solution is not null")
     Collection<User> findAllWithContributions();
+
+    void deleteUsersByIdIn(List<Long> ids);
 }
