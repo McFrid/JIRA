@@ -29,11 +29,11 @@ store.subscribe(() => {
 
 ReactDOM.render(
   <Provider store={store}>
-      <Router>
-        <Switch>
-          <AppContainer />
-        </Switch>
-      </Router>
+    <Router>
+      <Switch>
+        <AppContainer />
+      </Switch>
+    </Router>
   </Provider>,
   document.getElementById('root'),
 );
