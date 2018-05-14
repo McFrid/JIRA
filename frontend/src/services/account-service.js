@@ -11,7 +11,13 @@ const login = (username, password) => request.post(LOGIN_ROUTE, {
 
 const getAccountDetails = () => request.get(ACCOUNT_DETAILS);
 
+const resetPassword = (key, password) =>
+  request.post(`${ACCOUNT_DETAILS}/reset-password/finish`,
+    { key, newPassword: password },
+  );
+
 export default {
   login,
+  resetPassword,
   getAccountDetails,
 };
