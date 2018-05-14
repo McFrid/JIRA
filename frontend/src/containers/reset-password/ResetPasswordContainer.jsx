@@ -6,19 +6,16 @@ import awaitedRequestDecorator from '../../utils/decorators/awaitedRequestDecora
 import ResetPasswordPage from '../../components/reset-password/ResetPasswordPage';
 import notificationDecorator from '../../utils/decorators/notificationDecorator';
 
-const mapStateToProps = state => ({
-//   account: state.account.data,
-//   isLoaded: state.account.isLoaded,
-});
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
-//   login: (userName, password) => {
-//     dispatch(awaitedRequestDecorator(notificationDecorator(
-//       actions.user.login(userName, password),
-//       null,
-//       'Invalid username or password',
-//     )));
-//   },
+  resetPassword: (key, password) => {
+    dispatch(awaitedRequestDecorator(notificationDecorator(
+      actions.user.resetPassword(key, password),
+      'Changed password successfully',
+      'Invalid reset password key',
+    )));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordPage);

@@ -86,6 +86,10 @@ const login = (username, password) => async (dispatch) => {
   }
 };
 
+const resetPassword = (key, password) => async (dispatch) => {
+  await accountService.resetPassword(key, password);
+};
+
 const logout = () => (dispatch) => {
   auth.logout();
   account.removeAccount();
@@ -97,6 +101,7 @@ export default {
   storeUser,
   updateUser,
   removeUser,
+  resetPassword,
   login,
   logout,
 };

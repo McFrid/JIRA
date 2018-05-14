@@ -61,14 +61,16 @@ class App extends React.Component {
     }
 
     if (!this.props.isAuthenticated &&
-      !['/login', '/reset-password'].includes(this.props.location.pathname)) {
+      !['/login', '/reset-password'].some(item =>
+        this.props.location.pathname.startsWith(item))) {
       return (
         <Redirect to="/login" />
       );
     }
 
     if (this.props.isAuthenticated &&
-      ['/login', '/reset-password'].includes(this.props.location.pathname)) {
+      ['/login', '/reset-password'].some(item =>
+        this.props.location.pathname.startsWith(item))) {
       return (
         <Redirect to="/" />
       );
@@ -89,7 +91,7 @@ class App extends React.Component {
         <main>
           <Route path="/" exact render={() => <Redirect to="/users" />} />
           <Route path="/login" component={LoginContainer} />
-          <Route path="/reset-password" component={ResetPasswordContainer} />
+          <Route path="/reset-password/:key" component={ResetPasswordContainer} />
 
           <RouteCondition
             path="/users"
