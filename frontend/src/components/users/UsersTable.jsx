@@ -4,6 +4,7 @@ import { Button } from 'reactstrap';
 import moment from 'moment';
 
 import DataTable from '../../components/common/DataTable';
+import TablePagination from '../../components/common/TablePagination';
 
 import getAuthority from '../../utils/mapUserAuthority';
 
@@ -64,12 +65,23 @@ class UsersTable extends React.Component {
     }));
 
     return (
-      <DataTable
-        columns={this.columns}
-        columnNames={this.columnNames}
-        data={usersInfo}
-        actions={this.buttons}
-      />
+      <React.Fragment>
+        <DataTable
+          columns={this.columns}
+          columnNames={this.columnNames}
+          data={usersInfo}
+          actions={this.buttons}
+        />
+
+        {usersInfo.length !== 0 && (
+          <TablePagination
+            total={this.props.total}
+            rowPerPage={this.props.rowPerPage}
+            currentPage={this.props.currentPage}
+            changePage={this.props.onChangePage}
+          />
+        )}
+      </React.Fragment>
     );
   }
 }

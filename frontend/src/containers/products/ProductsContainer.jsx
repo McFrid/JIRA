@@ -19,33 +19,33 @@ const mapStateToProps = state => ({
   areUsersLoaded: state.users.isLoaded,
   isProductsError: state.products.isError,
   isActiveRequest: state.app.isActiveRequest,
+  isCountLoaded: state.products.isCountLoaded,
+  isCountFetching: state.products.isCountFetching,
+  total: state.products.count,
 });
 
 const mapDispatchToProps = dispatch => ({
   usersActions: bindActionCreators(actions.users, dispatch),
   productsActions: bindActionCreators(actions.products, dispatch),
   storiesActions: bindActionCreators(actions.stories, dispatch),
-  storeProduct: (product) => {
+  storeProduct: product =>
     dispatch(awaitedRequestDecorator(awaitedProductActionsDecorator(notificationDecorator(
       actions.product.storeProduct(product),
       'Successfully added product',
       'There is an input error in your field(s)',
-    ))));
-  },
-  updateProduct: (id, product) => {
+    )))),
+  updateProduct: (id, product) =>
     dispatch(awaitedRequestDecorator(awaitedProductActionsDecorator(notificationDecorator(
       actions.product.updateProduct(id, product),
       'Successfully edited product',
       'There is an input error in your field(s)',
-    ))));
-  },
-  removeProduct: (id) => {
-    dispatch(awaitedRequestDecorator(notificationDecorator(
+    )))),
+  removeProduct: id =>
+    dispatch(awaitedRequestDecorator(awaitedProductActionsDecorator(notificationDecorator(
       actions.product.removeProduct(id),
       'Successfully removed product',
       'The product is connected to some other entity',
-    )));
-  },
+    )))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductsMainPage);

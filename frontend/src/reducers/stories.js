@@ -4,7 +4,10 @@ const initState = {
   items: [],
   areFetching: false,
   areLoaded: false,
+  isCountFetching: false,
+  isCountLoaded: false,
   isError: false,
+  count: 0,
 };
 
 const storiesState = (state = initState, action) => {
@@ -16,6 +19,7 @@ const storiesState = (state = initState, action) => {
           ...state.items,
           action.payload.story,
         ],
+        count: state.count + 1,
       };
 
     case actionTypes.story.STORY_UPDATE:
@@ -36,6 +40,7 @@ const storiesState = (state = initState, action) => {
       return {
         ...state,
         items: state.items.filter(story => story.id !== action.payload.id),
+        count: state.count - 1,
       };
 
     case actionTypes.stories.STORIES_FETCH:
@@ -64,6 +69,21 @@ const storiesState = (state = initState, action) => {
       return {
         ...state,
         isError: true,
+      };
+
+    case actionTypes.stories.STORIES_COUNT_FETCH:
+      return {
+        ...state,
+        isCountFetching: true,
+        isCountLoaded: false,
+      };
+
+    case actionTypes.stories.STORIES_COUNT_STORE:
+      return {
+        ...state,
+        isCountFetching: false,
+        isCountLoaded: true,
+        count: action.payload.count,
       };
 
     default:

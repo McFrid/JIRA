@@ -24,6 +24,43 @@ const fetchStories = () => async (dispatch) => {
   }
 };
 
+const fetchStoriesPage = (page, size) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.stories.STORIES_FETCH,
+  });
+
+  try {
+    const stories = await storiesService.fetchStoriesPage(page, size);
+    dispatch(storeStories(stories.data));
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+};
+
+const fetchStoriesCount = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.stories.STORIES_COUNT_FETCH,
+  });
+
+  try {
+    const storiesCount = await storiesService.fetchStoriesCount();
+    dispatch({
+      type: actionTypes.stories.STORIES_COUNT_STORE,
+      payload: {
+        count: storiesCount.data,
+      },
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+};
+
 export default {
   fetchStories,
+  fetchStoriesPage,
+  fetchStoriesCount,
 };

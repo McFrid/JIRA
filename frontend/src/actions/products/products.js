@@ -24,6 +24,43 @@ const fetchProducts = () => async (dispatch) => {
   }
 };
 
+const fetchProductsPage = (page, size) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.products.PRODUCTS_FETCH,
+  });
+
+  try {
+    const products = await productsService.fetchProductsPage(page, size);
+    dispatch(storeProducts(products.data));
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+};
+
+const fetchProductsCount = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.products.PRODUCTS_COUNT_FETCH,
+  });
+
+  try {
+    const productsCount = await productsService.fetchProductsCount();
+    dispatch({
+      type: actionTypes.products.PRODUCTS_COUNT_STORE,
+      payload: {
+        count: productsCount.data,
+      },
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+};
+
 export default {
   fetchProducts,
+  fetchProductsPage,
+  fetchProductsCount,
 };

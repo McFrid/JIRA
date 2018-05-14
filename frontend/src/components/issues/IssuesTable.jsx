@@ -4,6 +4,7 @@ import { Button } from 'reactstrap';
 import moment from 'moment';
 
 import DataTable from '../../components/common/DataTable';
+import TablePagination from '../../components/common/TablePagination';
 
 import account from '../../utils/account';
 
@@ -70,12 +71,23 @@ class IssuesTable extends React.Component {
       }));
 
     return (
-      <DataTable
-        columns={this.columns}
-        columnNames={this.columnNames}
-        data={issuesInfo}
-        actions={this.buttons}
-      />
+      <React.Fragment>
+        <DataTable
+          columns={this.columns}
+          columnNames={this.columnNames}
+          data={issuesInfo}
+          actions={this.buttons}
+        />
+
+        {issuesInfo.length !== 0 && (
+          <TablePagination
+            total={this.props.total}
+            rowPerPage={this.props.rowPerPage}
+            currentPage={this.props.currentPage}
+            changePage={this.props.onChangePage}
+          />
+        )}
+      </React.Fragment>
     );
   }
 }
