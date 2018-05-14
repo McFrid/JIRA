@@ -4,7 +4,10 @@ const initState = {
   items: [],
   isFetching: false,
   isLoaded: false,
+  isCountFetching: false,
+  isCountLoaded: false,
   isError: false,
+  count: 0,
 };
 
 const userState = (state = initState, action) => {
@@ -16,6 +19,7 @@ const userState = (state = initState, action) => {
           ...state.items,
           action.payload.user,
         ],
+        count: state.count + 1,
       };
 
     case actionTypes.user.USER_UPDATE:
@@ -36,6 +40,7 @@ const userState = (state = initState, action) => {
       return {
         ...state,
         items: state.items.filter(user => user.login !== action.payload.login),
+        count: state.count - 1,
       };
 
     case actionTypes.users.USERS_FETCH:
@@ -64,6 +69,21 @@ const userState = (state = initState, action) => {
       return {
         ...state,
         isError: true,
+      };
+
+    case actionTypes.users.USERS_COUNT_FETCH:
+      return {
+        ...state,
+        isCountFetching: true,
+        isCountLoaded: false,
+      };
+
+    case actionTypes.users.USERS_COUNT_STORE:
+      return {
+        ...state,
+        isCountFetching: false,
+        isCountLoaded: true,
+        count: action.payload.count,
       };
 
     default:

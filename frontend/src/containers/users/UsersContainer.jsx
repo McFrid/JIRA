@@ -21,6 +21,9 @@ const mapStateToProps = state => ({
   isUsersError: state.users.isError,
   areRolesLoaded: state.roles.areLoaded,
   isActiveRequest: state.app.isActiveRequest,
+  isCountLoaded: state.users.isCountLoaded,
+  isCountFetching: state.users.isCountFetching,
+  total: state.products.count,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,27 +31,24 @@ const mapDispatchToProps = dispatch => ({
   rolesActions: bindActionCreators(actions.roles, dispatch),
   productsActions: bindActionCreators(actions.products, dispatch),
   issuesActions: bindActionCreators(actions.issues, dispatch),
-  storeUser: (user) => {
+  storeUser: user =>
     dispatch(awaitedRequestDecorator(awaitedUserActionsDecorator(notificationDecorator(
       actions.user.storeUser(user),
       'Successfully added user',
       'There is an input error in field(s)',
-    ))));
-  },
-  updateUser: (id, user) => {
+    )))),
+  updateUser: (id, user) =>
     dispatch(awaitedRequestDecorator(awaitedUserActionsDecorator(notificationDecorator(
       actions.user.updateUser(id, user),
       'Successfully updated user',
       'There is an input error in field(s)',
-    ))));
-  },
-  removeUser: (login) => {
-    dispatch(awaitedRequestDecorator(notificationDecorator(
+    )))),
+  removeUser: login =>
+    dispatch(awaitedRequestDecorator(awaitedUserActionsDecorator(notificationDecorator(
       actions.user.removeUser(login),
       'Successfully removed user',
       'The user is connected to some other entity',
-    )));
-  },
+    )))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersMainPage);

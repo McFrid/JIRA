@@ -19,33 +19,33 @@ const mapStateToProps = state => ({
   areIssuesLoaded: state.issues.areLoaded,
   isStoriesError: state.stories.isError,
   isActiveRequest: state.app.isActiveRequest,
+  isCountLoaded: state.stories.isCountLoaded,
+  isCountFetching: state.stories.isCountFetching,
+  total: state.products.count,
 });
 
 const mapDispatchToProps = dispatch => ({
   storiesActions: bindActionCreators(actions.stories, dispatch),
   productsActions: bindActionCreators(actions.products, dispatch),
   issuesActions: bindActionCreators(actions.issues, dispatch),
-  storeStory: (story) => {
+  storeStory: story =>
     dispatch(awaitedRequestDecorator(awaitedStoryActionsDecorator(notificationDecorator(
       actions.story.storeStory(story),
       'Successfully added story',
       'There is an input error in field(s)',
-    ))));
-  },
-  updateStory: (id, story) => {
+    )))),
+  updateStory: (id, story) =>
     dispatch(awaitedRequestDecorator(awaitedStoryActionsDecorator(notificationDecorator(
       actions.story.updateStory(id, story),
       'Successfully updated story',
       'There is an input error in field(s)',
-    ))));
-  },
-  removeStory: (id) => {
-    dispatch(awaitedRequestDecorator(notificationDecorator(
+    )))),
+  removeStory: id =>
+    dispatch(awaitedRequestDecorator(awaitedStoryActionsDecorator(notificationDecorator(
       actions.story.removeStory(id),
       'Successfully deleted story',
       'The story is connected to some other entity',
-    )));
-  },
+    )))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesMainPage);

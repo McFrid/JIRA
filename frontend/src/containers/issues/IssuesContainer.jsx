@@ -23,6 +23,9 @@ const mapStateToProps = state => ({
   isIssuesError: state.issues.isError,
   isSolutions: state.solutions.isError,
   isActiveRequest: state.app.isActiveRequest,
+  isCountLoaded: state.issues.isCountLoaded,
+  isCountFetching: state.issues.isCountFetching,
+  total: state.products.count,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -30,27 +33,24 @@ const mapDispatchToProps = dispatch => ({
   issuesActions: bindActionCreators(actions.issues, dispatch),
   usersActions: bindActionCreators(actions.users, dispatch),
   solutionsActions: bindActionCreators(actions.solutions, dispatch),
-  storeIssue: (issue) => {
+  storeIssue: issue =>
     dispatch(awaitedRequestDecorator(awaitedIssueActionsDecorator(notificationDecorator(
       actions.issue.storeIssue(issue),
       'Successfully added issue',
       'There is an input error in field(s)',
-    ))));
-  },
-  updateIssue: (id, issue) => {
+    )))),
+  updateIssue: (id, issue) =>
     dispatch(awaitedRequestDecorator(awaitedIssueActionsDecorator(notificationDecorator(
       actions.issue.updateIssue(id, issue),
       'Successfully updated issue',
       'There is an input error in field(s)',
-    ))));
-  },
-  removeIssue: (id) => {
-    dispatch(awaitedRequestDecorator(notificationDecorator(
+    )))),
+  removeIssue: id =>
+    dispatch(awaitedRequestDecorator(awaitedIssueActionsDecorator(notificationDecorator(
       actions.issue.removeIssue(id),
       'Successfully removed issue',
       'The issue is connected to some other entity',
-    )));
-  },
+    )))),
   storeSolution: solution => dispatch(actions.solution.storeSolution(solution)),
   updateSolution: (id, solution) => dispatch(actions.solution.updateSolution(id, solution)),
   removeSolution: id => dispatch(actions.solution.removeSolution(id)),
