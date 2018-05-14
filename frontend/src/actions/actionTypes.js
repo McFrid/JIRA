@@ -9,6 +9,8 @@ const user = {
 const users = {
   USERS_FETCH: 'USERS_FETCH',
   USERS_STORE: 'USERS_STORE',
+  USERS_COUNT_FETCH: 'USERS_COUNT_FETCH',
+  USERS_COUNT_STORE: 'USERS_COUNT_STORE',
 };
 
 const roles = {
@@ -55,6 +57,8 @@ const story = {
 const stories = {
   STORIES_FETCH: 'STORIES_FETCH',
   STORIES_STORE: 'STORIES_STORE',
+  STORIES_COUNT_FETCH: 'STORIES_COUNT_FETCH',
+  STORIES_COUNT_STORE: 'STORIES_COUNT_STORE',
 };
 
 const issue = {
@@ -68,6 +72,8 @@ const issue = {
 const issues = {
   ISSUES_FETCH: 'ISSUES_FETCH',
   ISSUES_STORE: 'ISSUES_STORE',
+  ISSUES_COUNT_FETCH: 'ISSUES_COUNT_FETCH',
+  ISSUES_COUNT_STORE: 'ISSUES_COUNT_STORE',
 };
 
 const solution = {

@@ -24,6 +24,43 @@ const fetchUsers = () => async (dispatch) => {
   }
 };
 
+const fetchUsersPage = (page, size) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.users.USERS_FETCH,
+  });
+
+  try {
+    const users = await usersService.fetchUsersPage(page, size);
+    dispatch(storeUsers(users.data));
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+};
+
+const fetchUsersCount = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.users.USERS_COUNT_FETCH,
+  });
+
+  try {
+    const usersCount = await usersService.fetchUsersCount();
+    dispatch({
+      type: actionTypes.users.USERS_COUNT_STORE,
+      payload: {
+        count: usersCount.data,
+      },
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+};
+
 export default {
   fetchUsers,
+  fetchUsersPage,
+  fetchUsersCount,
 };
