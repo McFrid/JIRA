@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 /**
  * Service Implementation for managing Solution.
@@ -77,5 +79,10 @@ public class SolutionService {
     public void delete(Long id) {
         log.debug("Request to delete Solution : {}", id);
         solutionRepository.delete(id);
+    }
+
+    public void delete(List<Long> ids) {
+        log.debug("Request to delete Solutions : {}", ids);
+        solutionRepository.deleteSolutionsByIdIn(ids);
     }
 }

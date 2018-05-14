@@ -19,4 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select product from Product product left join fetch product.users where product.id =:id")
     Product findOneWithEagerRelationships(@Param("id") Long id);
 
+    void deleteProductsByIdIn(List<Long> ids);
+
 }

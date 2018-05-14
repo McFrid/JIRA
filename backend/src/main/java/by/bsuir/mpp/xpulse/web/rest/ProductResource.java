@@ -134,4 +134,12 @@ public class ProductResource {
         productService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    @DeleteMapping("/products")
+    @Timed
+    public ResponseEntity<Void> deleteProducts(@RequestBody List<Long> ids) {
+        log.debug("REST request to delete Products : {}", ids);
+        productService.delete(ids);
+        return ResponseEntity.ok().build();
+    }
 }

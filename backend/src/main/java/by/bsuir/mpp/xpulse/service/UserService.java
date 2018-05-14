@@ -207,6 +207,11 @@ public class UserService {
         });
     }
 
+    public void deleteUsers(List<Long> ids) {
+        log.debug("Request to delete Users : {}", ids);
+        userRepository.deleteUsersByIdIn(ids);
+    }
+
     public void changePassword(String password) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
