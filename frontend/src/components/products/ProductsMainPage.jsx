@@ -30,6 +30,7 @@ class ProductsMainPage extends React.Component {
           developers: [],
           isActiveAddModal: false,
           isActiveUpdateModal: false,
+          currentPage: 1,
         };
       }
 
@@ -50,6 +51,8 @@ class ProductsMainPage extends React.Component {
       isActiveRequest: false,
       name: '',
       developers: [],
+      currentPage: 1,
+      rowPerPage: 3,
     };
 
     this.onToggleModal = this.onToggleModal.bind(this);
@@ -60,12 +63,15 @@ class ProductsMainPage extends React.Component {
     this.onCancelUpdateProduct = this.onCancelUpdateProduct.bind(this);
     this.onUpdateProduct = this.onUpdateProduct.bind(this);
     this.onDevelopersChange = this.onDevelopersChange.bind(this);
+    this.onChangePage = this.onChangePage.bind(this);
+    this.onRemoveProduct = this.onRemoveProduct.bind(this);
   }
 
   componentDidMount() {
-    this.props.productsActions.fetchProducts();
+    this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage);
     this.props.usersActions.fetchUsers();
     this.props.storiesActions.fetchStories();
+    this.props.productsActions.fetchProductsCount();
   }
 
   onInputChange(name, event) {
@@ -113,13 +119,15 @@ class ProductsMainPage extends React.Component {
     const customer = this.props.users
       .find(user => user.id === Number.parseInt(account.getAccountId(), 10));
 
-    this.props.storeProduct({
-      name: this.state.name,
-      users: [
-        ...this.state.developers,
-        customer,
-      ],
-    });
+    this.props
+      .storeProduct({
+        name: this.state.name,
+        users: [
+          ...this.state.developers,
+          customer,
+        ],
+      })
+      .then(() => this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage));
   }
 
   onUpdateProduct() {
@@ -130,13 +138,25 @@ class ProductsMainPage extends React.Component {
     const customer = this.props.users
       .find(user => user.id === Number.parseInt(account.getAccountId(), 10));
 
-    this.props.updateProduct(this.state.id, {
-      name: this.state.name,
-      users: [
-        ...this.state.developers,
-        customer,
-      ],
+    this.props
+      .updateProduct(this.state.id, {
+        name: this.state.name,
+        users: [
+          ...this.state.developers,
+          customer,
+        ],
+      })
+      .then(() => this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage));
+  }
+
+  onRemoveProduct(id) {
+    this.setState({
+      isActiveRequest: true,
     });
+
+    this.props
+      .removeProduct(id)
+      .then(() => this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage));
   }
 
   onDevelopersChange(event) {
@@ -164,13 +184,23 @@ class ProductsMainPage extends React.Component {
     this.setState(newState);
   }
 
+  onChangePage(index) {
+    this.setState({
+      currentPage: index,
+    });
+
+    this.props.productsActions.fetchProductsPage(index - 1, this.state.rowPerPage);
+  }
+
   render() {
     if (this.props.areUsersFetching ||
         this.props.areProductsFetching ||
         this.props.areStoriesFetching ||
+        this.props.isCountFetching ||
       !this.props.areUsersLoaded ||
       !this.props.areProductsLoaded ||
-      !this.props.areStoriesLoaded) {
+      !this.props.areStoriesLoaded ||
+      !this.props.isCountLoaded) {
       return (
         <Spinner />
       );
@@ -218,8 +248,12 @@ class ProductsMainPage extends React.Component {
           products={this.props.products.filter(product =>
             !!product.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)))}
           stories={this.props.stories}
+          currentPage={this.state.currentPage}
+          rowPerPage={this.state.rowPerPage}
+          total={this.props.total}
+          onChangePage={this.onChangePage}
           updateProduct={this.onToggleUpdateProductModal}
-          removeProduct={this.props.removeProduct}
+          removeProduct={this.onRemoveProduct}
         />
 
         {account.getAccountRole() === ROLE_CUSTOMER && (

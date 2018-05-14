@@ -5,6 +5,7 @@ import { Button } from 'reactstrap';
 import DataTable from '../../components/common/DataTable';
 
 import account from '../../utils/account';
+import TablePagination from '../../components/common/TablePagination';
 
 const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
 const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
@@ -62,12 +63,23 @@ class ProductsTable extends React.Component {
     });
 
     return (
-      <DataTable
-        columns={this.columns}
-        columnNames={this.columnNames}
-        data={productsInfo}
-        actions={account.getAccountRole() === ROLE_CUSTOMER ? this.buttons : null}
-      />
+      <React.Fragment>
+        <DataTable
+          columns={this.columns}
+          columnNames={this.columnNames}
+          data={productsInfo}
+          actions={account.getAccountRole() === ROLE_CUSTOMER ? this.buttons : null}
+        />
+
+        {productsInfo.length !== 0 && (
+          <TablePagination
+            total={this.props.total}
+            rowPerPage={this.props.rowPerPage}
+            currentPage={this.props.currentPage}
+            changePage={this.props.onChangePage}
+          />
+        )}
+      </React.Fragment>
     );
   }
 }

@@ -4,7 +4,10 @@ const initState = {
   items: [],
   areFetching: false,
   areLoaded: false,
+  isCountFetching: false,
+  isCountLoaded: false,
   isError: false,
+  count: 0,
 };
 
 const productsState = (state = initState, action) => {
@@ -16,6 +19,7 @@ const productsState = (state = initState, action) => {
           ...state.items,
           action.payload.product,
         ],
+        count: state.count + 1,
       };
 
     case actionTypes.product.PRODUCT_UPDATE:
@@ -36,6 +40,7 @@ const productsState = (state = initState, action) => {
       return {
         ...state,
         items: state.items.filter(product => product.id !== action.payload.id),
+        count: state.count - 1,
       };
 
     case actionTypes.products.PRODUCTS_FETCH:
@@ -64,6 +69,21 @@ const productsState = (state = initState, action) => {
       return {
         ...state,
         isError: true,
+      };
+
+    case actionTypes.products.PRODUCTS_COUNT_FETCH:
+      return {
+        ...state,
+        isCountFetching: true,
+        isCountLoaded: false,
+      };
+
+    case actionTypes.products.PRODUCTS_COUNT_STORE:
+      return {
+        ...state,
+        isCountFetching: false,
+        isCountLoaded: true,
+        count: action.payload.count,
       };
 
     default:
