@@ -8,6 +8,7 @@ import DataTable from '../../components/common/DataTable';
 import account from '../../utils/account';
 
 const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
+const ROLE_MANAGER = 'ROLE_MANAGER';
 const DELIMETER = ', ';
 
 class IssuesTable extends React.Component {
@@ -35,7 +36,10 @@ class IssuesTable extends React.Component {
     this.buttons = issueInfo => (
       <div>
         <Button color="primary" onClick={this.onEditClick.bind(this, issueInfo.id)}>Edit</Button>
-        <Button color="danger" onClick={this.onDeleteClick.bind(this, issueInfo.id)}>Delete</Button>
+
+        {account.getAccountRole() === ROLE_MANAGER && (
+          <Button color="danger" onClick={this.onDeleteClick.bind(this, issueInfo.id)}>Delete</Button>
+        )}
       </div>
     );
   }
@@ -50,8 +54,6 @@ class IssuesTable extends React.Component {
 
   render() {
     const issuesInfo = this.props.issues
-      .filter(issue => !!issue.users
-        .find(user => user.id === Number.parseInt(account.getAccountId(), 10)))
       .map(issue => ({
         ...issue,
         story: issue.storyId ? this.props.stories

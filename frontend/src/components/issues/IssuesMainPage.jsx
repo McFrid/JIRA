@@ -17,6 +17,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
+const ROLE_MANAGER = 'ROLE_MANAGER';
 
 class IssuesMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -233,6 +234,11 @@ class IssuesMainPage extends React.Component {
       );
     }
 
+    const issues = account.getAccountRole() === ROLE_MANAGER
+      ? this.props.issues
+      : this.props.issues.filter(issue => !!issue.users
+        .find(user => user.id === Number.parseInt(account.getAccountId(), 10)));
+
     return (
       <div>
         <DataModal
@@ -285,15 +291,17 @@ class IssuesMainPage extends React.Component {
 
         <IssuesTable
           stories={this.props.stories}
-          issues={this.props.issues}
+          issues={issues}
           solutions={this.props.solutions}
           updateIssue={this.onToggleUpdateIssueModal}
           removeIssue={this.props.removeIssue}
         />
 
-        <ButtonWrapper>
-          <Button color="success" onClick={this.onToggleModal} >Add New Issue</Button>
-        </ButtonWrapper>
+        {account.getAccountRole() === ROLE_MANAGER && (
+          <ButtonWrapper>
+            <Button color="success" onClick={this.onToggleModal} >Add New Issue</Button>
+          </ButtonWrapper>
+        )}
       </div>
     );
   }

@@ -8,21 +8,26 @@ import {
 import LabelInput from '../common/LabelInput';
 import LabelDropdown from '../common/LabelDropdown';
 import LabelMultiSelect from '../common/LabelMultiSelect';
+import account from '../../utils/account';
+
+const ROLE_MANAGER = 'ROLE_MANAGER';
 
 const IssuesForm = props => (
   <Form>
     <FormGroup>
-      <LabelInput
-        labelName="Description"
-        inputType="text"
-        inputName="description"
-        inputId="issues-table-description"
-        placeholder="Enter description"
-        value={props.description}
-        onInputChange={props.onInputChange.bind(this, 'description')}
-      />
+      {account.getAccountRole() === ROLE_MANAGER && (
+        <LabelInput
+          labelName="Description"
+          inputType="text"
+          inputName="description"
+          inputId="issues-table-description"
+          placeholder="Enter description"
+          value={props.description}
+          onInputChange={props.onInputChange.bind(this, 'description')}
+        />
+      )}
 
-      {!!props.stories.length && (
+      {!!props.stories.length && account.getAccountRole() === ROLE_MANAGER && (
         <LabelDropdown
           labelName="Story"
           dropdownId="issues-table-story"
@@ -35,7 +40,7 @@ const IssuesForm = props => (
         />
       )}
 
-      {!!props.developers.length && (
+      {!!props.developers.length && account.getAccountRole() === ROLE_MANAGER && (
         <LabelMultiSelect
           labelName="Developers"
           inputName="developers"
