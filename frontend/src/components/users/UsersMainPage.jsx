@@ -42,6 +42,7 @@ class UsersMainPage extends React.Component {
           birthday: new Date(),
           isActiveAddModal: false,
           isActiveUpdateModal: false,
+          currentPage: 1,
         };
       }
 
@@ -67,6 +68,8 @@ class UsersMainPage extends React.Component {
       login: '',
       roleId: '',
       birthday: new Date(),
+      currentPage: 1,
+      rowPerPage: 3,
     };
 
     this.userProperties = ['email', 'firstName', 'lastName', 'login', 'roleId'];
@@ -80,13 +83,16 @@ class UsersMainPage extends React.Component {
     this.onUpdateUser = this.onUpdateUser.bind(this);
     this.onDropdownSelectionChange = this.onDropdownSelectionChange.bind(this);
     this.onDateChange = this.onDateChange.bind(this);
+    this.onChangePage = this.onChangePage.bind(this);
+    this.onRemoveUser = this.onRemoveUser.bind(this);
   }
 
   componentDidMount() {
-    this.props.usersActions.fetchUsers();
+    this.props.usersActions.fetchUsersPage(0, this.state.rowPerPage);
     this.props.rolesActions.fetchRoles();
     this.props.productsActions.fetchProducts();
     this.props.issuesActions.fetchIssues();
+    this.props.usersActions.fetchUsersCount();
   }
 
   onInputChange(name, event) {
@@ -141,14 +147,16 @@ class UsersMainPage extends React.Component {
       isActiveRequest: true,
     });
 
-    this.props.storeUser({
-      email: this.state.email,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      login: this.state.login,
-      authority: this.state.roleId,
-      birthdate: moment(this.state.birthday).format('YYYY-MM-DD'),
-    });
+    this.props
+      .storeUser({
+        email: this.state.email,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        login: this.state.login,
+        authority: this.state.roleId,
+        birthdate: moment(this.state.birthday).format('YYYY-MM-DD'),
+      })
+      .then(() => this.props.usersActions.fetchUsersPage(0, this.state.rowPerPage));
   }
 
   onUpdateUser() {
@@ -156,15 +164,27 @@ class UsersMainPage extends React.Component {
       isActiveRequest: true,
     });
 
-    this.props.updateUser(this.state.id, {
-      email: this.state.email,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      login: this.state.login,
-      authority: this.state.roleId,
-      activated: true,
-      birthdate: moment(this.state.birthday).format('YYYY-MM-DD'),
+    this.props
+      .updateUser(this.state.id, {
+        email: this.state.email,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        login: this.state.login,
+        authority: this.state.roleId,
+        activated: true,
+        birthdate: moment(this.state.birthday).format('YYYY-MM-DD'),
+      })
+      .then(() => this.props.usersActions.fetchUsersPage(0, this.state.rowPerPage));
+  }
+
+  onRemoveUser(id) {
+    this.setState({
+      isActiveRequest: true,
     });
+
+    this.props
+      .removeUser(id)
+      .then(() => this.props.usersActions.fetchUsersPage(0, this.state.rowPerPage));
   }
 
   onDateChange(date) {
@@ -185,14 +205,24 @@ class UsersMainPage extends React.Component {
     this.setState(newState);
   }
 
+  onChangePage(index) {
+    this.setState({
+      currentPage: index,
+    });
+
+    this.props.usersActions.fetchUsersPage(index - 1, this.state.rowPerPage);
+  }
+
   render() {
     if (this.props.areUsersFetching ||
         this.props.areProductsFetching ||
         this.props.areIssuesFetching ||
+      this.props.isCountFetching ||
       !this.props.areUsersLoaded ||
       !this.props.areRolesLoaded ||
       !this.props.areProductsLoaded ||
-      !this.props.areIssuesLoaded) {
+      !this.props.areIssuesLoaded ||
+      !this.props.isCountLoaded) {
       return (
         <Spinner />
       );
@@ -252,8 +282,12 @@ class UsersMainPage extends React.Component {
           roles={this.props.roles}
           products={this.props.products}
           issues={this.props.issues}
+          currentPage={this.state.currentPage}
+          rowPerPage={this.state.rowPerPage}
+          total={this.props.total}
+          onChangePage={this.onChangePage}
           updateUser={this.onToggleUpdateUserModal}
-          removeUser={this.props.removeUser}
+          removeUser={this.onRemoveUser}
         />
 
         <ButtonWrapper>

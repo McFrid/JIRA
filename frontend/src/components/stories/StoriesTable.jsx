@@ -4,6 +4,7 @@ import { Button } from 'reactstrap';
 import moment from 'moment';
 
 import DataTable from '../../components/common/DataTable';
+import TablePagination from '../../components/common/TablePagination';
 
 import account from '../../utils/account';
 
@@ -45,7 +46,7 @@ class StoriesTable extends React.Component {
   }
 
   render() {
-    const productsInfo = this.props.stories.map(story => ({
+    const storiesInfo = this.props.stories.map(story => ({
       ...story,
       product: story.productId ? this.props.products.find(product => product.id === story.productId).name : '',
       createdDate: moment(story.date).format('MM/DD/YY'),
@@ -54,12 +55,23 @@ class StoriesTable extends React.Component {
     }));
 
     return (
-      <DataTable
-        columns={this.columns}
-        columnNames={this.columnNames}
-        data={productsInfo}
-        actions={account.getAccountRole() === ROLE_CUSTOMER ? this.buttons : null}
-      />
+      <React.Fragment>
+        <DataTable
+          columns={this.columns}
+          columnNames={this.columnNames}
+          data={storiesInfo}
+          actions={account.getAccountRole() === ROLE_CUSTOMER ? this.buttons : null}
+        />
+
+        {storiesInfo.length !== 0 && (
+          <TablePagination
+            total={this.props.total}
+            rowPerPage={this.props.rowPerPage}
+            currentPage={this.props.currentPage}
+            changePage={this.props.onChangePage}
+          />
+        )}
+      </React.Fragment>
     );
   }
 }

@@ -41,6 +41,7 @@ class IssuesMainPage extends React.Component {
           story: nextProps.stories.find(story => story),
           isActiveAddModal: false,
           isActiveUpdateModal: false,
+          currentPage: 1,
         };
       }
 
@@ -65,6 +66,8 @@ class IssuesMainPage extends React.Component {
       solution: '',
       developers: [],
       estimation: '0',
+      currentPage: 1,
+      rowPerPage: 3,
     };
 
     this.onToggleModal = this.onToggleModal.bind(this);
@@ -76,13 +79,16 @@ class IssuesMainPage extends React.Component {
     this.onUpdateIssue = this.onUpdateIssue.bind(this);
     this.onStoryChange = this.onStoryChange.bind(this);
     this.onDevelopersChange = this.onDevelopersChange.bind(this);
+    this.onChangePage = this.onChangePage.bind(this);
+    this.onRemoveIssue = this.onRemoveIssue.bind(this);
   }
 
   componentDidMount() {
-    this.props.issuesActions.fetchIssues();
+    this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage);
     this.props.storiesActions.fetchStories();
     this.props.solutionsActions.fetchSolutions();
     this.props.usersActions.fetchUsers();
+    this.props.issuesActions.fetchIssuesCount();
   }
 
   onInputChange(name, event) {
@@ -141,15 +147,17 @@ class IssuesMainPage extends React.Component {
       isActiveRequest: true,
     });
 
-    this.props.storeIssue({
-      description: this.state.description,
-      storyId: this.state.story ? this.state.story.id : 0,
-      date: moment(),
-      users: [
-        ...this.state.developers,
-        this.props.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)),
-      ],
-    });
+    this.props
+      .storeIssue({
+        description: this.state.description,
+        storyId: this.state.story ? this.state.story.id : 0,
+        date: moment(),
+        users: [
+          ...this.state.developers,
+          this.props.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)),
+        ],
+      })
+      .then(() => this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage));
   }
 
   onUpdateIssue() {
@@ -191,7 +199,8 @@ class IssuesMainPage extends React.Component {
           ...this.state.developers,
           this.props.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)),
         ],
-      }));
+      }))
+      .then(() => this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage));
   }
 
   onDevelopersChange(event) {
@@ -210,6 +219,16 @@ class IssuesMainPage extends React.Component {
     });
   }
 
+  onRemoveIssue(id) {
+    this.setState({
+      isActiveRequest: true,
+    });
+
+    this.props
+      .removeIssue(id)
+      .then(() => this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage));
+  }
+
   setDefaultProperties() {
     const newState = {
       description: '',
@@ -220,15 +239,25 @@ class IssuesMainPage extends React.Component {
     this.setState(newState);
   }
 
+  onChangePage(index) {
+    this.setState({
+      currentPage: index,
+    });
+
+    this.props.issuesActions.fetchIssuesPage(index - 1, this.state.rowPerPage);
+  }
+
   render() {
     if (this.props.areIssuesFetching ||
         this.props.areStoriesFetching ||
         this.props.areSolutionsFetching ||
         this.props.areUsersFetching ||
+        this.props.isCountFetching ||
       !this.props.areIssuesLoaded ||
       !this.props.areStoriesLoaded ||
       !this.props.areSolutionsLoaded ||
-      !this.props.areUsersLoaded) {
+      !this.props.areUsersLoaded ||
+      !this.props.isCountLoaded) {
       return (
         <Spinner />
       );
@@ -293,8 +322,12 @@ class IssuesMainPage extends React.Component {
           stories={this.props.stories}
           issues={issues}
           solutions={this.props.solutions}
+          currentPage={this.state.currentPage}
+          rowPerPage={this.state.rowPerPage}
+          total={this.props.total}
+          onChangePage={this.onChangePage}
           updateIssue={this.onToggleUpdateIssueModal}
-          removeIssue={this.props.removeIssue}
+          removeIssue={this.onRemoveIssue}
         />
 
         {account.getAccountRole() === ROLE_MANAGER && (

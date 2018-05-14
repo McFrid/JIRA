@@ -40,6 +40,7 @@ class StoriesMainPage extends React.Component {
           product: nextProps.products.find(product => product),
           isActiveAddModal: false,
           isActiveUpdateModal: false,
+          currentPage: 1,
         };
       }
 
@@ -61,6 +62,8 @@ class StoriesMainPage extends React.Component {
       isActiveRequest: false,
       description: '',
       product: null,
+      currentPage: 1,
+      rowPerPage: 3,
     };
 
     this.onToggleModal = this.onToggleModal.bind(this);
@@ -71,12 +74,15 @@ class StoriesMainPage extends React.Component {
     this.onCancelUpdateStory = this.onCancelUpdateStory.bind(this);
     this.onUpdateStory = this.onUpdateStory.bind(this);
     this.onProductChange = this.onProductChange.bind(this);
+    this.onChangePage = this.onChangePage.bind(this);
+    this.onRemoveStory = this.onRemoveStory.bind(this);
   }
 
   componentDidMount() {
-    this.props.productsActions.fetchProducts();
+    this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage);
     this.props.storiesActions.fetchStories();
     this.props.issuesActions.fetchIssues();
+    this.props.storiesActions.fetchStoriesCount();
   }
 
   onInputChange(name, event) {
@@ -128,11 +134,13 @@ class StoriesMainPage extends React.Component {
       isActiveRequest: true,
     });
 
-    this.props.storeStory({
-      description: this.state.description,
-      productId: this.state.product ? this.state.product.id : 0,
-      date: moment(),
-    });
+    this.props
+      .storeStory({
+        description: this.state.description,
+        productId: this.state.product ? this.state.product.id : 0,
+        date: moment(),
+      })
+      .then(() => this.props.storiesActions.fetchStoriesPage(0, this.state.rowPerPage));
   }
 
   onUpdateStory() {
@@ -140,11 +148,23 @@ class StoriesMainPage extends React.Component {
       isActiveRequest: true,
     });
 
-    this.props.updateStory(this.state.id, {
-      description: this.state.description,
-      productId: this.state.product ? this.state.product.id : 0,
-      date: moment(),
+    this.props
+      .updateStory(this.state.id, {
+        description: this.state.description,
+        productId: this.state.product ? this.state.product.id : 0,
+        date: moment(),
+      })
+      .then(() => this.props.storiesActions.fetchStoriesPage(0, this.state.rowPerPage));
+  }
+
+  onRemoveStory(id) {
+    this.setState({
+      isActiveRequest: true,
     });
+
+    this.props
+      .removeProduct(id)
+      .then(() => this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage));
   }
 
   setDefaultProperties() {
@@ -156,13 +176,23 @@ class StoriesMainPage extends React.Component {
     this.setState(newState);
   }
 
+  onChangePage(index) {
+    this.setState({
+      currentPage: index,
+    });
+
+    this.props.storiesActions.fetchStoriesPage(index - 1, this.state.rowPerPage);
+  }
+
   render() {
     if (this.props.areProductsFetching ||
         this.props.areStoriesFetching ||
         this.props.areIssuesFetching ||
+      this.props.isCountFetching ||
       !this.props.areProductsLoaded ||
       !this.props.areStoriesLoaded ||
-      !this.props.areIssuesLoaded) {
+      !this.props.areIssuesLoaded ||
+      !this.props.isCountLoaded) {
       return (
         <Spinner />
       );
@@ -216,8 +246,12 @@ class StoriesMainPage extends React.Component {
           stories={stories}
           products={this.props.products}
           issues={this.props.issues}
+          currentPage={this.state.currentPage}
+          rowPerPage={this.state.rowPerPage}
+          total={this.props.total}
+          onChangePage={this.onChangePage}
           updateStory={this.onToggleUpdateStoryModal}
-          removeStory={this.props.removeStory}
+          removeStory={this.onRemoveStory}
         />
 
         {account.getAccountRole() === ROLE_CUSTOMER && (

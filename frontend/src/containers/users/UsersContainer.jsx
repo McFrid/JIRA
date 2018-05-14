@@ -23,7 +23,7 @@ const mapStateToProps = state => ({
   isActiveRequest: state.app.isActiveRequest,
   isCountLoaded: state.users.isCountLoaded,
   isCountFetching: state.users.isCountFetching,
-  total: state.products.count,
+  total: state.users.count,
 });
 
 const mapDispatchToProps = dispatch => ({
