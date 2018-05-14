@@ -4,6 +4,8 @@ import { Button } from 'reactstrap';
 
 import DataTable from '../../components/common/DataTable';
 
+import account from '../../utils/account';
+
 const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
 const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
 const DELIMETER = ', ';
@@ -27,7 +29,10 @@ class ProductsTable extends React.Component {
     this.buttons = productInfo => (
       <div>
         <Button color="primary" onClick={this.onEditClick.bind(this, productInfo.id)}>Edit</Button>
-        <Button color="danger" onClick={this.onDeleteClick.bind(this, productInfo.id)}>Delete</Button>
+
+        {productInfo.canBeRemoved && (
+          <Button color="danger" onClick={this.onDeleteClick.bind(this, productInfo.id)}>Delete</Button>
+        )}
       </div>
     );
   }
@@ -51,6 +56,8 @@ class ProductsTable extends React.Component {
           .map(user => `${user.firstName} ${user.lastName}`)
           .join(DELIMETER),
         customer: customer ? `${customer.firstName} ${customer.lastName}` : '',
+        canBeRemoved: !this.props.stories
+          .find(story => story.productId === product.id),
       });
     });
 
@@ -59,7 +66,7 @@ class ProductsTable extends React.Component {
         columns={this.columns}
         columnNames={this.columnNames}
         data={productsInfo}
-        actions={this.buttons}
+        actions={account.getAccountRole() === ROLE_CUSTOMER ? this.buttons : null}
       />
     );
   }

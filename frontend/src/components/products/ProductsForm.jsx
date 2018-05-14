@@ -6,7 +6,6 @@ import {
 } from 'reactstrap';
 
 import LabelInput from '../common/LabelInput';
-import LabelDropdown from '../common/LabelDropdown';
 import LabelMultiSelect from '../common/LabelMultiSelect';
 
 const ProductsForm = props => (
@@ -35,19 +34,6 @@ const ProductsForm = props => (
           onOptionClick={props.onDevelopersChange}
         />
       )}
-
-      {!!props.customers.length && (
-        <LabelDropdown
-          labelName="Customer"
-          dropdownId="products-table-customer"
-          dropdownData={props.customers.map(customer => ({
-            key: customer.id,
-            value: `${customer.firstName} ${customer.lastName}`,
-          }))}
-          selectedKey={props.currentCustomer ? props.currentCustomer.id : null}
-          onChange={props.onCustomerChange}
-        />
-      )}
     </FormGroup>
   </Form>
 );
@@ -70,36 +56,16 @@ ProductsForm.propTypes = {
     authority: PropTypes.string,
     login: PropTypes.string,
   })),
-  customers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    authority: PropTypes.string,
-    login: PropTypes.string,
-  })),
-  currentCustomer: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    authority: PropTypes.string,
-    login: PropTypes.string,
-  }),
   onInputChange: PropTypes.func,
   onDevelopersChange: PropTypes.func,
-  onCustomerChange: PropTypes.func,
 };
 
 ProductsForm.defaultProps = {
   name: '',
   developers: [],
   currentDevelopers: [],
-  customers: [],
-  currentCustomer: null,
   onInputChange: null,
   onDevelopersChange: null,
-  onCustomerChange: null,
 };
 
 export default ProductsForm;
