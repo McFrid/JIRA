@@ -83,7 +83,7 @@ const userState = (state = initState, action) => {
         ...state,
         isCountFetching: false,
         isCountLoaded: true,
-        count: action.payload.count,
+        count: action.payload.count - 1,
       };
 
     default:
