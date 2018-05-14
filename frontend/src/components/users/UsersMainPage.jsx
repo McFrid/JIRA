@@ -9,6 +9,8 @@ import UsersForm from './UsersForm';
 import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
 
+import account from '../../utils/account';
+
 class UsersMainPage extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     let newState = {};
@@ -76,6 +78,8 @@ class UsersMainPage extends React.Component {
   componentDidMount() {
     this.props.usersActions.fetchUsers();
     this.props.rolesActions.fetchRoles();
+    this.props.productsActions.fetchProducts();
+    this.props.issuesActions.fetchIssues();
   }
 
   onInputChange(name, event) {
@@ -176,8 +180,12 @@ class UsersMainPage extends React.Component {
 
   render() {
     if (this.props.areUsersFetching ||
+        this.props.areProductsFetching ||
+        this.props.areIssuesFetching ||
       !this.props.areUsersLoaded ||
-      !this.props.areRolesLoaded) {
+      !this.props.areRolesLoaded ||
+      !this.props.areProductsLoaded ||
+      !this.props.areIssuesLoaded) {
       return (
         <Spinner />
       );
@@ -232,8 +240,11 @@ class UsersMainPage extends React.Component {
         </DataModal>
 
         <UsersTable
-          users={this.props.users}
+          users={this.props.users
+            .filter(user => user.id !== Number.parseInt(account.getAccountId(), 10))}
           roles={this.props.roles}
+          products={this.props.products}
+          issues={this.props.issues}
           updateUser={this.onToggleUpdateUserModal}
           removeUser={this.props.removeUser}
         />
@@ -256,11 +267,17 @@ UsersMainPage.propTypes = {
   roles: PropTypes.arrayOf(PropTypes.string),
   usersActions: PropTypes.objectOf(PropTypes.func),
   rolesActions: PropTypes.objectOf(PropTypes.func),
+  productsActions: PropTypes.objectOf(PropTypes.func),
+  issuesActions: PropTypes.objectOf(PropTypes.func),
   storeUser: PropTypes.func,
   updateUser: PropTypes.func,
   removeUser: PropTypes.func,
   areUsersFetching: PropTypes.bool,
   areUsersLoaded: PropTypes.bool,
+  areProductsFetching: PropTypes.bool,
+  areProductsLoaded: PropTypes.bool,
+  areIssuesFetching: PropTypes.bool,
+  areIssuesLoaded: PropTypes.bool,
   areRolesLoaded: PropTypes.bool,
 };
 
@@ -269,11 +286,17 @@ UsersMainPage.defaultProps = {
   roles: [],
   usersActions: {},
   rolesActions: {},
+  productsActions: {},
+  issuesActions: {},
   storeUser: null,
   updateUser: null,
   removeUser: null,
   areUsersFetching: false,
   areUsersLoaded: false,
+  areProductsFetching: false,
+  areProductsLoaded: false,
+  areIssuesFetching: false,
+  areIssuesLoaded: false,
   areRolesLoaded: false,
 };
 

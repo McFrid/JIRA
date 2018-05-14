@@ -34,7 +34,9 @@ class UsersTable extends React.Component {
     this.buttons = userInfo => (
       <div>
         <Button color="primary" onClick={this.onEditClick.bind(this, userInfo.id)}>Edit</Button>
-        <Button color="danger" onClick={this.onDeleteClick.bind(this, userInfo.login)}>Delete</Button>
+        {userInfo.canBeRemoved && (
+          <Button color="danger" onClick={this.onDeleteClick.bind(this, userInfo.login)}>Delete</Button>
+        )}
       </div>
     );
   }
@@ -53,6 +55,12 @@ class UsersTable extends React.Component {
       role: getAuthority(this.props.roles.find(role => role === user.authority)),
       activated: user.activated ? 'Yes' : 'No',
       birthday: user.birthdate ? moment(user.birthdate).format('MM/DD/YYYY') : '',
+      canBeRemoved: !this.props.products
+        .find(product => !!product.users
+          .find(productUser => productUser.id === user.id)) &&
+        !this.props.issues
+          .find(issue => !!issue.users
+            .find(issueUser => issueUser.id === user.id)),
     }));
 
     return (
