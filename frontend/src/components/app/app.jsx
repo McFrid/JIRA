@@ -8,6 +8,7 @@ import LoginContainer from '../../containers/login/LoginContainer';
 import ProductsContainer from '../../containers/products/ProductsContainer';
 import StoriesContainer from '../../containers/stories/StoriesContainer';
 import IssuesContainer from '../../containers/issues/IssuesContainer';
+import ResetPasswordContainer from '../../containers/reset-password/ResetPasswordContainer';
 
 import Spinner from '../../components/common/Spinner';
 import FullScreenSpinner from '../../components/common/FullScreenSpinner';
@@ -59,13 +60,15 @@ class App extends React.Component {
       );
     }
 
-    if (!this.props.isAuthenticated && this.props.location.pathname !== '/login') {
+    if (!this.props.isAuthenticated &&
+      !['/login', '/reset-password'].includes(this.props.location.pathname)) {
       return (
         <Redirect to="/login" />
       );
     }
 
-    if (this.props.isAuthenticated && this.props.location.pathname === '/login') {
+    if (this.props.isAuthenticated &&
+      ['/login', '/reset-password'].includes(this.props.location.pathname)) {
       return (
         <Redirect to="/" />
       );
@@ -86,6 +89,7 @@ class App extends React.Component {
         <main>
           <Route path="/" exact render={() => <Redirect to="/users" />} />
           <Route path="/login" component={LoginContainer} />
+          <Route path="/reset-password" component={ResetPasswordContainer} />
 
           <RouteCondition
             path="/users"
