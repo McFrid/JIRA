@@ -100,6 +100,14 @@ public class StoryResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/stories", params = "login")
+    @Timed
+    public ResponseEntity<List<StoryDTO>> getStoriesByUserLogin(@RequestParam String login) {
+        log.debug("REST request to get a filtered Issues");
+        List<StoryDTO> stories = storyService.findByUserLogin(login);
+        return new ResponseEntity<>(stories, HttpStatus.OK);
+    }
+
     @GetMapping("/stories/count")
     @Timed
     public ResponseEntity<Long> getStoryNumber() {

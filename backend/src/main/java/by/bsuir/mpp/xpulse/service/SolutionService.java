@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 /**
  * Service Implementation for managing Solution.
@@ -56,6 +59,13 @@ public class SolutionService {
             .map(solutionMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public List<SolutionDTO> findByUserLogin(String login) {
+        log.debug("Request to get all Issues");
+        return solutionRepository.findSolutionsByUserLogin(login)
+            .stream().map(solutionMapper::toDto).collect(Collectors.toList());
+    }
+
     /**
      * Get one solution by id.
      *
@@ -68,6 +78,7 @@ public class SolutionService {
         Solution solution = solutionRepository.findOne(id);
         return solutionMapper.toDto(solution);
     }
+
 
     /**
      * Delete the solution by id.

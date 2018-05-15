@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 /**
  * Service Implementation for managing Product.
@@ -54,6 +57,13 @@ public class ProductService {
         log.debug("Request to get all Products");
         return productRepository.findAll(pageable)
             .map(productMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDTO> findByUserLogin(String login) {
+        log.debug("Request to get all Issues");
+        return productRepository.findProductsByUserLogin(login)
+            .stream().map(productMapper::toDto).collect(Collectors.toList());
     }
 
     /**
