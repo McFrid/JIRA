@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 /**
  * Service Implementation for managing Issue.
@@ -54,6 +57,13 @@ public class IssueService {
         log.debug("Request to get all Issues");
         return issueRepository.findAll(pageable)
             .map(issueMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<IssueDTO> findByUserLogin(String login) {
+        log.debug("Request to get all Issues");
+        return issueRepository.findIssuesByUserLogin(login)
+            .stream().map(issueMapper::toDto).collect(Collectors.toList());
     }
 
     /**

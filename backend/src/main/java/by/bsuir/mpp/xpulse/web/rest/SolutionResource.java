@@ -100,6 +100,13 @@ public class SolutionResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/solutions", params = "login")
+    @Timed
+    public ResponseEntity<List<SolutionDTO>> getSolutionsByUserLogin(@RequestParam String login) {
+        log.debug("REST request to get a filtered Issues");
+        List<SolutionDTO> solutions = solutionService.findByUserLogin(login);
+        return new ResponseEntity<>(solutions, HttpStatus.OK);
+    }
 
     @GetMapping("/solutions/count")
     @Timed

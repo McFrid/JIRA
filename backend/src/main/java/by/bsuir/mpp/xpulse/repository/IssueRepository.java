@@ -22,7 +22,7 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     @Query("select i from Issue i " +
         "join i.users u " +
         "where u.login = ?1")
-    List<Issue> findAllByUserLogin(String login);
+    List<Issue> findIssuesByUserLogin(String login);
 
     List<Issue> findBySolutionNotNull();
 
