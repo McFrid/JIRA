@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -56,6 +57,13 @@ public class StoryService {
         log.debug("Request to get all Stories");
         return storyRepository.findAll(pageable)
             .map(storyMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<StoryDTO> findByUserLogin(String login) {
+        log.debug("Request to get all Issues");
+        return storyRepository.findStoriesByUserLogin(login)
+            .stream().map(storyMapper::toDto).collect(Collectors.toList());
     }
 
     /**

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -56,6 +57,13 @@ public class SolutionService {
         log.debug("Request to get all Solutions");
         return solutionRepository.findAll(pageable)
             .map(solutionMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SolutionDTO> findByUserLogin(String login) {
+        log.debug("Request to get all Issues");
+        return solutionRepository.findSolutionsByUserLogin(login)
+            .stream().map(solutionMapper::toDto).collect(Collectors.toList());
     }
 
     /**

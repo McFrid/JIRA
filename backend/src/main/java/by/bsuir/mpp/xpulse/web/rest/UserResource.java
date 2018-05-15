@@ -1,7 +1,6 @@
 package by.bsuir.mpp.xpulse.web.rest;
 
 import by.bsuir.mpp.xpulse.config.Constants;
-import com.codahale.metrics.annotation.Timed;
 import by.bsuir.mpp.xpulse.domain.User;
 import by.bsuir.mpp.xpulse.repository.UserRepository;
 import by.bsuir.mpp.xpulse.security.AuthoritiesConstants;
@@ -13,8 +12,8 @@ import by.bsuir.mpp.xpulse.web.rest.errors.EmailAlreadyUsedException;
 import by.bsuir.mpp.xpulse.web.rest.errors.LoginAlreadyUsedException;
 import by.bsuir.mpp.xpulse.web.rest.util.HeaderUtil;
 import by.bsuir.mpp.xpulse.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -28,7 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing users.

@@ -1,13 +1,12 @@
 package by.bsuir.mpp.xpulse.web.rest;
 
 import by.bsuir.mpp.xpulse.repository.IssueRepository;
-import by.bsuir.mpp.xpulse.security.AuthoritiesConstants;
-import com.codahale.metrics.annotation.Timed;
 import by.bsuir.mpp.xpulse.service.IssueService;
+import by.bsuir.mpp.xpulse.service.dto.IssueDTO;
 import by.bsuir.mpp.xpulse.web.rest.errors.BadRequestAlertException;
 import by.bsuir.mpp.xpulse.web.rest.util.HeaderUtil;
 import by.bsuir.mpp.xpulse.web.rest.util.PaginationUtil;
-import by.bsuir.mpp.xpulse.service.dto.IssueDTO;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -100,6 +97,14 @@ public class IssueResource {
         Page<IssueDTO> page = issueService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/issues");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/issues", params = "login")
+    @Timed
+    public ResponseEntity<List<IssueDTO>> getIssuesByUserLogin(@RequestParam String login) {
+        log.debug("REST request to get a filtered Issues");
+        List<IssueDTO> issues = issueService.findByUserLogin(login);
+        return new ResponseEntity<>(issues, HttpStatus.OK);
     }
 
     @GetMapping("/issues/count")
