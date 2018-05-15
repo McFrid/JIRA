@@ -134,4 +134,12 @@ public class StoryResource {
         storyService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    @DeleteMapping("/stories")
+    @Timed
+    public ResponseEntity<Void> deleteStories(@RequestBody List<Long> ids) {
+        log.debug("REST request to delete Stories : {}", ids);
+        storyService.delete(ids);
+        return ResponseEntity.ok().build();
+    }
 }

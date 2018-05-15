@@ -135,4 +135,12 @@ public class SolutionResource {
         solutionService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    @DeleteMapping("/solutions")
+    @Timed
+    public ResponseEntity<Void> deleteSolutions(@RequestBody List<Long> ids) {
+        log.debug("REST request to delete Solutions : {}", ids);
+        solutionService.delete(ids);
+        return ResponseEntity.ok().build();
+    }
 }

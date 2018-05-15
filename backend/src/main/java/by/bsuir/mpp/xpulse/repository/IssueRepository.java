@@ -32,4 +32,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
         "and i.solution is not null")
     List<Issue> findSolvedIssuesByLogin(String login);
 
+    void deleteIssuesByIdIn(List<Long> ids);
+
 }
