@@ -19,12 +19,9 @@ public class DocumentService {
 
     private Logger logger = LoggerFactory.getLogger(DocumentService.class);
 
-    private ByteArrayOutputStream baos;
+    private ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
     public byte[] writeTo(JasperReportBuilder reportBuilder, final String format) throws Exception {
-
-        baos = new ByteArrayOutputStream();
-
         if (format.equalsIgnoreCase(Constants.PDF)) {
             writeToPdf(reportBuilder);
         }
@@ -34,7 +31,6 @@ public class DocumentService {
         else {
             writeToCsv(reportBuilder);
         }
-
         return baos.toByteArray();
     }
 
