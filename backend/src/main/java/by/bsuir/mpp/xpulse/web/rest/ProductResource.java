@@ -100,6 +100,14 @@ public class ProductResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/products", params = "login")
+    @Timed
+    public ResponseEntity<List<ProductDTO>> getProductsByUserLogin(@RequestParam String login) {
+        log.debug("REST request to get a filtered Issues");
+        List<ProductDTO> products = productService.findByUserLogin(login);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
     @GetMapping("/products/count")
     @Timed
     public ResponseEntity<Long> getProductNumber() {

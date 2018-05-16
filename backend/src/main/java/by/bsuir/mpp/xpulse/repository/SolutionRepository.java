@@ -15,6 +15,13 @@ import java.util.List;
 @Repository
 public interface SolutionRepository extends JpaRepository<Solution, Long> {
 
+    @Query("select s from Solution s " +
+        "join s.issue i " +
+        "join i.users u " +
+        "where u.login = ?1")
+    List<Solution> findSolutionsByUserLogin(String login);
+
+
     void deleteSolutionsByIdIn(List<Long> ids);
 
 }
