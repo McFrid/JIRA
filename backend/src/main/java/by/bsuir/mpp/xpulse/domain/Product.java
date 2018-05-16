@@ -30,14 +30,14 @@ public class Product implements Serializable {
     @Column(name = "name", length = 75, nullable = false)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "product_user",
                joinColumns = @JoinColumn(name="products_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="users_id", referencedColumnName="id"))
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private Set<Story> stories = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

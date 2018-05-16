@@ -35,7 +35,7 @@ public class Story implements Serializable {
     @ManyToOne
     private Product product;
 
-    @OneToMany(mappedBy = "story")
+    @OneToMany(mappedBy = "story", fetch = FetchType.EAGER)
     private Set<Issue> issues = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

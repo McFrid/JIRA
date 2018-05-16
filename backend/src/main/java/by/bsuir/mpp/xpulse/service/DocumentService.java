@@ -5,23 +5,19 @@ import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.jasper.builder.export.JasperCsvExporterBuilder;
 import net.sf.dynamicreports.jasper.builder.export.JasperPdfExporterBuilder;
 import net.sf.dynamicreports.jasper.builder.export.JasperXlsExporterBuilder;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import org.springframework.core.io.InputStreamResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.export;
 
 
 @Service
 public class DocumentService {
+
+    private Logger logger = LoggerFactory.getLogger(DocumentService.class);
 
     private ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -41,7 +37,9 @@ public class DocumentService {
     private void writeToCsv(JasperReportBuilder reportBuilder) throws Exception {
         JasperCsvExporterBuilder csvExporterBuilder = export
             .csvExporter(baos)
-            .setCharacterEncoding("UTF-8");
+            .setCharacterEncoding("UTF-16");
+
+        logger.debug("Writing to CSV");
 
         reportBuilder.toCsv(csvExporterBuilder);
     }
@@ -49,7 +47,13 @@ public class DocumentService {
     private void writeToXls(JasperReportBuilder reportBuilder) throws Exception {
         JasperXlsExporterBuilder xlsExporterBuilder = export
             .xlsExporter(baos)
+            .setDetectCellType(true)
+            .setIgnorePageMargins(true)
+            .setWhitePageBackground(false)
+            .setRemoveEmptySpaceBetweenColumns(true)
             .setCharacterEncoding("UTF-8");
+
+        logger.debug("Writing to XLS");
 
         reportBuilder.toXls(xlsExporterBuilder);
     }
@@ -58,6 +62,8 @@ public class DocumentService {
         JasperPdfExporterBuilder pdfExporterBuilder = export
             .pdfExporter(baos)
             .setCharacterEncoding("UTF-8");
+
+        logger.debug("Writing to PDF");
 
         reportBuilder.toPdf(pdfExporterBuilder);
     }
