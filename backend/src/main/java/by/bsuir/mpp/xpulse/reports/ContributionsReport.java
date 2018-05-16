@@ -58,7 +58,7 @@ public class ContributionsReport implements Report {
             //.pageHeader(cmp.text("Contributions of user with login " + login).setStyle(italicCenteredStyle))
             //.title(cmp.text("Contribution report").setStyle(headerStyle))
             //.pageFooter(cmp.text("© DreamTeam").setStyle(italicCenteredStyle))
-            .setDataSource(issueRepository.findAllByUserLogin(login));
+            .setDataSource(issueRepository.findIssuesByUserLogin(login));
     }
 
     private class ExpressionColumn extends AbstractSimpleExpression<String> {
