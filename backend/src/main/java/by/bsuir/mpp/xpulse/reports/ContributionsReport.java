@@ -1,5 +1,6 @@
 package by.bsuir.mpp.xpulse.reports;
 
+import by.bsuir.mpp.xpulse.reports.template.Templates;
 import by.bsuir.mpp.xpulse.repository.IssueRepository;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
@@ -31,30 +32,33 @@ public class ContributionsReport implements Report {
             login = (String)parameter;
         }
 
-        StyleBuilder boldStyle = stl.style().bold();
-        StyleBuilder headerStyle = stl.style().bold().setFontSize(18).setBottomPadding(10)
-            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
-        StyleBuilder boldCenteredStyle = stl.style(boldStyle)
-            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
-        StyleBuilder columnTitleStyle = stl.style(boldCenteredStyle)
-            .setBorder(stl.pen1Point())
-            .setBackgroundColor(Color.LIGHT_GRAY);
-        StyleBuilder italicCenteredStyle = stl.style().italic().setBottomPadding(5)
-            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+//        StyleBuilder boldStyle = stl.style().bold();
+//        StyleBuilder headerStyle = stl.style().bold().setFontSize(18).setBottomPadding(10)
+//            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+//        StyleBuilder boldCenteredStyle = stl.style(boldStyle)
+//            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+//        StyleBuilder columnTitleStyle = stl.style(boldCenteredStyle)
+//            .setBorder(stl.pen1Point())
+//            .setBackgroundColor(Color.LIGHT_GRAY);
+//        StyleBuilder italicCenteredStyle = stl.style().italic().setBottomPadding(5)
+//            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
         return report()
+            .setColumnTitleStyle(Templates.columnTitleStyle)
+            .ignorePageWidth()
+            .ignorePagination()
             .fields(
                 field("date", ZonedDateTime.class)
             )
-            .setColumnTitleStyle(columnTitleStyle)
-            .highlightDetailEvenRows()
+            //.setColumnTitleStyle(columnTitleStyle)
+            //.highlightDetailEvenRows()
             .columns(
                 col.column("Description", "description", type.stringType()),
                 col.column("Date", new ExpressionColumn())
             )
-            .pageHeader(cmp.text("Contributions of user with login " + login).setStyle(italicCenteredStyle))
-            .title(cmp.text("Contribution report").setStyle(headerStyle))
-            .pageFooter(cmp.text("© DreamTeam").setStyle(italicCenteredStyle))
-            .setDataSource(issueRepository.findIssuesByUserLogin(login));
+            //.pageHeader(cmp.text("Contributions of user with login " + login).setStyle(italicCenteredStyle))
+            //.title(cmp.text("Contribution report").setStyle(headerStyle))
+            //.pageFooter(cmp.text("© DreamTeam").setStyle(italicCenteredStyle))
+            .setDataSource(issueRepository.findAllByUserLogin(login));
     }
 
     private class ExpressionColumn extends AbstractSimpleExpression<String> {

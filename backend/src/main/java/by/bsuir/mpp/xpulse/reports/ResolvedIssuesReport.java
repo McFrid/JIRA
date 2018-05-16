@@ -2,6 +2,7 @@ package by.bsuir.mpp.xpulse.reports;
 
 import by.bsuir.mpp.xpulse.domain.Solution;
 import by.bsuir.mpp.xpulse.domain.Story;
+import by.bsuir.mpp.xpulse.reports.template.Templates;
 import by.bsuir.mpp.xpulse.repository.IssueRepository;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
@@ -31,23 +32,26 @@ public class ResolvedIssuesReport implements Report {
             login = (String)parameter;
         }
 
-        StyleBuilder boldStyle = stl.style().bold();
-        StyleBuilder headerStyle = stl.style().bold().setFontSize(18).setBottomPadding(10)
-            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
-        StyleBuilder boldCenteredStyle = stl.style(boldStyle)
-            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
-        StyleBuilder columnTitleStyle = stl.style(boldCenteredStyle)
-            .setBorder(stl.pen1Point())
-            .setBackgroundColor(Color.LIGHT_GRAY);
-        StyleBuilder italicCenteredStyle = stl.style().italic().setBottomPadding(5)
-            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+//        StyleBuilder boldStyle = stl.style().bold();
+//        StyleBuilder headerStyle = stl.style().bold().setFontSize(18).setBottomPadding(10)
+//            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+//        StyleBuilder boldCenteredStyle = stl.style(boldStyle)
+//            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+//        StyleBuilder columnTitleStyle = stl.style(boldCenteredStyle)
+//            .setBorder(stl.pen1Point())
+//            .setBackgroundColor(Color.LIGHT_GRAY);
+//        StyleBuilder italicCenteredStyle = stl.style().italic().setBottomPadding(5)
+//            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
         return report()
+            .setColumnTitleStyle(Templates.columnTitleStyle)
+            .ignorePageWidth()
+            .ignorePagination()
             .fields(
                 field("solution", Solution.class),
                 field("story", Story.class)
             )
-            .setColumnTitleStyle(columnTitleStyle)
-            .highlightDetailEvenRows()
+            //.setColumnTitleStyle(columnTitleStyle)
+            //.highlightDetailEvenRows()
             .columns(
                 col.column("Product", new AbstractSimpleExpression<String>() {
                     @Override
@@ -73,9 +77,9 @@ public class ResolvedIssuesReport implements Report {
                     }
                 })
             )
-            .pageHeader(cmp.text("Solutions of user with login " + login).setStyle(italicCenteredStyle))
-            .title(cmp.text("Resolved issues report").setStyle(headerStyle))
-            .pageFooter(cmp.text("© DreamTeam").setStyle(italicCenteredStyle))
+            //.pageHeader(cmp.text("Solutions of user with login " + login).setStyle(italicCenteredStyle))
+            //.title(cmp.text("Resolved issues report").setStyle(headerStyle))
+            //.pageFooter(cmp.text("© DreamTeam").setStyle(italicCenteredStyle))
             .setDataSource(issueRepository.findSolvedIssuesByLogin(login));
     }
 }
