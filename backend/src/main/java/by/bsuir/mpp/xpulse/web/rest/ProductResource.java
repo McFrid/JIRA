@@ -115,6 +115,13 @@ public class ProductResource {
         return new ResponseEntity<>(productRepository.count(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/products/count", params = "login")
+    @Timed
+    public ResponseEntity<Integer> getProductNumber(@RequestParam String login) {
+        log.debug("REST request to get a number of filtered Products");
+        return new ResponseEntity<>(productRepository.findProductsByUserLogin(login).size(), HttpStatus.OK);
+    }
+
     /**
      * GET  /products/:id : get the "id" product.
      *

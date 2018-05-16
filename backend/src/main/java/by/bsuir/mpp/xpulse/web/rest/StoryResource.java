@@ -115,6 +115,13 @@ public class StoryResource {
         return new ResponseEntity<>(storyRepository.count(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/stories/count", params = "login")
+    @Timed
+    public ResponseEntity<Integer> getStoryumber(@RequestParam String login) {
+        log.debug("REST request to get a number of filtered Stories");
+        return new ResponseEntity<>(storyRepository.findStoriesByUserLogin(login).size(), HttpStatus.OK);
+    }
+
     /**
      * GET  /stories/:id : get the "id" story.
      *
