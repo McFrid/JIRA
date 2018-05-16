@@ -6,6 +6,7 @@ import LabelDropdown from '../../components/common/LabelDropdown';
 
 import request from '../../utils/request';
 import account from '../../utils/account';
+import auth from "../../utils/auth";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,9 +39,18 @@ class HomePage extends React.Component {
   render() {
     const download = (name, url) => (
       <Button
-        onClick={() => request.get(url, {
-          format: this.state[name],
-        })}
+        onClick={() => {
+          const headers = new Headers();
+          headers.append('Authorization', `Bearer ${auth.getAccessToken()}`);
+          fetch(`http://localhost:8080/api${url}?format=${this.state[name]}`, {
+            headers,
+          })
+            .then(response => response.blob())
+            .then(blob => {
+              const objectUrl = URL.createObjectURL(blob);
+              window.open(objectUrl);
+            });
+        }}
       >
         Download
       </Button>
