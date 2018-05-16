@@ -163,7 +163,7 @@ class StoriesMainPage extends React.Component {
     });
 
     this.props
-      .removeProduct(id)
+      .removeStory(id)
       .then(() => this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage));
   }
 
