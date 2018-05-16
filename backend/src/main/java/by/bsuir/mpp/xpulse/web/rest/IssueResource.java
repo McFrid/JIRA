@@ -114,6 +114,13 @@ public class IssueResource {
         return new ResponseEntity<>(issueRepository.count(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/issues/count", params = "login")
+    @Timed
+    public ResponseEntity<Integer> getIssueNumber(@RequestParam String login) {
+        log.debug("REST request to get a number of filtered Issues");
+        return new ResponseEntity<>(issueRepository.findIssuesByUserLogin(login).size(), HttpStatus.OK);
+    }
+
     /**
      * GET  /issues/:id : get the "id" issue.
      *

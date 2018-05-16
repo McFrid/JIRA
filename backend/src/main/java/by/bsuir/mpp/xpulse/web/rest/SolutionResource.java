@@ -115,6 +115,13 @@ public class SolutionResource {
         return new ResponseEntity<>(solutionRepository.count(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/solutions/count", params = "login")
+    @Timed
+    public ResponseEntity<Integer> getSolutionNumber(@RequestParam String login) {
+        log.debug("REST request to get a number of filtered Solutions");
+        return new ResponseEntity<>(solutionRepository.findSolutionsByUserLogin(login).size(), HttpStatus.OK);
+    }
+
     /**
      * GET  /solutions/:id : get the "id" solution.
      *
