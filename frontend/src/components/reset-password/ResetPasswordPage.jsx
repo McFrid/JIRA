@@ -5,11 +5,11 @@ import {
 } from 'reactstrap';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import toastr from 'toastr';
 
 import LabelInput from '../common/LabelInput';
 import './ResetPassword.css';
-
-import toastr from 'toastr';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -28,6 +28,7 @@ class ResetPasswordPage extends React.Component {
       confirmPassword: '',
       isPasswordError: false,
       isConfirmPasswordError: false,
+      isPasswordReset: false,
     };
 
     this.onChangePassword = this.onChangePassword.bind(this);
@@ -59,7 +60,11 @@ class ResetPasswordPage extends React.Component {
       }
 
       this.props.resetPassword(this.props.match.params.key,
-        this.state.password);
+        this.state.password).then(() =>
+        this.setState({
+          isPasswordReset: true,
+        }), error =>
+        toastr.error(error.response.data.title));
     } else {
       this.setState({
         isPasswordError: !this.state.password,
@@ -70,6 +75,10 @@ class ResetPasswordPage extends React.Component {
 
   render() {
     const errorMessage = 'Field cannot be empty';
+
+    if (this.state.isPasswordReset) {
+      return (<Redirect to="/" />);
+    }
 
     return (
       <Wrapper>

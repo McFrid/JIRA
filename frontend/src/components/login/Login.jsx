@@ -5,6 +5,7 @@ import {
 } from 'reactstrap';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 
 import LabelInput from '../common/LabelInput';
 
