@@ -11,13 +11,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  login: (userName, password) => {
+  login: (userName, password) => 
     dispatch(awaitedRequestDecorator(notificationDecorator(
       actions.user.login(userName, password),
       null,
       'Invalid username or password',
-    )));
-  },
+    ), true)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
