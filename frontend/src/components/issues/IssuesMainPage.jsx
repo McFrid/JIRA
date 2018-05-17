@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import moment from 'moment';
 import styled from 'styled-components';
+import toastr from 'toastr'
 
 import IssuesTable from './IssuesTable';
 import IssuesForm from './IssuesForm';
@@ -150,6 +151,10 @@ class IssuesMainPage extends React.Component {
   }
 
   onAddIssue() {
+    if (!this.state.description || !this.state.story) {
+      return toastr.warning('You should fill all required fields');
+    }
+
     this.setState({
       isActiveRequest: true,
     });
@@ -170,6 +175,10 @@ class IssuesMainPage extends React.Component {
   }
 
   onUpdateIssue() {
+    if (!this.state.description || !this.state.story) {
+      return toastr.warning('You should fill all required fields');
+    }
+
     this.setState({
       isActiveRequest: true,
     });

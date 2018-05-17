@@ -10,6 +10,7 @@ import DataModal from '../common/DataModal';
 import Spinner from '../common/Spinner';
 
 import account from '../../utils/account';
+import toastr from "toastr";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -137,6 +138,10 @@ class StoriesMainPage extends React.Component {
   }
 
   onAddStory() {
+    if (!this.state.description || !this.state.product) {
+      return toastr.warning('You should fill all required fields');
+    }
+
     this.setState({
       isActiveRequest: true,
     });
@@ -153,6 +158,10 @@ class StoriesMainPage extends React.Component {
   }
 
   onUpdateStory() {
+    if (!this.state.description || !this.state.product) {
+      return toastr.warning('You should fill all required fields');
+    }
+
     this.setState({
       isActiveRequest: true,
     });

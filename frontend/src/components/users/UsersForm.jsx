@@ -22,6 +22,7 @@ const UsersForm = props => (
         inputId="users-table-email"
         placeholder="Enter user email"
         value={props.email}
+        isRequired={true}
         onInputChange={props.onInputChange.bind(this, 'email')}
       />
       <LabelInput
@@ -31,6 +32,7 @@ const UsersForm = props => (
         inputId="users-table-first-name"
         placeholder="Enter user first name"
         value={props.firstName}
+        isRequired={true}
         onInputChange={props.onInputChange.bind(this, 'firstName')}
       />
       <LabelInput
@@ -40,6 +42,7 @@ const UsersForm = props => (
         inputId="users-table-last-name"
         placeholder="Enter user last name"
         value={props.lastName}
+        isRequired={true}
         onInputChange={props.onInputChange.bind(this, 'lastName')}
       />
       <LabelInput
@@ -49,6 +52,7 @@ const UsersForm = props => (
         inputId="users-table-login"
         placeholder="Enter user login"
         value={props.login}
+        isRequired={true}
         onInputChange={props.onInputChange.bind(this, 'login')}
       />
       <LabelDropdown
@@ -59,10 +63,11 @@ const UsersForm = props => (
           value: getAuthority(role),
         }))}
         selectedKey={props.currentRoleId}
+        isRequired={true}
         onChange={props.onDropdownSelectionChange.bind(this, 'roleId')}
       />
       <FormGroup>
-        <Label>Birth Day</Label><br />
+        <Label>Birth Day *</Label><br />
 
         <DatePicker
           value={props.birthday}

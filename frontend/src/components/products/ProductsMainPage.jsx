@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import styled from 'styled-components';
+import toastr from 'toastr';
 
 import ProductsTable from './ProductsTable';
 import ProductsForm from './ProductsForm';
@@ -113,6 +114,10 @@ class ProductsMainPage extends React.Component {
   }
 
   onAddProduct() {
+    if (!this.state.name) {
+      return toastr.warning('You should fill all required fields');
+    }
+
     this.setState({
       isActiveRequest: true,
     });
@@ -132,6 +137,10 @@ class ProductsMainPage extends React.Component {
   }
 
   onUpdateProduct() {
+    if (!this.state.name) {
+      return toastr.warning('You should fill all required fields');
+    }
+
     this.setState({
       isActiveRequest: true,
     });

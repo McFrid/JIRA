@@ -4,6 +4,7 @@ import { Button } from 'reactstrap';
 import styled from 'styled-components';
 
 import moment from 'moment';
+import toastr from 'toastr';
 
 import UsersTable from './UsersTable';
 import UsersForm from './UsersForm';
@@ -143,6 +144,11 @@ class UsersMainPage extends React.Component {
   }
 
   onAddUser() {
+    if (!this.state.email || !this.state.firstName || !this.state.lastName ||
+      !this.state.login || !this.state.roleId || !this.state.birthday) {
+      return toastr.warning('You should fill all required fields');
+    }
+
     this.setState({
       isActiveRequest: true,
     });
@@ -160,6 +166,11 @@ class UsersMainPage extends React.Component {
   }
 
   onUpdateUser() {
+    if (!this.state.email || !this.state.firstName || !this.state.lastName ||
+      !this.state.login || !this.state.roleId || !this.state.birthday) {
+      return toastr.warning('You should fill all required fields');
+    }
+
     this.setState({
       isActiveRequest: true,
     });
