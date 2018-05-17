@@ -46,6 +46,12 @@ const mapDispatchToProps = dispatch => ({
       'Successfully deleted story',
       'The story is connected to some other entity',
     )))),
+  removeStories: id =>
+    dispatch(awaitedRequestDecorator(awaitedStoryActionsDecorator(notificationDecorator(
+      actions.story.removeStory(id),
+      'Successfully deleted story',
+      'The story is connected to some other entity',
+    )))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesMainPage);

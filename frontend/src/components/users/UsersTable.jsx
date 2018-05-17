@@ -119,7 +119,7 @@ UsersTable.defaultProps = {
   roles: [],
   updateUser: null,
   removeUser: null,
-  removeMultipleUsers: PropTypes.func,
+  removeMultipleUsers: null,
 };
 
 export default UsersTable;
