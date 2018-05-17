@@ -251,6 +251,7 @@ class UsersMainPage extends React.Component {
           onCancel={this.onCancelAddUser}
         >
           <UsersForm
+            isUpdate={false}
             email={this.state.email}
             firstName={this.state.firstName}
             lastName={this.state.lastName}
@@ -274,6 +275,7 @@ class UsersMainPage extends React.Component {
           onCancel={this.onCancelUpdateUser}
         >
           <UsersForm
+            isUpdate={true}
             email={this.state.email}
             firstName={this.state.firstName}
             lastName={this.state.lastName}
