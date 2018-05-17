@@ -10,6 +10,8 @@ import issue from './issues/issue';
 import issues from './issues/issues';
 import solution from './solutions/solution';
 import solutions from './solutions/solutions';
+import templates from './mails/templates';
+import email from './mails/email';
 
 export default {
   user,
@@ -24,4 +26,6 @@ export default {
   issues,
   solution,
   solutions,
+  templates,
+  email,
 };
