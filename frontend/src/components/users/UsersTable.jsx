@@ -40,6 +40,16 @@ class UsersTable extends React.Component {
         )}
       </div>
     );
+
+    this.multiCheckAction = userIds => (
+      <Button color="danger" size="sm" onClick={e => this.onDeleteSelectedClick(e, userIds)}>
+        Delete selected
+      </Button>
+    );
+  }
+
+  onDeleteSelectedClick(event, userIds) {
+    this.props.removeMultipleUsers(userIds);
   }
 
   onEditClick(id) {
@@ -67,6 +77,8 @@ class UsersTable extends React.Component {
     return (
       <React.Fragment>
         <DataTable
+          multiCheckBoxes
+          multiCheckAction={this.multiCheckAction}
           columns={this.columns}
           columnNames={this.columnNames}
           data={usersInfo}
@@ -99,6 +111,7 @@ UsersTable.propTypes = {
   roles: PropTypes.arrayOf(PropTypes.string),
   updateUser: PropTypes.func,
   removeUser: PropTypes.func,
+  removeMultipleUsers: PropTypes.func,
 };
 
 UsersTable.defaultProps = {
@@ -106,6 +119,7 @@ UsersTable.defaultProps = {
   roles: [],
   updateUser: null,
   removeUser: null,
+  removeMultipleUsers: null,
 };
 
 export default UsersTable;

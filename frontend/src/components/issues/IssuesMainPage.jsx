@@ -83,6 +83,7 @@ class IssuesMainPage extends React.Component {
     this.onDevelopersChange = this.onDevelopersChange.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.onRemoveIssue = this.onRemoveIssue.bind(this);
+    this.onRemoveMultipleIssues = this.onRemoveMultipleIssues.bind(this);
   }
 
   componentDidMount() {
@@ -103,6 +104,18 @@ class IssuesMainPage extends React.Component {
     this.setState({
       [name]: event.target.value,
     });
+  }
+
+  onRemoveMultipleIssues(ids) {
+    this.setState({
+      isActiveRequest: true,
+    });
+
+    this.props
+      .removeMultipleIssues(ids)
+      .then(() => account.getAccountRole() === ROLE_MANAGER
+        ? this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage)
+        : this.props.issuesActions.fetchIssuesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   onStoryChange(event) {
@@ -347,6 +360,7 @@ class IssuesMainPage extends React.Component {
           onChangePage={this.onChangePage}
           updateIssue={this.onToggleUpdateIssueModal}
           removeIssue={this.onRemoveIssue}
+          removeMultipleIssues={this.onRemoveMultipleIssues}
         />
 
         {account.getAccountRole() === ROLE_MANAGER && (
@@ -403,6 +417,7 @@ IssuesMainPage.propTypes = {
   storeIssue: PropTypes.func,
   updateIssue: PropTypes.func,
   removeIssue: PropTypes.func,
+  removeMultipleIssues: PropTypes.func,
   storeSolution: PropTypes.func,
   updateSolution: PropTypes.func,
   areIssuesFetching: PropTypes.bool,
@@ -427,6 +442,7 @@ IssuesMainPage.defaultProps = {
   storeIssue: null,
   updateIssue: null,
   removeIssue: null,
+  removeMultipleIssues: null,
   storeSolution: null,
   updateSolution: null,
   areIssuesFetching: false,

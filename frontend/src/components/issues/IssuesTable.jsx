@@ -43,6 +43,16 @@ class IssuesTable extends React.Component {
         )}
       </div>
     );
+
+    this.multiCheckAction = issueIds => (
+      <Button color="danger" size="sm" onClick={e => this.onDeleteSelectedClick(e, issueIds)}>
+        Delete selected
+      </Button>
+    );
+  }
+
+  onDeleteSelectedClick(event, issueIds) {
+    this.props.removeMultipleIssues(issueIds);
   }
 
   onEditClick(id) {
@@ -73,6 +83,8 @@ class IssuesTable extends React.Component {
     return (
       <React.Fragment>
         <DataTable
+          multiCheckBoxes
+          multiCheckAction={this.multiCheckAction}
           columns={this.columns}
           columnNames={this.columnNames}
           data={issuesInfo}
@@ -112,6 +124,7 @@ IssuesTable.propTypes = {
   })),
   updateIssue: PropTypes.func,
   removeIssue: PropTypes.func,
+  removeMultipleIssues: PropTypes.func,
 };
 
 IssuesTable.defaultProps = {
@@ -120,6 +133,7 @@ IssuesTable.defaultProps = {
   solutions: [],
   updateIssue: null,
   removeIssue: null,
+  removeMultipleUsers: null,
 };
 
 export default IssuesTable;

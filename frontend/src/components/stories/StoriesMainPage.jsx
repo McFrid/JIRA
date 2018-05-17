@@ -78,6 +78,7 @@ class StoriesMainPage extends React.Component {
     this.onProductChange = this.onProductChange.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.onRemoveStory = this.onRemoveStory.bind(this);
+    this.onRemoveMultipleStories = this.onRemoveMultipleStories.bind(this);
   }
 
   componentDidMount() {
@@ -189,6 +190,18 @@ class StoriesMainPage extends React.Component {
         : this.props.storiesActions.fetchStoriesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
+  onRemoveMultipleStories(ids) {
+    this.setState({
+      isActiveRequest: true,
+    });
+
+    this.props
+      .removeMultipleStories(ids)
+      .then(() => account.getAccountRole() === ROLE_MANAGER
+        ? this.props.storiesActions.fetchStoriesPage(0, this.state.rowPerPage)
+        : this.props.storiesActions.fetchStoriesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage));
+  }
+
   setDefaultProperties() {
     const newState = {
       description: '',
@@ -270,6 +283,7 @@ class StoriesMainPage extends React.Component {
           onChangePage={this.onChangePage}
           updateStory={this.onToggleUpdateStoryModal}
           removeStory={this.onRemoveStory}
+          removeMultipleStories={this.onRemoveMultipleStories}
         />
 
         {account.getAccountRole() === ROLE_CUSTOMER && (
@@ -318,6 +332,7 @@ StoriesMainPage.propTypes = {
   storeStory: PropTypes.func,
   updateStory: PropTypes.func,
   removeStory: PropTypes.func,
+  removeMultipleStories: PropTypes.func,
   areProductsFetching: PropTypes.bool,
   areProductsLoaded: PropTypes.bool,
   areStoriesFetching: PropTypes.bool,
@@ -335,6 +350,7 @@ StoriesMainPage.defaultProps = {
   storeStory: null,
   updateStory: null,
   removeStory: null,
+  removeMultipleStories: null,
   areProductsFetching: false,
   areProductsLoaded: false,
   areStoriesFetching: false,

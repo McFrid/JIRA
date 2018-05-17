@@ -24,6 +24,26 @@ const fetchSolutions = () => async (dispatch) => {
   }
 };
 
+const removeSolutions = ids => async (dispatch) => {
+  try {
+    await solutionsService.removeMultipleSolutions(ids);
+
+    dispatch({
+      type: actionTypes.solutions.SOLUTIONS_REMOVE,
+      payload: {
+        ids,
+      }
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+
+    throw error;
+  }
+}
+
 export default {
   fetchSolutions,
+  removeSolutions,
 };

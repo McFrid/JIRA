@@ -67,6 +67,7 @@ class ProductsMainPage extends React.Component {
     this.onDevelopersChange = this.onDevelopersChange.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.onRemoveProduct = this.onRemoveProduct.bind(this);
+    this.onRemoveMultipleProducts = this.onRemoveMultipleProducts.bind(this);
   }
 
   componentDidMount() {
@@ -80,6 +81,16 @@ class ProductsMainPage extends React.Component {
     this.setState({
       [name]: event.target.value,
     });
+  }
+
+  onRemoveMultipleProducts(ids) {
+    this.setState({
+      isActiveRequest: true,
+    });
+
+    this.props
+      .removeMultipleProducts(ids)
+      .then(() => this.props.productsActions.fetchProductsPage(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   onToggleModal() {
@@ -263,6 +274,7 @@ class ProductsMainPage extends React.Component {
           onChangePage={this.onChangePage}
           updateProduct={this.onToggleUpdateProductModal}
           removeProduct={this.onRemoveProduct}
+          removeMultipleProducts={this.onRemoveMultipleProducts}
         />
 
         {account.getAccountRole() === ROLE_CUSTOMER && (
@@ -302,6 +314,7 @@ ProductsMainPage.propTypes = {
   storeProduct: PropTypes.func,
   updateProduct: PropTypes.func,
   removeProduct: PropTypes.func,
+  removeMultipleProducts: PropTypes.func,
   areUsersFetching: PropTypes.bool,
   areUsersLoaded: PropTypes.bool,
   areProductsFetching: PropTypes.bool,
@@ -319,6 +332,7 @@ ProductsMainPage.defaultProps = {
   storeProduct: null,
   updateProduct: null,
   removeProduct: null,
+  removeMultipleProducts: null,
   areUsersFetching: false,
   areUsersLoaded: false,
   areProductsFetching: false,

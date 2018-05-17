@@ -16,6 +16,8 @@ const updateProduct = product => request.put(PRODUCTS_BASE, product);
 
 const removeProduct = id => request.delete(`${PRODUCTS_BASE}/${id}`);
 
+const removeMultipleProducts = ids => request.delete(`${PRODUCTS_BASE}`, ids);
+
 const fetchProductsCount = login => request.get(`${PRODUCTS_BASE}/count`, {
   login,
 });
@@ -27,4 +29,5 @@ export default {
   updateProduct,
   removeProduct,
   fetchProductsCount,
+  removeMultipleProducts,
 };

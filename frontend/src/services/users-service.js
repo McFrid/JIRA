@@ -18,6 +18,8 @@ const removeUser = login => request.delete(`${USERS_BASE}/${login}`);
 
 const fetchUsersCount = () => request.get(`${USERS_BASE}/count`);
 
+const removeMultipleUsers = ids => request.delete(`${USERS_BASE}`, ids);
+
 export default {
   fetchUsers,
   fetchUsersPage,
@@ -25,4 +27,5 @@ export default {
   updateUser,
   removeUser,
   fetchUsersCount,
+  removeMultipleUsers,
 };

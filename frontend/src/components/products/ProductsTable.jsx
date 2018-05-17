@@ -36,6 +36,16 @@ class ProductsTable extends React.Component {
         )}
       </div>
     );
+
+    this.multiCheckAction = productIds => (
+      <Button color="danger" size="sm" onClick={e => this.onDeleteSelectedClick(e, productIds)}>
+        Delete selected
+      </Button>
+    );
+  }
+
+  onDeleteSelectedClick(event, productIds) {
+    this.props.removeMultipleProducts(productIds);
   }
 
   onEditClick(id) {
@@ -65,6 +75,8 @@ class ProductsTable extends React.Component {
     return (
       <React.Fragment>
         <DataTable
+          multiCheckBoxes
+          multiCheckAction={this.multiCheckAction}
           columns={this.columns}
           columnNames={this.columnNames}
           data={productsInfo}
@@ -93,12 +105,14 @@ ProductsTable.propTypes = {
   })),
   updateProduct: PropTypes.func,
   removeProduct: PropTypes.func,
+  removeMultipleProducts: PropTypes.func,
 };
 
 ProductsTable.defaultProps = {
   products: [],
   updateProduct: null,
   removeProduct: null,
+  removeMultipleProducts: null,
 };
 
 export default ProductsTable;

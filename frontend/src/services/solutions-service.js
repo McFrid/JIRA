@@ -10,9 +10,12 @@ const updateSolution = solution => request.put(SOLUTIONS_BASE, solution);
 
 const removeSolution = id => request.delete(`${SOLUTIONS_BASE}/${id}`);
 
+const removeMultipleSolutions = ids => request.delete(`${SOLUTIONS_BASE}`, ids);
+
 export default {
   fetchSolutions,
   saveSolution,
   updateSolution,
   removeSolution,
+  removeMultipleSolutions,
 };

@@ -35,6 +35,16 @@ class StoriesTable extends React.Component {
         )}
       </div>
     );
+
+    this.multiCheckAction = storyIds => (
+      <Button color="danger" size="sm" onClick={e => this.onDeleteSelectedClick(e, storyIds)}>
+        Delete selected
+      </Button>
+    );
+  }
+
+  onDeleteSelectedClick(event, storyIds) {
+    this.props.removeMultipleStories(storyIds);
   }
 
   onEditClick(id) {
@@ -57,6 +67,8 @@ class StoriesTable extends React.Component {
     return (
       <React.Fragment>
         <DataTable
+          multiCheckBoxes
+          multiCheckAction={this.multiCheckAction}
           columns={this.columns}
           columnNames={this.columnNames}
           data={storiesInfo}
@@ -97,6 +109,7 @@ StoriesTable.propTypes = {
   })),
   updateStory: PropTypes.func,
   removeStory: PropTypes.func,
+  removeMultipleStories: PropTypes.func,
 };
 
 StoriesTable.defaultProps = {
@@ -104,6 +117,7 @@ StoriesTable.defaultProps = {
   products: [],
   updateStory: null,
   removeStory: null,
+  removeMultipleStories: null,
 };
 
 export default StoriesTable;

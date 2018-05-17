@@ -86,6 +86,13 @@ const productsState = (state = initState, action) => {
         count: action.payload.count,
       };
 
+    case actionTypes.products.PRODUCTS_REMOVE:
+      return {
+        ...state,
+        items: state.items.filter(item =>
+          !action.payload.ids.includes(item.id)),
+      };
+
     default:
       return state;
   }

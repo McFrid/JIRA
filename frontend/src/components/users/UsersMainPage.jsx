@@ -86,6 +86,7 @@ class UsersMainPage extends React.Component {
     this.onDateChange = this.onDateChange.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.onRemoveUser = this.onRemoveUser.bind(this);
+    this.onRemoveMultipleUsers = this.onRemoveMultipleUsers.bind(this);
   }
 
   componentDidMount() {
@@ -198,6 +199,16 @@ class UsersMainPage extends React.Component {
       .then(() => this.props.usersActions.fetchUsersPage(0, this.state.rowPerPage));
   }
 
+  onRemoveMultipleUsers(ids) {
+    this.setState({
+      isActiveRequest: true,
+    });
+
+    this.props
+      .removeMultipleUsers(ids)
+      .then(() => this.props.usersActions.fetchUsersPage(0, this.state.rowPerPage));
+  }
+
   onDateChange(date) {
     this.setState({
       birthday: date,
@@ -301,6 +312,7 @@ class UsersMainPage extends React.Component {
           onChangePage={this.onChangePage}
           updateUser={this.onToggleUpdateUserModal}
           removeUser={this.onRemoveUser}
+          removeMultipleUsers={this.onRemoveMultipleUsers}
         />
 
         <ButtonWrapper>
@@ -329,6 +341,7 @@ UsersMainPage.propTypes = {
   storeUser: PropTypes.func,
   updateUser: PropTypes.func,
   removeUser: PropTypes.func,
+  removeMultipleUsers: PropTypes.func,
   areUsersFetching: PropTypes.bool,
   areUsersLoaded: PropTypes.bool,
   areProductsFetching: PropTypes.bool,
@@ -348,6 +361,7 @@ UsersMainPage.defaultProps = {
   storeUser: null,
   updateUser: null,
   removeUser: null,
+  removeMultipleUsers: null,
   areUsersFetching: false,
   areUsersLoaded: false,
   areProductsFetching: false,
