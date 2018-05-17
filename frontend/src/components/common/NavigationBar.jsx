@@ -14,12 +14,15 @@ import {
   Label,
   Input,
 } from 'reactstrap';
+import toastr from 'toastr';
 
 import DataModal from './DataModal';
 
 import account from '../../utils/account';
 import LabelMultiSelect from './LabelMultiSelect';
 import LabelDropdown from './LabelDropdown';
+
+const ROLE_ADMIN = 'ROLE_ADMIN';
 
 class NavigationBar extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -76,7 +79,9 @@ class NavigationBar extends React.Component {
 
   componentDidMount() {
     this.props.usersActions.fetchUsers();
-    this.props.templatesActions.fetchTemplates();
+    if (account.getAccountUsername() === ROLE_ADMIN) {
+      this.props.templatesActions.fetchTemplates();
+    }
   }
 
   onSendMailClick(e) {
@@ -111,6 +116,11 @@ class NavigationBar extends React.Component {
   }
 
   onSendMail() {
+    if (!this.state.title || (this.state.isTemplate && !this.state.template) ||
+      (!this.state.isTemplate && !this.state.mail) || !this.state.users.length) {
+      return toastr.warning('You should fill all required fields');
+    }
+
     this.setState({
       isActiveRequest: true,
     });
@@ -187,9 +197,12 @@ class NavigationBar extends React.Component {
                   </NavItem>
                 ))}
             </Nav>
-            <Nav className="ml-auto" navbar>
-              <Button color="primary" href="#" onClick={this.onSendMailClick}>Send Mail</Button>
-            </Nav>
+
+            {account.getAccountRole() === ROLE_ADMIN && (
+              <Nav className="ml-auto" navbar>
+                <Button color="primary" href="#" onClick={this.onSendMailClick}>Send Mail</Button>
+              </Nav>
+            )}
             <Nav className="ml-auto" navbar>
               <span>
                 {this.props.username} ( <a href="/" onClick={this.onLogoutClick}>Logout</a> )
@@ -208,6 +221,20 @@ class NavigationBar extends React.Component {
             onConfirm={this.onSendMail}
             onCancel={this.onCancelSendMail}
           >
+            <FormGroup>
+              <Label for="email-title">Title *</Label>
+
+              <Input
+                type="text"
+                name="email-title'"
+                id="email-title"
+                placeholder="Enter title"
+                value={this.state.title}
+                onChange={this.onChangeEmailTitle}
+              />
+
+            </FormGroup>
+
             <LabelMultiSelect
               labelName="Users"
               inputName="users"
@@ -240,6 +267,7 @@ class NavigationBar extends React.Component {
                   key: template,
                   value: template,
                 }))}
+                isRequired={true}
                 selectedKey={this.state.template ? this.state.template : null}
                 onChange={this.onTemplateChange}
               />
@@ -248,20 +276,7 @@ class NavigationBar extends React.Component {
             {!this.state.isTemplate && (
               <React.Fragment>
                 <FormGroup>
-                  <Label for="email-title">Title</Label>
-
-                  <Input
-                    type="text"
-                    name="email-title'"
-                    id="email-title"
-                    placeholder="Enter title"
-                    value={this.state.title}
-                    onChange={this.onChangeEmailTitle}
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  <Label for="textarea">Mail:</Label>
+                  <Label for="textarea">Mail *</Label>
                   <Input
                     type="textarea"
                     value={this.state.mail}

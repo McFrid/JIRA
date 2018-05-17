@@ -4,7 +4,7 @@ import by.bsuir.mpp.xpulse.domain.User;
 
 import by.bsuir.mpp.xpulse.repository.UserRepository;
 import io.github.jhipster.config.JHipsterProperties;
-
+import by.bsuir.mpp.xpulse.config.Constants;
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,12 +81,18 @@ public class MailService {
 
     @Async
     public void sendEmailFromTemplate(User user, String templateName, String titleKey) {
-        Locale locale = Locale.forLanguageTag(user.getLangKey());
-        Context context = new Context(locale);
+        Locale locale = Locale.forLanguageTag(Constants.DEFAULT_LANGUAGE);
+        Context context = new Context();
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process(templateName, context);
-        String subject = messageSource.getMessage(titleKey, null, locale);
+        String subject;
+        if (titleKey.contains(".")) {
+            subject = messageSource.getMessage(titleKey, null, locale);
+        }
+        else {
+            subject = titleKey;
+        }
         sendEmail(user.getEmail(), subject, content, false, true);
 
     }

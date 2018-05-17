@@ -55,17 +55,19 @@ const UsersForm = props => (
         isRequired={true}
         onInputChange={props.onInputChange.bind(this, 'login')}
       />
-      <LabelDropdown
-        labelName="Role"
-        dropdownId="users-table-role"
-        dropdownData={props.roles.map(role => ({
-          key: role,
-          value: getAuthority(role),
-        }))}
-        selectedKey={props.currentRoleId}
-        isRequired={true}
-        onChange={props.onDropdownSelectionChange.bind(this, 'roleId')}
-      />
+      {!props.isUpdate && (
+        <LabelDropdown
+          labelName="Role"
+          dropdownId="users-table-role"
+          dropdownData={props.roles.map(role => ({
+            key: role,
+            value: getAuthority(role),
+          }))}
+          selectedKey={props.currentRoleId}
+          isRequired={true}
+          onChange={props.onDropdownSelectionChange.bind(this, 'roleId')}
+        />
+      )}
       <FormGroup>
         <Label>Birth Day *</Label><br />
 
