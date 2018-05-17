@@ -91,6 +91,16 @@ const solutions = {
   SOLUTIONS_STORE: 'SOLUTIONS_STORE',
 };
 
+const mail = {
+  MAIL_REQUEST: 'MAIL_REQUEST',
+  MAIL_REQUEST_ERROR: 'MAIL_REQUEST_ERROR',
+};
+
+const templates = {
+  TEMPLATES_FETCH: 'TEMPLATES_FETCH',
+  TEMPLATES_STORE: 'TEMPLATES_STORE',
+};
+
 export default {
   user,
   users,
@@ -105,4 +115,6 @@ export default {
   issues,
   solution,
   solutions,
+  mail,
+  templates,
 };

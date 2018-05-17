@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import NavigationBar from '../../components/common/NavigationBar';
+import NavigationBar from '../../containers/navbar/NavbarContainer';
 import UsersTableContainer from '../../containers/users/UsersContainer';
 import LoginContainer from '../../containers/login/LoginContainer';
 import ProductsContainer from '../../containers/products/ProductsContainer';
@@ -12,7 +12,7 @@ import ResetPasswordContainer from '../../containers/reset-password/ResetPasswor
 
 import Spinner from '../../components/common/Spinner';
 import FullScreenSpinner from '../../components/common/FullScreenSpinner';
-import HomePage from '../../components/HomePage/HomePage';
+import HomePage from '../home-page/HomePage';
 
 import RouteCondition from '../../components/common/RouteCondition';
 
