@@ -53,6 +53,7 @@ class ProductsMainPage extends React.Component {
       developers: [],
       currentPage: 1,
       rowPerPage: 3,
+      accountUsername: account.getAccountUsername(),
     };
 
     this.onToggleModal = this.onToggleModal.bind(this);
@@ -68,10 +69,10 @@ class ProductsMainPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage);
+    this.props.productsActions.fetchProductsPage(this.state.accountUsername, 0, this.state.rowPerPage);
     this.props.usersActions.fetchUsers();
     this.props.storiesActions.fetchStories();
-    this.props.productsActions.fetchProductsCount();
+    this.props.productsActions.fetchProductsCount(this.state.accountUsername);
   }
 
   onInputChange(name, event) {
@@ -127,7 +128,7 @@ class ProductsMainPage extends React.Component {
           customer,
         ],
       })
-      .then(() => this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage));
+      .then(() => this.props.productsActions.fetchProductsPage(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   onUpdateProduct() {
@@ -146,7 +147,7 @@ class ProductsMainPage extends React.Component {
           customer,
         ],
       })
-      .then(() => this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage));
+      .then(() => this.props.productsActions.fetchProductsPage(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   onRemoveProduct(id) {
@@ -156,7 +157,7 @@ class ProductsMainPage extends React.Component {
 
     this.props
       .removeProduct(id)
-      .then(() => this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage));
+      .then(() => this.props.productsActions.fetchProductsPage(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   onDevelopersChange(event) {
@@ -189,7 +190,7 @@ class ProductsMainPage extends React.Component {
       currentPage: index,
     });
 
-    this.props.productsActions.fetchProductsPage(index - 1, this.state.rowPerPage);
+    this.props.productsActions.fetchProductsPage(this.state.accountUsername, index - 1, this.state.rowPerPage);
   }
 
   render() {
@@ -245,8 +246,7 @@ class ProductsMainPage extends React.Component {
         </DataModal>
 
         <ProductsTable
-          products={this.props.products.filter(product =>
-            !!product.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)))}
+          products={this.props.products}
           stories={this.props.stories}
           currentPage={this.state.currentPage}
           rowPerPage={this.state.rowPerPage}

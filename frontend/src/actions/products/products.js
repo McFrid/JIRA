@@ -24,13 +24,13 @@ const fetchProducts = () => async (dispatch) => {
   }
 };
 
-const fetchProductsPage = (page, size) => async (dispatch) => {
+const fetchProductsPage = (login, page, size) => async (dispatch) => {
   dispatch({
     type: actionTypes.products.PRODUCTS_FETCH,
   });
 
   try {
-    const products = await productsService.fetchProductsPage(page, size);
+    const products = await productsService.fetchProductsPage(login, page, size);
     dispatch(storeProducts(products.data));
   } catch (error) {
     if (error.response.status === 401) {
@@ -39,13 +39,13 @@ const fetchProductsPage = (page, size) => async (dispatch) => {
   }
 };
 
-const fetchProductsCount = () => async (dispatch) => {
+const fetchProductsCount = login => async (dispatch) => {
   dispatch({
     type: actionTypes.products.PRODUCTS_COUNT_FETCH,
   });
 
   try {
-    const productsCount = await productsService.fetchProductsCount();
+    const productsCount = await productsService.fetchProductsCount(login);
     dispatch({
       type: actionTypes.products.PRODUCTS_COUNT_STORE,
       payload: {

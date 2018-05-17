@@ -4,7 +4,8 @@ const PRODUCTS_BASE = 'products';
 
 const fetchProducts = () => request.get(PRODUCTS_BASE);
 
-const fetchProductsPage = (page, size) => request.get(`${PRODUCTS_BASE}`, {
+const fetchProductsPage = (login, page, size) => request.get(`${PRODUCTS_BASE}`, {
+  login,
   page,
   size,
 });
@@ -15,7 +16,9 @@ const updateProduct = product => request.put(PRODUCTS_BASE, product);
 
 const removeProduct = id => request.delete(`${PRODUCTS_BASE}/${id}`);
 
-const fetchProductsCount = () => request.get(`${PRODUCTS_BASE}/count`);
+const fetchProductsCount = login => request.get(`${PRODUCTS_BASE}/count`, {
+  login,
+});
 
 export default {
   fetchProducts,

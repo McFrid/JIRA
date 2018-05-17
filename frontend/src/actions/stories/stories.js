@@ -39,6 +39,21 @@ const fetchStoriesPage = (page, size) => async (dispatch) => {
   }
 };
 
+const fetchStoriesPageByLogin = (login, page, size) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.stories.STORIES_FETCH,
+  });
+
+  try {
+    const stories = await storiesService.fetchStoriesPageByLogin(login, page, size);
+    dispatch(storeStories(stories.data));
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+};
+
 const fetchStoriesCount = () => async (dispatch) => {
   dispatch({
     type: actionTypes.stories.STORIES_COUNT_FETCH,
@@ -59,8 +74,30 @@ const fetchStoriesCount = () => async (dispatch) => {
   }
 };
 
+const fetchStoriesCountByLogin = login => async (dispatch) => {
+  dispatch({
+    type: actionTypes.stories.STORIES_COUNT_FETCH,
+  });
+
+  try {
+    const storiesCount = await storiesService.fetchStoriesCountByLogin(login);
+    dispatch({
+      type: actionTypes.stories.STORIES_COUNT_STORE,
+      payload: {
+        count: storiesCount.data,
+      },
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+};
+
 export default {
   fetchStories,
   fetchStoriesPage,
+  fetchStoriesPageByLogin,
   fetchStoriesCount,
+  fetchStoriesCountByLogin,
 };
