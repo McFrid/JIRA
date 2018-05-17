@@ -49,6 +49,12 @@ const mapDispatchToProps = dispatch => ({
       'Successfully removed user',
       'The user is connected to some other entity',
     )))),
+  removeMultipleUsers: ids =>
+    dispatch(awaitedRequestDecorator(awaitedUserActionsDecorator(notificationDecorator(
+      actions.users.removeUsers(ids),
+      'Successfully removed users',
+      'Some user is connected to an other entity',
+    )))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersMainPage);

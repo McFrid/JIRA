@@ -11,6 +11,8 @@ const awaitedUserActionsDecorator = thunk => async (dispatch) => {
     dispatch({
       type: actionTypes.user.USER_REQUEST_ERROR,
     });
+
+    throw e;
   }
 };
 

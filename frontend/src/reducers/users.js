@@ -86,6 +86,13 @@ const userState = (state = initState, action) => {
         count: action.payload.count - 1,
       };
 
+    case actionTypes.users.USERS_REMOVE:
+      return {
+        ...state,
+        items: state.items.filter(item =>
+          !action.payload.ids.includes(item.id)),
+      };
+
     default:
       return state;
   }

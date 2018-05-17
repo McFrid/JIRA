@@ -59,8 +59,27 @@ const fetchUsersCount = () => async (dispatch) => {
   }
 };
 
+const removeUsers = ids => async (dispatch) => {
+  try {
+    await usersService.removeMultipleUsers(ids);
+
+    dispatch({
+      type: actionTypes.users.USERS_REMOVE,
+      payload: {
+        ids,
+      }
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+}
+
+
 export default {
   fetchUsers,
   fetchUsersPage,
   fetchUsersCount,
+  removeUsers,
 };
