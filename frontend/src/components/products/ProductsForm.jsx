@@ -18,6 +18,7 @@ const ProductsForm = props => (
         inputId="products-table-name"
         placeholder="Enter user name"
         value={props.name}
+        isRequired={true}
         onInputChange={props.onInputChange.bind(this, 'name')}
       />
 

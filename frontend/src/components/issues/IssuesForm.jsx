@@ -23,6 +23,7 @@ const IssuesForm = props => (
           inputId="issues-table-description"
           placeholder="Enter description"
           value={props.description}
+          isRequired={true}
           onInputChange={props.onInputChange.bind(this, 'description')}
         />
       )}
@@ -35,6 +36,7 @@ const IssuesForm = props => (
             key: story.id,
             value: story.description,
           }))}
+          isRequired={true}
           selectedKey={props.story ? props.story.id : null}
           onChange={props.onStoryChange}
         />
