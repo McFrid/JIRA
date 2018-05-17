@@ -38,4 +38,5 @@ export default {
   removeStory,
   fetchStoriesCount,
   fetchStoriesCountByLogin,
+  removeMultipleStories,
 };

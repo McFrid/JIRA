@@ -38,4 +38,5 @@ export default {
   removeIssue,
   fetchIssuesCount,
   fetchIssuesCountByLogin,
+  removeMultipleIssues,
 };

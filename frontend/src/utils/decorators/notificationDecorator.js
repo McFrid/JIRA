@@ -12,7 +12,6 @@ const notificationDecorator = (thunk, textOnSuccess, textOnFail) => async (dispa
       toastr.error(textOnFail);
     }
 
-    console.log({e});
     throw e;
   }
 };

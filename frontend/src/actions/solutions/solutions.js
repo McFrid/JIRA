@@ -38,6 +38,8 @@ const removeSolutions = ids => async (dispatch) => {
     if (error.response.status === 401) {
       dispatch(actions.app.setAuthenticationError());
     }
+
+    throw error;
   }
 }
 

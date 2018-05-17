@@ -33,16 +33,9 @@ class DataTable extends React.Component {
       ? this.state.selectedIds.filter(item => item !== selectedId)
       : this.state.selectedIds.concat(selectedId);
 
-    let newSelectAllChecked = this.state.isSelectAllChecked;
-    if (newIds.length === this.props.data.length) {
-      newSelectAllChecked = true;
-    } else if (!newIds.length) {
-      newSelectAllChecked = false;
-    }
-
     this.setState({
       selectedIds: newIds,
-      isSelectAllChecked: newSelectAllChecked,
+      isSelectAllChecked: newIds.length === this.props.data.length,
     });
   }
 

@@ -54,7 +54,7 @@ const mapDispatchToProps = dispatch => ({
       actions.users.removeUsers(ids),
       'Successfully removed users',
       'Some user is connected to an other entity',
-    )))),
+    )), true)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersMainPage);

@@ -11,6 +11,8 @@ const awaitedProductActionsDecorator = thunk => async (dispatch) => {
     dispatch({
       type: actionTypes.product.PRODUCT_REQUEST_ERROR,
     });
+
+    throw e;
   }
 };
 

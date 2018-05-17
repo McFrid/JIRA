@@ -17,4 +17,5 @@ export default {
   saveSolution,
   updateSolution,
   removeSolution,
+  removeMultipleSolutions,
 };

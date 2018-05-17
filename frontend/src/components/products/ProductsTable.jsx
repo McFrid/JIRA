@@ -112,7 +112,7 @@ ProductsTable.defaultProps = {
   products: [],
   updateProduct: null,
   removeProduct: null,
-  removeMultipleUsers: null,
+  removeMultipleProducts: null,
 };
 
 export default ProductsTable;

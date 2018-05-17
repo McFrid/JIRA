@@ -29,4 +29,5 @@ export default {
   updateProduct,
   removeProduct,
   fetchProductsCount,
+  removeMultipleProducts,
 };

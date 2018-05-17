@@ -53,10 +53,10 @@ const mapDispatchToProps = dispatch => ({
     )))),
   removeMultipleIssues: ids =>
     dispatch(awaitedRequestDecorator(awaitedIssueActionsDecorator(notificationDecorator(
-      actions.issues.removeIssue(ids),
+      actions.issues.removeIssues(ids),
       'Successfully removed issues',
       'Some issue is connected to an other entity',
-    )))),
+    )), true)),
   storeSolution: solution => dispatch(actions.solution.storeSolution(solution)),
   updateSolution: (id, solution) => dispatch(actions.solution.updateSolution(id, solution)),
   removeSolution: id => dispatch(actions.solution.removeSolution(id)),

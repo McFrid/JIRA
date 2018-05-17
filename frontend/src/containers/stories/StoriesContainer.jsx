@@ -51,7 +51,7 @@ const mapDispatchToProps = dispatch => ({
       actions.stories.removeStories(id),
       'Successfully removed stories',
       'Some story is connected to an other entity',
-    )))),
+    )), true)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesMainPage);

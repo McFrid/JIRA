@@ -51,7 +51,7 @@ const mapDispatchToProps = dispatch => ({
       actions.products.removeProducts(ids),
       'Successfully removed products',
       'Some product is connected to an other entity',
-    )))),
+    )), true)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductsMainPage);
