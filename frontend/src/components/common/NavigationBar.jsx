@@ -79,7 +79,9 @@ class NavigationBar extends React.Component {
 
   componentDidMount() {
     this.props.usersActions.fetchUsers();
-    this.props.templatesActions.fetchTemplates();
+    if (account.getAccountUsername() === ROLE_ADMIN) {
+      this.props.templatesActions.fetchTemplates();
+    }
   }
 
   onSendMailClick(e) {
