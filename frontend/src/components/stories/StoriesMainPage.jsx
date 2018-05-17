@@ -64,6 +64,7 @@ class StoriesMainPage extends React.Component {
       product: null,
       currentPage: 1,
       rowPerPage: 3,
+      accountUsername: account.getAccountUsername(),
     };
 
     this.onToggleModal = this.onToggleModal.bind(this);
@@ -79,10 +80,16 @@ class StoriesMainPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage);
-    this.props.storiesActions.fetchStories();
+    account.getAccountRole() === ROLE_MANAGER
+      ? this.props.storiesActions.fetchStoriesPage(0, this.state.rowPerPage)
+      : this.props.storiesActions.fetchStoriesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage);
+
+    this.props.productsActions.fetchProducts();
     this.props.issuesActions.fetchIssues();
-    this.props.storiesActions.fetchStoriesCount();
+
+    account.getAccountRole() === ROLE_MANAGER
+      ? this.props.storiesActions.fetchStoriesCount()
+      : this.props.storiesActions.fetchStoriesCountByLogin(this.state.accountUsername);
   }
 
   onInputChange(name, event) {
@@ -140,7 +147,9 @@ class StoriesMainPage extends React.Component {
         productId: this.state.product ? this.state.product.id : 0,
         date: moment(),
       })
-      .then(() => this.props.storiesActions.fetchStoriesPage(0, this.state.rowPerPage));
+      .then(() => account.getAccountRole() === ROLE_MANAGER
+        ? this.props.storiesActions.fetchStoriesPage(0, this.state.rowPerPage)
+        : this.props.storiesActions.fetchStoriesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   onUpdateStory() {
@@ -154,7 +163,9 @@ class StoriesMainPage extends React.Component {
         productId: this.state.product ? this.state.product.id : 0,
         date: moment(),
       })
-      .then(() => this.props.storiesActions.fetchStoriesPage(0, this.state.rowPerPage));
+      .then(() => account.getAccountRole() === ROLE_MANAGER
+        ? this.props.storiesActions.fetchStoriesPage(0, this.state.rowPerPage)
+        : this.props.storiesActions.fetchStoriesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   onRemoveStory(id) {
@@ -164,7 +175,9 @@ class StoriesMainPage extends React.Component {
 
     this.props
       .removeStory(id)
-      .then(() => this.props.productsActions.fetchProductsPage(0, this.state.rowPerPage));
+      .then(() => account.getAccountRole() === ROLE_MANAGER
+        ? this.props.storiesActions.fetchStoriesPage(0, this.state.rowPerPage)
+        : this.props.storiesActions.fetchStoriesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   setDefaultProperties() {
@@ -181,7 +194,9 @@ class StoriesMainPage extends React.Component {
       currentPage: index,
     });
 
-    this.props.storiesActions.fetchStoriesPage(index - 1, this.state.rowPerPage);
+    account.getAccountRole() === ROLE_MANAGER
+      ? this.props.storiesActions.fetchStoriesPage(index - 1, this.state.rowPerPage)
+      : this.props.storiesActions.fetchStoriesPageByLogin(this.state.accountUsername, index - 1, this.state.rowPerPage);
   }
 
   render() {
@@ -197,12 +212,6 @@ class StoriesMainPage extends React.Component {
         <Spinner />
       );
     }
-
-    const stories = account.getAccountRole() === ROLE_MANAGER
-      ? this.props.stories
-      : this.props.stories.filter(story =>
-        !!this.props.products.find(product => story.productId === product.id).users
-          .find(user => user.id === Number.parseInt(account.getAccountId(), 10)));
 
     return (
       <div>
@@ -243,7 +252,7 @@ class StoriesMainPage extends React.Component {
         </DataModal>
 
         <StoriesTable
-          stories={stories}
+          stories={this.props.stories}
           products={this.props.products}
           issues={this.props.issues}
           currentPage={this.state.currentPage}

@@ -9,6 +9,12 @@ const fetchIssuesPage = (page, size) => request.get(`${ISSUES_BASE}`, {
   size,
 });
 
+const fetchIssuesPageByLogin = (login, page, size) => request.get(`${ISSUES_BASE}`, {
+  login,
+  page,
+  size,
+});
+
 const saveIssue = issue => request.post(ISSUES_BASE, issue);
 
 const updateIssue = issue => request.put(ISSUES_BASE, issue);
@@ -17,11 +23,17 @@ const removeIssue = id => request.delete(`${ISSUES_BASE}/${id}`);
 
 const fetchIssuesCount = () => request.get(`${ISSUES_BASE}/count`);
 
+const fetchIssuesCountByLogin = login => request.get(`${ISSUES_BASE}/count`, {
+  login,
+});
+
 export default {
   fetchIssues,
   fetchIssuesPage,
+  fetchIssuesPageByLogin,
   saveIssue,
   updateIssue,
   removeIssue,
   fetchIssuesCount,
+  fetchIssuesCountByLogin,
 };

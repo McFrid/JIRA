@@ -68,6 +68,7 @@ class IssuesMainPage extends React.Component {
       estimation: '0',
       currentPage: 1,
       rowPerPage: 3,
+      accountUsername: account.getAccountUsername(),
     };
 
     this.onToggleModal = this.onToggleModal.bind(this);
@@ -84,11 +85,17 @@ class IssuesMainPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage);
+    account.getAccountRole() === ROLE_MANAGER
+      ? this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage)
+      : this.props.issuesActions.fetchIssuesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage);
+
     this.props.storiesActions.fetchStories();
     this.props.solutionsActions.fetchSolutions();
     this.props.usersActions.fetchUsers();
-    this.props.issuesActions.fetchIssuesCount();
+
+    account.getAccountRole() === ROLE_MANAGER
+      ? this.props.issuesActions.fetchIssuesCount()
+      : this.props.issuesActions.fetchIssuesCountByLogin(this.state.accountUsername);
   }
 
   onInputChange(name, event) {
@@ -157,7 +164,9 @@ class IssuesMainPage extends React.Component {
           this.props.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)),
         ],
       })
-      .then(() => this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage));
+      .then(() => account.getAccountRole() === ROLE_MANAGER
+        ? this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage)
+        : this.props.issuesActions.fetchIssuesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   onUpdateIssue() {
@@ -200,7 +209,9 @@ class IssuesMainPage extends React.Component {
           this.props.users.find(user => user.id === Number.parseInt(account.getAccountId(), 10)),
         ],
       }))
-      .then(() => this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage));
+      .then(() => account.getAccountRole() === ROLE_MANAGER
+        ? this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage)
+        : this.props.issuesActions.fetchIssuesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   onDevelopersChange(event) {
@@ -226,7 +237,9 @@ class IssuesMainPage extends React.Component {
 
     this.props
       .removeIssue(id)
-      .then(() => this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage));
+      .then(() => account.getAccountRole() === ROLE_MANAGER
+        ? this.props.issuesActions.fetchIssuesPage(0, this.state.rowPerPage)
+        : this.props.issuesActions.fetchIssuesPageByLogin(this.state.accountUsername, 0, this.state.rowPerPage));
   }
 
   setDefaultProperties() {
@@ -244,7 +257,9 @@ class IssuesMainPage extends React.Component {
       currentPage: index,
     });
 
-    this.props.issuesActions.fetchIssuesPage(index - 1, this.state.rowPerPage);
+    account.getAccountRole() === ROLE_MANAGER
+      ? this.props.issuesActions.fetchIssuesPage(index - 1, this.state.rowPerPage)
+      : this.props.issuesActions.fetchIssuesPageByLogin(this.state.accountUsername, index - 1, this.state.rowPerPage);
   }
 
   render() {
@@ -262,11 +277,6 @@ class IssuesMainPage extends React.Component {
         <Spinner />
       );
     }
-
-    const issues = account.getAccountRole() === ROLE_MANAGER
-      ? this.props.issues
-      : this.props.issues.filter(issue => !!issue.users
-        .find(user => user.id === Number.parseInt(account.getAccountId(), 10)));
 
     return (
       <div>
@@ -320,7 +330,7 @@ class IssuesMainPage extends React.Component {
 
         <IssuesTable
           stories={this.props.stories}
-          issues={issues}
+          issues={this.props.issues}
           solutions={this.props.solutions}
           currentPage={this.state.currentPage}
           rowPerPage={this.state.rowPerPage}
