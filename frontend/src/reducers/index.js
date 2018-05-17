@@ -7,6 +7,7 @@ import products from './products';
 import stories from './stories';
 import issues from './issues';
 import solutions from './solutions';
+import emails from './emails';
 
 export default combineReducers({
   users,
@@ -17,4 +18,5 @@ export default combineReducers({
   stories,
   issues,
   solutions,
+  emails,
 });

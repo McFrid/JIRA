@@ -1,21 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Button } from 'reactstrap';
 
 import LabelDropdown from '../../components/common/LabelDropdown';
 
-import request from '../../utils/request';
 import account from '../../utils/account';
-import auth from "../../utils/auth";
+import auth from '../../utils/auth';
 
-const Wrapper = styled.div`
-  display: flex;
-  box-sizing: border-box;
-  width: 100vw;
-  height: 100vh;
-  padding-top: 100px;
-  justify-content: space-around;
-`;
+import './HomePage.css';
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -39,6 +30,7 @@ class HomePage extends React.Component {
   render() {
     const download = (name, url) => (
       <Button
+        color="success"
         onClick={() => {
           const headers = new Headers();
           headers.append('Authorization', `Bearer ${auth.getAccessToken()}`);
@@ -57,7 +49,7 @@ class HomePage extends React.Component {
     );
 
     const selectFormat = (name, label, url) => (
-      <div>
+      <div className="home-container__document">
 
         <h2>{label}</h2><br />
 
@@ -77,13 +69,13 @@ class HomePage extends React.Component {
     );
 
     return (
-      <Wrapper>
+      <div className="home-container">
         {selectFormat('products', 'Products Statistics', '/products/statistics')}
         {selectFormat('solutions', 'Solutions Statistics', '/solutions/statistics')}
         {selectFormat('users', 'Users Statistics', '/users/statistics')}
         {selectFormat('contributions', 'Contributions', `/users/${account.getAccountUsername()}/contributions`)}
         {selectFormat('resolved', 'Resolved', `/users/${account.getAccountUsername()}/resolved`)}
-      </Wrapper>
+      </div>
     );
   }
 }

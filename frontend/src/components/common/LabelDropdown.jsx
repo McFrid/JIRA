@@ -36,7 +36,7 @@ class LabelDropdown extends React.Component {
 
     return (
       <FormGroup>
-        <Label for={this.props.dropdownId}>{this.props.labelName}</Label>
+        <Label for={this.props.dropdownId}>{this.props.labelName} {this.props.isRequired ? '*' : ''}</Label>
         <Dropdown
           isOpen={this.state.isDropdownOpened}
           toggle={this.onToggle}

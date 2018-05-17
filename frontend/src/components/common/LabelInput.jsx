@@ -9,7 +9,7 @@ import {
 
 const LabelInput = props => (
   <FormGroup>
-    <Label for={props.inputId}>{props.labelName}</Label>
+    <Label for={props.inputId}>{props.labelName} {props.isRequired ? '*' : ''}</Label>
 
     <Input
       invalid={props.isError}
