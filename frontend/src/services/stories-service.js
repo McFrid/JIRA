@@ -21,6 +21,8 @@ const updateStory = story => request.put(STORIES_BASE, story);
 
 const removeStory = id => request.delete(`${STORIES_BASE}/${id}`);
 
+const removeMultipleStories = ids => request.delete(`${STORIES_BASE}`, ids);
+
 const fetchStoriesCount = () => request.get(`${STORIES_BASE}/count`);
 
 const fetchStoriesCountByLogin = login => request.get(`${STORIES_BASE}/count`, {

@@ -77,6 +77,7 @@ class StoriesMainPage extends React.Component {
     this.onProductChange = this.onProductChange.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.onRemoveStory = this.onRemoveStory.bind(this);
+    this.onRemoveMultipleStories = this.onRemoveMultipleStories.bind(this);
   }
 
   componentDidMount() {

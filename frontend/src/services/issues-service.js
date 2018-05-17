@@ -21,6 +21,8 @@ const updateIssue = issue => request.put(ISSUES_BASE, issue);
 
 const removeIssue = id => request.delete(`${ISSUES_BASE}/${id}`);
 
+const removeMultipleIssues = ids => request.delete(`${ISSUES_BASE}`, ids);
+
 const fetchIssuesCount = () => request.get(`${ISSUES_BASE}/count`);
 
 const fetchIssuesCountByLogin = login => request.get(`${ISSUES_BASE}/count`, {

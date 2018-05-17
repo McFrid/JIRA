@@ -94,10 +94,28 @@ const fetchStoriesCountByLogin = login => async (dispatch) => {
   }
 };
 
+const removeStories = ids => async (dispatch) => {
+  try {
+    await storiesService.removeMultipleStories(ids);
+
+    dispatch({
+      type: actionTypes.stories.STORIES_REMOVE,
+      payload: {
+        ids,
+      }
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+}
+
 export default {
   fetchStories,
   fetchStoriesPage,
   fetchStoriesPageByLogin,
   fetchStoriesCount,
   fetchStoriesCountByLogin,
+  removeStories,
 };

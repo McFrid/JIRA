@@ -46,6 +46,12 @@ const mapDispatchToProps = dispatch => ({
       'Successfully removed product',
       'The product is connected to some other entity',
     )))),
+  removeMultipleProducts: ids =>
+    dispatch(awaitedRequestDecorator(awaitedProductActionsDecorator(notificationDecorator(
+      actions.products.removeProducts(ids),
+      'Successfully removed products',
+      'Some product is connected to an other entity',
+    )))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductsMainPage);

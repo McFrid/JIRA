@@ -94,10 +94,28 @@ const fetchIssuesCountByLogin = login => async (dispatch) => {
   }
 };
 
+const removeIssues = ids => async (dispatch) => {
+  try {
+    await issuesService.removeMultipleIssues(ids);
+
+    dispatch({
+      type: actionTypes.issues.ISSUES_REMOVE,
+      payload: {
+        ids,
+      }
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+}
+
 export default {
   fetchIssues,
   fetchIssuesPage,
   fetchIssuesPageByLogin,
   fetchIssuesCount,
   fetchIssuesCountByLogin,
+  removeIssues,
 };

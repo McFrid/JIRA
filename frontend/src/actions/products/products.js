@@ -59,8 +59,26 @@ const fetchProductsCount = login => async (dispatch) => {
   }
 };
 
+const removeProducts = ids => async (dispatch) => {
+  try {
+    await productsService.removeMultipleProducts(ids);
+
+    dispatch({
+      type: actionTypes.products.PRODUCTS_REMOVE,
+      payload: {
+        ids,
+      }
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      dispatch(actions.app.setAuthenticationError());
+    }
+  }
+}
+
 export default {
   fetchProducts,
   fetchProductsPage,
   fetchProductsCount,
+  removeProducts,
 };
