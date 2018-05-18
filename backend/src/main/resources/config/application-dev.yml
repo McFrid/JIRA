@@ -136,3 +136,5 @@ jhipster:
 # ===================================================================
 
 application:
+    pdf:
+        encryption-owner-password: my_encryption_password
