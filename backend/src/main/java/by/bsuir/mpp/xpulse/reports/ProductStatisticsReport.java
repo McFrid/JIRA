@@ -1,5 +1,6 @@
 package by.bsuir.mpp.xpulse.reports;
 
+import by.bsuir.mpp.xpulse.config.Constants;
 import by.bsuir.mpp.xpulse.domain.Story;
 import by.bsuir.mpp.xpulse.domain.User;
 import by.bsuir.mpp.xpulse.reports.template.Templates;
@@ -9,6 +10,7 @@ import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,26 +29,28 @@ public class ProductStatisticsReport implements Report {
 
     @Override
     public JasperReportBuilder generateReport(Object parameter) {
-//        StyleBuilder boldStyle = stl.style().bold();
-//        StyleBuilder headerStyle = stl.style().bold().setFontSize(18).setBottomPadding(10)
-//            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
-//        StyleBuilder boldCenteredStyle = stl.style(boldStyle)
-//            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
-//        StyleBuilder columnTitleStyle = stl.style(boldCenteredStyle)
-//            .setBorder(stl.pen1Point())
-//            .setBackgroundColor(Color.LIGHT_GRAY);
-//        StyleBuilder italicCenteredStyle = stl.style().italic().setBottomPadding(5)
-//            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+        StyleBuilder boldStyle = stl.style().bold();
+        StyleBuilder headerStyle = stl.style().bold().setFontSize(10).setBottomPadding(10)
+            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+        StyleBuilder boldCenteredStyle = stl.style(boldStyle)
+            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+        StyleBuilder columnTitleStyle = stl.style(boldCenteredStyle)
+            .setBorder(stl.pen1Point())
+            .setBackgroundColor(Color.LIGHT_GRAY);
+        StyleBuilder italicCenteredStyle = stl.style().italic().setTopPadding(10).setBottomPadding(10).setFontSize(12)
+            .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+        StyleBuilder dejaVuSansFont = stl.style().setFontName("DejaVu Sans").setFontSize(8).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
         return report()
-            .setColumnTitleStyle(Templates.columnTitleStyle)
+            .setColumnStyle(dejaVuSansFont)
+            .setColumnTitleStyle(headerStyle)
             .ignorePageWidth()
             .ignorePagination()
             .fields(
                 field("stories", Set.class),
                 field("users", Set.class)
             )
-            //.setColumnTitleStyle(columnTitleStyle)
-            //.highlightDetailEvenRows()
+            .setColumnTitleStyle(columnTitleStyle)
+            .highlightDetailEvenRows()
             .columns(
                 col.column("Product name", "name", type.stringType()),
                 col.column("Issue number", new AbstractSimpleExpression<String>() {
@@ -116,10 +120,10 @@ public class ProductStatisticsReport implements Report {
 
                         return String.valueOf(count);
                     }
-                })
+                }).setMinHeight(Constants.MIN_COLUMN_HEIGH)
             )
-            //.title(cmp.text("Solution statistics").setStyle(headerStyle))
-            //.pageFooter(cmp.text("© DreamTeam").setStyle(italicCenteredStyle))
+            .title(cmp.text("Solution statistics").setStyle(italicCenteredStyle))
+            .pageFooter(cmp.text("© XPulse Team").setStyle(italicCenteredStyle))
             .setDataSource(productRepository.findAll());
     }
 }
