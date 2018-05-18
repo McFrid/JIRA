@@ -5,6 +5,7 @@ import by.bsuir.mpp.xpulse.repository.UserRepository;
 import by.bsuir.mpp.xpulse.security.AuthoritiesConstants;
 import by.bsuir.mpp.xpulse.service.MailService;
 import by.bsuir.mpp.xpulse.web.rest.vm.MailVM;
+import by.bsuir.mpp.xpulse.web.rest.vm.TemplateVM;
 import com.codahale.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,17 +76,25 @@ public class MailResource {
 
     @GetMapping("/templates")
     @Timed
-    public ResponseEntity<List<String>> getAllTemplates() {
+    public ResponseEntity<List<TemplateVM>> getAllTemplates() {
         try {
             File templateDir = ResourceUtils.getFile("classpath:mails");
             File[] files = templateDir.listFiles();
             if (files != null) {
-                List<String> templateNames = Arrays.stream(files).map(file -> file.getName().substring(0, file.getName().indexOf('.'))).collect(Collectors.toList());
-                return new ResponseEntity<>(templateNames, HttpStatus.OK);
+
+                List<TemplateVM> templates = new LinkedList<>();
+
+                for (File file : files) {
+                    String content = new String(Files.readAllBytes(file.toPath()), "UTF-8");
+                    String name = file.getName().substring(0, file.getName().indexOf('.'));
+                    templates.add(new TemplateVM(name, content));
+                }
+
+                return new ResponseEntity<>(templates, HttpStatus.OK);
             }
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        catch (FileNotFoundException e) {
+        catch (IOException e) {
             logger.error("Error reading template folder", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
