@@ -16,6 +16,8 @@ public final class Constants {
     public static final String XLS = "xls";
     public static final String CSV = "csv";
 
+    public static final int MIN_COLUMN_HEIGH = 20;
+
     private Constants() {
     }
 }

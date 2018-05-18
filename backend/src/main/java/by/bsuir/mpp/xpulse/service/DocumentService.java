@@ -19,9 +19,12 @@ public class DocumentService {
 
     private Logger logger = LoggerFactory.getLogger(DocumentService.class);
 
-    private ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    private ByteArrayOutputStream baos;
 
     public byte[] writeTo(JasperReportBuilder reportBuilder, final String format) throws Exception {
+
+        baos = new ByteArrayOutputStream();
+
         if (format.equalsIgnoreCase(Constants.PDF)) {
             writeToPdf(reportBuilder);
         }
@@ -31,13 +34,14 @@ public class DocumentService {
         else {
             writeToCsv(reportBuilder);
         }
+
         return baos.toByteArray();
     }
 
     private void writeToCsv(JasperReportBuilder reportBuilder) throws Exception {
         JasperCsvExporterBuilder csvExporterBuilder = export
             .csvExporter(baos)
-            .setCharacterEncoding("UTF-16");
+            .setCharacterEncoding("UTF-8");
 
         logger.debug("Writing to CSV");
 
