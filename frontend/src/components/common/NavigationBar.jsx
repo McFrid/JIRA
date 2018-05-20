@@ -79,7 +79,7 @@ class NavigationBar extends React.Component {
 
   componentDidMount() {
     this.props.usersActions.fetchUsers();
-    if (account.getAccountUsername() === ROLE_ADMIN) {
+    if (account.getAccountRole() === ROLE_ADMIN) {
       this.props.templatesActions.fetchTemplates();
     }
   }
@@ -129,7 +129,7 @@ class NavigationBar extends React.Component {
       message: this.state.mail,
       title: this.state.title,
       userIds: this.state.users.map(user => user.id),
-    }, this.state.isTemplate ? this.state.template : null);
+    }, this.state.isTemplate ? this.state.template.name : null);
   }
 
   onCancelSendMail() {
@@ -163,7 +163,7 @@ class NavigationBar extends React.Component {
   onTemplateChange(event) {
     this.setState({
       template: this.props.templates
-        .find(template => template === event.target.id),
+        .find(template => template.name === event.target.id),
     });
   }
 
@@ -181,6 +181,20 @@ class NavigationBar extends React.Component {
 
   render() {
     const role = account.getAccountRole();
+
+    setTimeout(() => {
+      const iframe = document.getElementById('iframe__mail');
+
+      if (iframe) {
+        const html = '';
+
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(html);
+        iframe.contentWindow.document.close();
+
+        iframe.contentDocument.write(this.state.template.content);
+      }
+    }, 100);
 
     return (
       <React.Fragment>
@@ -246,6 +260,7 @@ class NavigationBar extends React.Component {
                   value: `${user.firstName} ${user.lastName}`,
                 }))}
               value={this.state.users.map(user => user.id)}
+              isRequired={true}
               onOptionClick={this.onUsersChange}
             />
 
@@ -264,27 +279,32 @@ class NavigationBar extends React.Component {
                 labelName="Templates"
                 dropdownId="emails-template"
                 dropdownData={this.props.templates.map(template => ({
-                  key: template,
-                  value: template,
+                  key: template.name,
+                  value: template.name,
                 }))}
                 isRequired={true}
-                selectedKey={this.state.template ? this.state.template : null}
+                selectedKey={this.state.template ? this.state.template.name : null}
                 onChange={this.onTemplateChange}
               />
             )}
 
-            {!this.state.isTemplate && (
-              <React.Fragment>
-                <FormGroup>
-                  <Label for="textarea">Mail *</Label>
+            <React.Fragment>
+              <FormGroup>
+                <Label for="textarea">Mail {!this.state.isTemplate ? '*' : ''}</Label>
+
+                {this.state.isTemplate ? (
+                  <iframe id="iframe__mail" style={{ width: '100%' }} />
+                ) : (
                   <Input
                     type="textarea"
-                    value={this.state.mail}
+                    value={this.state.isTemplate ? this.state.template.content : this.state.mail}
+                    disabled={this.state.isTemplate}
                     onChange={this.onChangeMail}
+                    rows={9}
                   />
-                </FormGroup>
-              </React.Fragment>
-            )}
+                )}
+              </FormGroup>
+            </React.Fragment>
           </DataModal>
         </div>
       </React.Fragment>
