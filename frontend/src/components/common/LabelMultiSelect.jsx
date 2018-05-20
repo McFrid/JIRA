@@ -8,7 +8,7 @@ import {
 
 const LabelMultiSelect = props => (
   <FormGroup>
-    <Label for={props.inputId}>{props.labelName}</Label>
+    <Label for={props.inputId}>{props.labelName} {props.isRequired ? '*' : ''}</Label>
 
     <Input
       type="select"
